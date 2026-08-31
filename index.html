@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -113,123 +114,573 @@ button{cursor:pointer}
   80%{transform:translate(5px,4px)}
 }
 
-.particle{width:7px;height:7px;border-radius:50%;position:absolute}
+/* simple particles */
+.particle{
+ width:7px;height:7px;border-radius:50%;position:absolute
+}
 
-/* Visual Effects Styles */
+/* Pebble */
 .pebble{width:13px;height:9px;background:#777;border-radius:60% 40%;animation:orbit 4s linear infinite}
 .pebbleDust{width:5px;height:5px;background:#aaa;border-radius:50%;animation:rise 1.7s infinite}
-.leaf{width:12px;height:7px;background:#36a852;border-radius:100% 0;animation:fall 3s linear infinite}
-.wind{width:75px;height:30px;border-top:3px solid #ddd;border-radius:50%;animation:drift 2s linear infinite}
-.drop{width:9px;height:13px;background:#36bdf5;border-radius:60% 60% 70% 70%;animation:fall 2s linear infinite}
-.dew{width:8px;height:8px;background:#bffcff;border-radius:50%;box-shadow:0 0 10px #fff;animation:float 1.5s infinite alternate}
-.dust{width:6px;height:6px;background:#9a7950;border-radius:50%;animation:drift 2s linear infinite}
-.glowRing{width:190px;height:190px;border:3px solid #fff4a3;border-radius:50%;box-shadow:0 0 35px #fff4a3;animation:pulse 1.4s infinite alternate}
-.ember{width:6px;height:13px;background:#ff7a00;border-radius:50%;box-shadow:0 0 10px #ff4500;animation:rise 2s linear infinite}
-.frost{width:28px;height:28px;border:3px solid #bdf5ff;transform:rotate(45deg);box-shadow:0 0 12px #8eeaff}
-.flame{width:32px;height:55px;background:linear-gradient(#fff,#ffb000,#f30);border-radius:50% 50% 45% 45%;filter:blur(1px);animation:pulse .45s infinite alternate}
-.mist{width:180px;height:55px;background:#fff8;border-radius:50%;filter:blur(12px);animation:float 2s infinite alternate}
-.stone{width:18px;height:15px;background:#666;border-radius:4px;animation:orbit 3s linear infinite}
-.bloom{width:18px;height:18px;border-radius:50%;background:radial-gradient(circle,#ffd1ec 0 25%,#ff69b4 27% 55%,transparent 58%);animation:float 2s infinite alternate}
-.cloud{width:100px;height:35px;background:#fff;border-radius:50px;box-shadow:25px 0 0 #fff,-25px 5px 0 #fff;animation:float 2s infinite alternate}
-.wave{width:180px;height:70px;border:7px solid #19aee8;border-color:#19aee8 transparent transparent;border-radius:50%;animation:spin 2s linear infinite}
-.shadowSmoke{width:180px;height:180px;background:#1118;border-radius:50%;filter:blur(15px);animation:float 2s infinite alternate}
-.bolt{width:6px;height:90px;background:#55dfff;clip-path:polygon(50% 0,100% 35%,60% 35%,80% 100%,0 50%,40% 50%);animation:flash 1.5s infinite}
-.crystal{width:18px;height:42px;background:linear-gradient(135deg,#fff,#73e8ff,#b86cff);clip-path:polygon(50% 0,100% 25%,75% 100%,25% 100%,0 25%);animation:orbit 5s linear infinite}
-.venom{width:50px;height:80px;background:#8b20c7aa;border-radius:50%;filter:blur(10px);animation:float 1.3s infinite alternate}
-.sun{width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,#fff,#ffd21c,#ff7200);box-shadow:0 0 50px #ff9d00;animation:pulse 1s infinite alternate}
-.moon{width:85px;height:85px;border-radius:50%;background:#dffaff;box-shadow:0 0 35px #9eeaff;position:absolute}
-.moon:after{content:"";position:absolute;width:85px;height:85px;border-radius:50%;background:#fff;left:24px;top:-8px}
-.comet{width:30px;height:30px;border-radius:50%;background:#fff;box-shadow:0 0 25px #fff;animation:orbit 3s linear infinite}
-.voidBall{width:120px;height:120px;border-radius:50%;background:#000;box-shadow:0 0 35px #4b0082;animation:pulse 2s infinite alternate}
-.inferno{width:260px;height:260px;border:18px solid #f30;border-radius:50%;filter:blur(3px);animation:spin 1.5s linear infinite}
-.ice{width:55px;height:100px;background:#8eeaff88;clip-path:polygon(50% 0,100% 100%,50% 80%,0 100%);border:3px solid #dfffff;animation:pulse 2s infinite alternate}
-.tempest{width:280px;height:280px;border:7px dashed #9eeaff;border-radius:50%;animation:spin 1s linear infinite}
-.abyss{width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,#000 0 45%,#54106f 48%,transparent 70%);box-shadow:0 0 45px #5b0088;animation:spin 4s linear infinite}
-.eclipse{width:105px;height:105px;border-radius:50%;background:#050505;border:6px solid #ffd34e;box-shadow:0 0 35px #ffd34e}
-.ghost{width:75px;height:130px;border:4px solid #bfcfff;border-radius:50% 50% 25% 25%;opacity:.35;animation:float 1.7s infinite alternate}
-.prism{width:32px;height:55px;background:linear-gradient(45deg,#f00,#ff0,#0f0,#0ff,#00f,#f0f);clip-path:polygon(50% 0,100% 35%,75% 100%,25% 100%,0 35%);animation:orbit 2s linear infinite}
-.nebula{width:300px;height:190px;border-radius:50%;background:radial-gradient(circle,#ff4fc8aa,#7a45ff88,#20cffff0,transparent 70%);filter:blur(15px);animation:pulse 2s infinite alternate}
-.gravityRock{width:15px;height:15px;background:#777;border-radius:4px;animation:gravityFloat 2s infinite alternate}
-@keyframes gravityFloat{0%{transform:translateY(100px) rotate(0)}100%{transform:translateY(-100px) rotate(180deg)}}
-.star{color:#fff;font-size:18px;animation:float 2s infinite alternate}
-.bloodmoon{width:145px;height:145px;border-radius:50%;background:#7d0012;box-shadow:0 0 50px #e00025;animation:pulse 2s infinite alternate}
-.aurora{width:300px;height:180px;border-radius:50%;border-top:15px solid #5fffc8;border-left:15px solid #8c5cff;filter:blur(4px);animation:spin 7s linear infinite}
-.speed{width:240px;height:5px;background:#fff;box-shadow:0 0 12px #fff;animation:drift .5s linear infinite}
-.celestialRing{width:220px;height:220px;border:5px solid #ffd84a;border-radius:50%;animation:spin 3s linear infinite}
-.oblivion{width:240px;height:240px;border-radius:50%;background:#000b;filter:blur(8px);animation:pulse 2s infinite alternate}
-.divineBeam{width:25px;height:280px;background:#fff4a8;filter:blur(5px);animation:pulse 1.5s infinite alternate}
-.galaxy{width:280px;height:150px;border:15px solid #764cff88;border-radius:50%;transform:rotate(-25deg);animation:spin 4s linear infinite}
-.singularity{width:85px;height:85px;border-radius:50%;background:#000;box-shadow:0 0 35px #642cff;animation:pulse 1.3s infinite alternate}
-.eternal{width:220px;height:220px;border:12px double #ffd34e;border-radius:50%;animation:spin 2s linear infinite}
-.rift{width:150px;height:220px;border-left:7px dashed #b44cff;transform:skew(-15deg);animation:glitch .8s infinite}
-.clock{width:170px;height:170px;border:7px solid #ffd34e;border-radius:50%;animation:spin 8s linear infinite}
-.clock:after{content:"";position:absolute;left:50%;top:15px;width:4px;height:70px;background:#ffd34e;transform-origin:bottom;transform:rotate(35deg)}
-.wing{width:150px;height:90px;border-radius:100% 0;background:linear-gradient(#fff,#ffd95c);filter:drop-shadow(0 0 15px #fff);animation:float 1.5s infinite alternate}
-.shock{width:320px;height:320px;border:15px solid #111;border-radius:50%;box-shadow:0 0 30px #ffd34e;animation:pulse .8s infinite alternate}
-.genesis{width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,#fff,#ffd34e,#ff69b4,#5b5cff,transparent 70%);animation:pulse 1.5s infinite alternate}
-.infinity{font-size:180px;color:#8b5cff;line-height:1;animation:spin 5s linear infinite}
-.rune{font-size:55px;color:#d8a9ff;animation:spin 4s linear infinite}
-.planet{width:40px;height:40px;border-radius:50%;background:#55aaff;box-shadow:0 0 15px #55aaff;animation:orbit 4s linear infinite}
-.astral{width:100px;height:170px;border:3px solid #bcdcff;border-radius:45%;opacity:.35;animation:float 2s infinite alternate}
-.heavenBeam{width:35px;height:320px;background:#fff;filter:blur(8px);animation:pulse 1s infinite alternate}
-.doom{width:260px;height:180px;background:#30000a99;border-radius:50%;filter:blur(15px);animation:pulse 1s infinite alternate}
-.crack{width:280px;height:4px;background:#fff;box-shadow:0 0 15px #fff;transform:rotate(-15deg);animation:glitch .7s infinite}
-.reality{width:250px;height:250px;border:4px dashed #fff;animation:glitch .3s infinite}
-.ancient{font-size:65px;color:#b88732;animation:spin 5s linear infinite}
-.seal{width:170px;height:170px;border:5px solid #6b19a8;border-radius:50%;animation:spin 3s linear infinite}
-.immortal{width:180px;height:180px;border:10px solid #ffd34e;border-radius:50%;box-shadow:0 0 30px #ffd34e;animation:pulse 1s infinite alternate}
-.transRing{width:250px;height:250px;border:4px solid #dfffff;border-radius:50%;animation:spin 4s linear infinite}
-.absolute{width:240px;height:240px;border:5px solid #111;border-radius:50%;animation:spin 6s linear infinite}
-.chain{width:100px;height:25px;border:6px solid #777;border-radius:20px;animation:drift 1s infinite}
-.lines{width:360px;height:3px;background:#55aaff;box-shadow:0 0 12px #55aaff;animation:drift 1s linear infinite}
-.paradoxA,.paradoxB{width:180px;height:180px;border:6px solid;border-radius:50%;animation:spin 2s linear infinite}
-.universe{width:65px;height:65px;border-radius:50%;background:radial-gradient(circle,#fff,#7c4dff,transparent 70%);animation:orbit 3s linear infinite}
-.finalClock{width:190px;height:190px;border:8px solid #222;border-radius:50%}
-.godRing{width:300px;height:300px;border:12px solid #ffd34e;border-radius:50%;box-shadow:0 0 40px #ffd34e;animation:spin 5s linear infinite}
-.chosenMark{width:170px;height:170px;border:7px solid #fff;border-radius:50%;box-shadow:0 0 30px #fff;animation:pulse 1.5s infinite alternate}
-.firstRune{font-size:100px;color:#d7a63b;animation:spin 7s linear infinite}
-.beyond{width:400px;height:300px;border:3px dotted #fff;animation:glitch .4s infinite}
-.xRing{width:330px;height:330px;border:7px double #55aaff;border-radius:50%;animation:spin 1.5s linear infinite}
-.whiteFire{width:75px;height:130px;background:linear-gradient(#fff,#ffe96a,#fff);clip-path:polygon(50% 0,80% 40%,100% 65%,65% 100%,30% 80%,0 50%,30% 35%);filter:drop-shadow(0 0 20px #fff);animation:pulse .5s infinite alternate}
-.origin{width:45px;height:45px;border-radius:50%;background:#fff;box-shadow:0 0 40px #fff;animation:origin 2s infinite}
-@keyframes origin{0%{transform:scale(.3);opacity:1}70%{transform:scale(4);opacity:.15}100%{transform:scale(.3);opacity:1}}
-.endSphere{width:260px;height:260px;border-radius:50%;background:#000;box-shadow:0 0 40px #111;animation:pulse 3s infinite alternate}
-.nullFx{width:230px;height:230px;border:2px solid #000;border-radius:50%;animation:pulse 2s infinite alternate}
-.impossible{width:230px;height:230px;border:4px solid #111;transform:rotate(45deg);animation:glitch .25s infinite}
-.infiniteVoid{width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,#000 0 35%,#270052 50%,transparent 72%);box-shadow:0 0 50px #7200c9;animation:spin 8s linear infinite}
-.creator{width:55px;height:55px;border-radius:50%;background:#fff;box-shadow:0 0 35px #ffd34e;animation:origin 2s infinite}
-.zero{width:240px;height:240px;border:12px solid #dffcff;border-radius:50%;box-shadow:0 0 30px #bffcff;animation:pulse 2s infinite alternate}
-.glitchAura{width:300px;height:300px;border:5px dashed #f00;box-shadow:0 0 25px #f00,0 0 50px #000;animation:glitch .12s infinite}
-.glitchText{position:absolute;color:#f00;font-family:monospace;font-size:28px;animation:glitch .1s infinite}
 
-/* Anime Visual Effects */
-.gojoRed,.gojoBlue{width:55px;height:55px;border-radius:50%;position:absolute;box-shadow:0 0 30px currentColor}
+/* Leaf */
+.leaf{width:12px;height:7px;background:#36a852;border-radius:100% 0;animation:fall 3s linear infinite}
+
+/* Breeze */
+.wind{width:75px;height:30px;border-top:3px solid #ddd;border-radius:50%;animation:drift 2s linear infinite}
+
+/* Drop */
+.drop{width:9px;height:13px;background:#36bdf5;border-radius:60% 60% 70% 70%;animation:fall 2s linear infinite}
+
+/* Dew */
+.dew{width:8px;height:8px;background:#bffcff;border-radius:50%;box-shadow:0 0 10px #fff;animation:float 1.5s infinite alternate}
+
+/* Dust */
+.dust{width:6px;height:6px;background:#9a7950;border-radius:50%;animation:drift 2s linear infinite}
+
+/* Glow */
+.glowRing{width:190px;height:190px;border:3px solid #fff4a3;border-radius:50%;box-shadow:0 0 35px #fff4a3;animation:pulse 1.4s infinite alternate}
+
+/* Ember */
+.ember{width:6px;height:13px;background:#ff7a00;border-radius:50%;box-shadow:0 0 10px #ff4500;animation:rise 2s linear infinite}
+
+/* Frost */
+.frost{width:28px;height:28px;border:3px solid #bdf5ff;transform:rotate(45deg);box-shadow:0 0 12px #8eeaff}
+
+/* Flame */
+.flame{
+ width:32px;height:55px;background:linear-gradient(#fff,#ffb000,#f30);
+ border-radius:50% 50% 45% 45%;filter:blur(1px);animation:pulse .45s infinite alternate
+}
+
+/* Mist */
+.mist{
+ width:180px;height:55px;background:#fff8;border-radius:50%;
+ filter:blur(12px);animation:float 2s infinite alternate
+}
+
+/* Stone */
+.stone{width:18px;height:15px;background:#666;border-radius:4px;animation:orbit 3s linear infinite}
+
+/* Bloom */
+.bloom{
+ width:18px;height:18px;border-radius:50%;
+ background:radial-gradient(circle,#ffd1ec 0 25%,#ff69b4 27% 55%,transparent 58%);
+ animation:float 2s infinite alternate
+}
+
+/* Cloud */
+.cloud{
+ width:100px;height:35px;background:#fff;border-radius:50px;
+ box-shadow:25px 0 0 #fff,-25px 5px 0 #fff;animation:float 2s infinite alternate
+}
+
+/* Wave */
+.wave{
+ width:180px;height:70px;border:7px solid #19aee8;border-color:#19aee8 transparent transparent;
+ border-radius:50%;animation:spin 2s linear infinite
+}
+
+/* Shadow */
+.shadowSmoke{
+ width:180px;height:180px;background:#1118;border-radius:50%;
+ filter:blur(15px);animation:float 2s infinite alternate
+}
+
+/* Thunder */
+.bolt{
+ width:6px;height:90px;background:#55dfff;
+ clip-path:polygon(50% 0,100% 35%,60% 35%,80% 100%,0 50%,40% 50%);
+ animation:flash 1.5s infinite
+}
+
+/* Crystal */
+.crystal{
+ width:18px;height:42px;background:linear-gradient(135deg,#fff,#73e8ff,#b86cff);
+ clip-path:polygon(50% 0,100% 25%,75% 100%,25% 100%,0 25%);
+ animation:orbit 5s linear infinite
+}
+
+/* Venom */
+.venom{
+ width:50px;height:80px;background:#8b20c7aa;border-radius:50%;
+ filter:blur(10px);animation:float 1.3s infinite alternate
+}
+
+/* Solar */
+.sun{
+ width:90px;height:90px;border-radius:50%;
+ background:radial-gradient(circle,#fff,#ffd21c,#ff7200);
+ box-shadow:0 0 50px #ff9d00;animation:pulse 1s infinite alternate
+}
+
+/* Lunar */
+.moon{
+ width:85px;height:85px;border-radius:50%;
+ background:#dffaff;box-shadow:0 0 35px #9eeaff;
+ position:absolute
+}
+.moon:after{
+ content:"";position:absolute;width:85px;height:85px;border-radius:50%;
+ background:#fff;left:24px;top:-8px
+}
+
+/* Comet */
+.comet{
+ width:30px;height:30px;border-radius:50%;background:#fff;
+ box-shadow:0 0 25px #fff;
+ animation:orbit 3s linear infinite
+}
+
+/* Void */
+.voidBall{
+ width:120px;height:120px;border-radius:50%;background:#000;
+ box-shadow:0 0 35px #4b0082;animation:pulse 2s infinite alternate
+}
+
+/* Inferno */
+.inferno{
+ width:260px;height:260px;border:18px solid #f30;border-radius:50%;
+ filter:blur(3px);animation:spin 1.5s linear infinite
+}
+
+/* Glacier */
+.ice{
+ width:55px;height:100px;background:#8eeaff88;
+ clip-path:polygon(50% 0,100% 100%,50% 80%,0 100%);
+ border:3px solid #dfffff;animation:pulse 2s infinite alternate
+}
+
+/* Tempest */
+.tempest{
+ width:280px;height:280px;border:7px dashed #9eeaff;border-radius:50%;
+ animation:spin 1s linear infinite
+}
+
+/* Abyss */
+.abyss{
+ width:180px;height:180px;border-radius:50%;
+ background:radial-gradient(circle,#000 0 45%,#54106f 48%,transparent 70%);
+ box-shadow:0 0 45px #5b0088;animation:spin 4s linear infinite
+}
+
+/* Eclipse */
+.eclipse{
+ width:105px;height:105px;border-radius:50%;background:#050505;
+ border:6px solid #ffd34e;box-shadow:0 0 35px #ffd34e
+}
+
+/* Phantom */
+.ghost{
+ width:75px;height:130px;border:4px solid #bfcfff;border-radius:50% 50% 25% 25%;
+ opacity:.35;animation:float 1.7s infinite alternate
+}
+
+/* Prism */
+.prism{
+ width:32px;height:55px;
+ background:linear-gradient(45deg,#f00,#ff0,#0f0,#0ff,#00f,#f0f);
+ clip-path:polygon(50% 0,100% 35%,75% 100%,25% 100%,0 35%);
+ animation:orbit 2s linear infinite
+}
+
+/* Nebula */
+.nebula{
+ width:300px;height:190px;border-radius:50%;
+ background:radial-gradient(circle,#ff4fc8aa,#7a45ff88,#20cffff0,transparent 70%);
+ filter:blur(15px);animation:pulse 2s infinite alternate
+}
+
+/* Gravity */
+.gravityRock{
+ width:15px;height:15px;background:#777;border-radius:4px;
+ animation:gravityFloat 2s infinite alternate
+}
+@keyframes gravityFloat{
+ 0%{transform:translateY(100px) rotate(0)}
+ 100%{transform:translateY(-100px) rotate(180deg)}
+}
+
+/* Starlight */
+.star{color:#fff;font-size:18px;animation:float 2s infinite alternate}
+
+/* Bloodmoon */
+.bloodmoon{
+ width:145px;height:145px;border-radius:50%;background:#7d0012;
+ box-shadow:0 0 50px #e00025;animation:pulse 2s infinite alternate
+}
+
+/* Aurora */
+.aurora{
+ width:300px;height:180px;border-radius:50%;
+ border-top:15px solid #5fffc8;border-left:15px solid #8c5cff;
+ filter:blur(4px);animation:spin 7s linear infinite
+}
+
+/* Overdrive */
+.speed{
+ width:240px;height:5px;background:#fff;
+ box-shadow:0 0 12px #fff;animation:drift .5s linear infinite
+}
+
+/* Celestial */
+.celestialRing{
+ width:220px;height:220px;border:5px solid #ffd84a;border-radius:50%;
+ animation:spin 3s linear infinite
+}
+
+/* Oblivion */
+.oblivion{
+ width:240px;height:240px;border-radius:50%;background:#000b;
+ filter:blur(8px);animation:pulse 2s infinite alternate
+}
+
+/* Divine */
+.divineBeam{
+ width:25px;height:280px;background:#fff4a8;filter:blur(5px);
+ animation:pulse 1.5s infinite alternate
+}
+
+/* Galaxy */
+.galaxy{
+ width:280px;height:150px;border:15px solid #764cff88;border-radius:50%;
+ transform:rotate(-25deg);animation:spin 4s linear infinite
+}
+
+/* Singularity */
+.singularity{
+ width:85px;height:85px;border-radius:50%;background:#000;
+ box-shadow:0 0 35px #642cff;animation:pulse 1.3s infinite alternate
+}
+
+/* Eternal */
+.eternal{
+ width:220px;height:220px;border:12px double #ffd34e;border-radius:50%;
+ animation:spin 2s linear infinite
+}
+
+/* Rift */
+.rift{
+ width:150px;height:220px;border-left:7px dashed #b44cff;
+ transform:skew(-15deg);animation:glitch .8s infinite
+}
+
+/* Chronos */
+.clock{
+ width:170px;height:170px;border:7px solid #ffd34e;border-radius:50%;
+ animation:spin 8s linear infinite
+}
+.clock:after{
+ content:"";position:absolute;left:50%;top:15px;width:4px;height:70px;
+ background:#ffd34e;transform-origin:bottom;transform:rotate(35deg)
+}
+
+/* Seraph */
+.wing{
+ width:150px;height:90px;border-radius:100% 0;
+ background:linear-gradient(#fff,#ffd95c);
+ filter:drop-shadow(0 0 15px #fff);
+ animation:float 1.5s infinite alternate
+}
+
+/* Omega */
+.shock{
+ width:320px;height:320px;border:15px solid #111;border-radius:50%;
+ box-shadow:0 0 30px #ffd34e;animation:pulse .8s infinite alternate
+}
+
+/* Genesis */
+.genesis{
+ width:190px;height:190px;border-radius:50%;
+ background:radial-gradient(circle,#fff,#ffd34e,#ff69b4,#5b5cff,transparent 70%);
+ animation:pulse 1.5s infinite alternate
+}
+
+/* Infinity */
+.infinity{
+ font-size:180px;color:#8b5cff;line-height:1;
+ animation:spin 5s linear infinite
+}
+
+/* Mythic */
+.rune{
+ font-size:55px;color:#d8a9ff;
+ animation:spin 4s linear infinite
+}
+
+/* Cosmic */
+.planet{
+ width:40px;height:40px;border-radius:50%;
+ background:#55aaff;box-shadow:0 0 15px #55aaff;
+ animation:orbit 4s linear infinite
+}
+
+/* Astral */
+.astral{
+ width:100px;height:170px;border:3px solid #bcdcff;border-radius:45%;
+ opacity:.35;animation:float 2s infinite alternate
+}
+
+/* Heavenly */
+.heavenBeam{
+ width:35px;height:320px;background:#fff;filter:blur(8px);
+ animation:pulse 1s infinite alternate
+}
+
+/* Doom */
+.doom{
+ width:260px;height:180px;background:#30000a99;border-radius:50%;
+ filter:blur(15px);animation:pulse 1s infinite alternate
+}
+
+/* Worldbreaker */
+.crack{
+ width:280px;height:4px;background:#fff;
+ box-shadow:0 0 15px #fff;transform:rotate(-15deg);
+ animation:glitch .7s infinite
+}
+
+/* Reality */
+.reality{
+ width:250px;height:250px;border:4px dashed #fff;
+ animation:glitch .3s infinite
+}
+
+/* Ancient */
+.ancient{
+ font-size:65px;color:#b88732;animation:spin 5s linear infinite
+}
+
+/* Forbidden */
+.seal{
+ width:170px;height:170px;border:5px solid #6b19a8;border-radius:50%;
+ animation:spin 3s linear infinite
+}
+
+/* Immortal */
+.immortal{
+ width:180px;height:180px;border:10px solid #ffd34e;border-radius:50%;
+ box-shadow:0 0 30px #ffd34e;animation:pulse 1s infinite alternate
+}
+
+/* Transcendent */
+.transRing{
+ width:250px;height:250px;border:4px solid #dfffff;border-radius:50%;
+ animation:spin 4s linear infinite
+}
+
+/* Absolute */
+.absolute{
+ width:240px;height:240px;border:5px solid #111;border-radius:50%;
+ animation:spin 6s linear infinite
+}
+
+/* Unbound */
+.chain{
+ width:100px;height:25px;border:6px solid #777;border-radius:20px;
+ animation:drift 1s infinite
+}
+
+/* Limitless */
+.lines{
+ width:360px;height:3px;background:#55aaff;
+ box-shadow:0 0 12px #55aaff;
+ animation:drift 1s linear infinite
+}
+
+/* Paradox */
+.paradoxA,.paradoxB{
+ width:180px;height:180px;border:6px solid;border-radius:50%;
+ animation:spin 2s linear infinite
+}
+
+/* Omniversal */
+.universe{
+ width:65px;height:65px;border-radius:50%;
+ background:radial-gradient(circle,#fff,#7c4dff,transparent 70%);
+ animation:orbit 3s linear infinite
+}
+
+/* Finality */
+.finalClock{
+ width:190px;height:190px;border:8px solid #222;border-radius:50%
+}
+
+/* Godly */
+.godRing{
+ width:300px;height:300px;border:12px solid #ffd34e;border-radius:50%;
+ box-shadow:0 0 40px #ffd34e;animation:spin 5s linear infinite
+}
+
+/* Chosen */
+.chosenMark{
+ width:170px;height:170px;border:7px solid #fff;border-radius:50%;
+ box-shadow:0 0 30px #fff;animation:pulse 1.5s infinite alternate
+}
+
+/* First */
+.firstRune{
+ font-size:100px;color:#d7a63b;animation:spin 7s linear infinite
+}
+
+/* Beyond */
+.beyond{
+ width:400px;height:300px;border:3px dotted #fff;
+ animation:glitch .4s infinite
+}
+
+/* Limitless X */
+.xRing{
+ width:330px;height:330px;border:7px double #55aaff;border-radius:50%;
+ animation:spin 1.5s linear infinite
+}
+
+/* Eternal Flame */
+.whiteFire{
+ width:75px;height:130px;background:linear-gradient(#fff,#ffe96a,#fff);
+ clip-path:polygon(50% 0,80% 40%,100% 65%,65% 100%,30% 80%,0 50%,30% 35%);
+ filter:drop-shadow(0 0 20px #fff);animation:pulse .5s infinite alternate
+}
+
+/* Origin */
+.origin{
+ width:45px;height:45px;border-radius:50%;background:#fff;
+ box-shadow:0 0 40px #fff;animation:origin 2s infinite
+}
+@keyframes origin{
+ 0%{transform:scale(.3);opacity:1}
+ 70%{transform:scale(4);opacity:.15}
+ 100%{transform:scale(.3);opacity:1}
+}
+
+/* End */
+.endSphere{
+ width:260px;height:260px;border-radius:50%;background:#000;
+ box-shadow:0 0 40px #111;animation:pulse 3s infinite alternate
+}
+
+/* Null */
+.nullFx{
+ width:230px;height:230px;border:2px solid #000;border-radius:50%;
+ animation:pulse 2s infinite alternate
+}
+
+/* Impossible */
+.impossible{
+ width:230px;height:230px;border:4px solid #111;
+ transform:rotate(45deg);animation:glitch .25s infinite
+}
+
+/* Infinite Void */
+.infiniteVoid{
+ width:360px;height:360px;border-radius:50%;
+ background:radial-gradient(circle,#000 0 35%,#270052 50%,transparent 72%);
+ box-shadow:0 0 50px #7200c9;animation:spin 8s linear infinite
+}
+
+/* Creator */
+.creator{
+ width:55px;height:55px;border-radius:50%;background:#fff;
+ box-shadow:0 0 35px #ffd34e;animation:origin 2s infinite
+}
+
+/* Absolute Zero */
+.zero{
+ width:240px;height:240px;border:12px solid #dffcff;
+ border-radius:50%;box-shadow:0 0 30px #bffcff;animation:pulse 2s infinite alternate
+}
+
+/* 1/0 */
+.glitchAura{
+ width:300px;height:300px;border:5px dashed #f00;
+ box-shadow:0 0 25px #f00,0 0 50px #000;
+ animation:glitch .12s infinite
+}
+.glitchText{
+ position:absolute;color:#f00;font-family:monospace;font-size:28px;
+ animation:glitch .1s infinite
+}
+
+/* ---------- ANIME ---------- */
+.gojoRed,.gojoBlue{
+ width:55px;height:55px;border-radius:50%;position:absolute;
+ box-shadow:0 0 30px currentColor
+}
 .gojoRed{background:#f22;color:#f22}
 .gojoBlue{background:#29c8ff;color:#29c8ff}
-.itachiEye{width:180px;height:180px;border-radius:50%;background:#8b0018;border:8px solid #111;box-shadow:0 0 35px #e0002a;animation:spin 5s linear infinite}
-.crow{width:18px;height:10px;background:#111;clip-path:polygon(0 50%,40% 0,100% 50%,40% 100%);animation:drift 2s linear infinite}
+
+.itachiEye{
+ width:180px;height:180px;border-radius:50%;
+ background:#8b0018;border:8px solid #111;
+ box-shadow:0 0 35px #e0002a;animation:spin 5s linear infinite
+}
+.crow{
+ width:18px;height:10px;background:#111;
+ clip-path:polygon(0 50%,40% 0,100% 50%,40% 100%);
+ animation:drift 2s linear infinite
+}
+
 .frog{font-size:35px;animation:float 1.5s infinite alternate}
-.scroll{width:28px;height:125px;background:#c99043;border:4px solid #6b3b13;border-radius:5px}
 
-/* Luffy Stretch Arm Fix */
+.scroll{
+ width:28px;height:125px;background:#c99043;border:4px solid #6b3b13;
+ border-radius:5px
+}
+
 .stretchArm{
- position:absolute;left:56px;top:70px;height:7px;background:#111;
- transform-origin:left;animation:stretchArm 1.5s ease-in-out infinite alternate
-}
-@keyframes stretchArm{
- 0%{width:35px}
- 100%{width:210px}
+ position:absolute;width:190px;height:7px;background:#111;
+ transform-origin:left;animation:float 1.2s infinite alternate
 }
 
-.smoke{width:70px;height:70px;border:8px solid #fff;border-radius:50%;filter:blur(5px);animation:float 1.2s infinite alternate}
-.sword{width:9px;height:120px;background:#ccc;border:2px solid #555;transform:rotate(25deg)}
-.chidoriFx{width:70px;height:70px;border-radius:50%;background:#eaffff;box-shadow:0 0 20px #00bfff,0 0 45px #fff;animation:flash .25s infinite}
-.sukunaDomain{width:340px;height:250px;border:5px solid #6d0010;background:radial-gradient(circle,#40000a55,transparent);box-shadow:0 0 35px #b00020;animation:pulse 1s infinite alternate}
+.smoke{
+ width:70px;height:70px;border:8px solid #fff;border-radius:50%;
+ filter:blur(5px);animation:float 1.2s infinite alternate
+}
+
+.sword{
+ width:9px;height:120px;background:#ccc;border:2px solid #555;
+ transform:rotate(25deg)
+}
+
+.chidoriFx{
+ width:70px;height:70px;border-radius:50%;
+ background:#eaffff;box-shadow:0 0 20px #00bfff,0 0 45px #fff;
+ animation:flash .25s infinite
+}
+
+.sukunaDomain{
+ width:340px;height:250px;
+ border:5px solid #6d0010;
+ background:radial-gradient(circle,#40000a55,transparent);
+ box-shadow:0 0 35px #b00020;
+ animation:pulse 1s infinite alternate
+}
+
 .finger{font-size:25px;animation:orbit 5s linear infinite}
-.maho{font-size:130px;color:#d8a73b;text-shadow:0 0 20px #fff;animation:float 2s infinite alternate}
-.kakashiDog{font-size:50px;animation:float 1.5s infinite alternate}
-.shark{width:110px;height:70px;background:#6699aa;clip-path:polygon(0 50%,65% 0,100% 50%,65% 100%);animation:float 1s infinite alternate}
-.fireFoot{width:50px;height:90px;background:linear-gradient(#fff,#ff7b00,#f00);clip-path:polygon(50% 0,85% 45%,100% 100%,50% 75%,0 100%,15% 45%);filter:drop-shadow(0 0 15px #ff4500);animation:pulse .4s infinite alternate}
+
+.maho{
+ font-size:130px;color:#d8a73b;
+ text-shadow:0 0 20px #fff;
+ animation:float 2s infinite alternate
+}
+
+.kakashiDog{
+ font-size:50px;animation:float 1.5s infinite alternate
+}
+
+.shark{
+ width:110px;height:70px;background:#6699aa;
+ clip-path:polygon(0 50%,65% 0,100% 50%,65% 100%);
+ animation:float 1s infinite alternate
+}
+
+.fireFoot{
+ width:50px;height:90px;
+ background:linear-gradient(#fff,#ff7b00,#f00);
+ clip-path:polygon(50% 0,85% 45%,100% 100%,50% 75%,0 100%,15% 45%);
+ filter:drop-shadow(0 0 15px #ff4500);
+ animation:pulse .4s infinite alternate
+}
 </style>
 </head>
 
@@ -262,8 +713,8 @@ button{cursor:pointer}
 <div id="stick">
 <div class="head" id="head"></div>
 <div class="body"></div>
-<div class="arm a1" id="arm1"></div>
-<div class="arm a2" id="arm2"></div>
+<div class="arm a1"></div>
+<div class="arm a2"></div>
 <div class="leg l1"></div>
 <div class="leg l2"></div>
 </div>
@@ -289,12 +740,14 @@ button{cursor:pointer}
 <button class="tab" onclick="showTab('potions',this)">Potions</button>
 <button class="tab" onclick="showTab('gloves',this)">Gloves</button>
 <button class="tab" onclick="showTab('biomes',this)">Biomes</button>
+<button class="tab" onclick="showTab('leaderboard',this)">Leaderboard</button>
 </div>
 
 <div id="auras" class="section active"></div>
 <div id="potions" class="section"></div>
 <div id="gloves" class="section"></div>
 <div id="biomes" class="section"></div>
+<div id="leaderboard" class="section"></div>
 </div>
 </div>
 
@@ -316,6 +769,11 @@ const names=[
 "Kakashi","Sasuke","Itadori","Mahoraga"
 ];
 
+/*
+  Anime stays AFTER 1/0.
+  Every anime rarity is above 1,000,000.
+  1/0 is exactly 1/1B.
+*/
 const odds=[
 5,12,20,35,50,70,90,120,160,210,275,350,450,575,725,900,1100,1350,
 1650,2000,2400,2900,3500,4200,5000,6000,7200,8600,10000,12000,14500,
@@ -400,15 +858,27 @@ const gloves=[
 ["Reality Glove",800,[60,62,64]],["Infinite Glove",2000,[68,70,73]]
 ].map(x=>({name:x[0],luck:x[1],recipe:x[2]}));
 
+const randomizers=[
+["Basic Biome Randomizer",10,[8,9,10]],
+["Rare Biome Randomizer",35,[15,17,19]],
+["Epic Biome Randomizer",100,[25,28,30]],
+["Legendary Biome Randomizer",300,[38,40,43]],
+["Mythic Biome Randomizer",1000,[50,53,55]],
+["Divine Biome Randomizer",3000,[60,63,66]],
+["Reality Randomizer",10000,[69,71,73]]
+].map(x=>({name:x[0],luck:x[1],recipe:x[2]}));
+
 let inventory={
  potions:Array(10).fill(0),
- gloves:Array(10).fill(0)
+ gloves:Array(10).fill(0),
+ randomizers:Array(7).fill(0)
 };
 
-let autoCraft={potion:null,glove:null};
+let autoCraft={potion:null,glove:null,randomizer:null};
 let rolls=0,equippedAura=null,equippedGlove=null,potionLuck=0;
 let auto=false,busy=false,rarest=-1,admin=false;
 let currentBiome=biomes[0],biomeTime=currentBiome.time;
+let biomeVisits={},milestones={};
 
 /* ================= SAVE ================= */
 
@@ -416,7 +886,8 @@ function save(){
  if(admin)return;
  localStorage.setItem("auraRoll",JSON.stringify({
   auras,inventory,autoCraft,rolls,equippedAura,equippedGlove,
-  potionLuck,currentBiome:currentBiome.name,biomeTime,rarest
+  potionLuck,biomeVisits,currentBiome:currentBiome.name,biomeTime,
+  rarest,milestones
  }));
 }
 
@@ -434,7 +905,9 @@ function load(){
   equippedAura=d.equippedAura??null;
   equippedGlove=d.equippedGlove??null;
   potionLuck=d.potionLuck||0;
+  biomeVisits=d.biomeVisits||{};
   rarest=d.rarest??-1;
+  milestones=d.milestones||{};
   currentBiome=biomes.find(b=>b.name===d.currentBiome)||biomes[0];
   biomeTime=d.biomeTime||currentBiome.time;
  }catch(e){}
@@ -450,6 +923,7 @@ function adminToggle(){
    auras.forEach(a=>{a.owned=999999;a.total=999999});
    inventory.potions.fill(999);
    inventory.gloves.fill(999);
+   inventory.randomizers.fill(999);
    equippedAura=79;
    equippedGlove=9;
    toast("ADMIN MODE ON — NOTHING SAVES");
@@ -471,11 +945,9 @@ function totalLuck(){
 }
 
 function chooseAura(){
- let L=totalLuck();
  let weights=auras.map(a=>{
-  // Scale effectively so Luck reduces item thresholds and properly boosts rare drops
-  let effectiveOdds=Math.max(1, a.odds/L);
-  return 1/effectiveOdds;
+  let rarity=a.odds||1;
+  return Math.pow(1/rarity,.92)*Math.pow(totalLuck(),.7);
  });
  let total=weights.reduce((a,b)=>a+b,0);
  let r=Math.random()*total;
@@ -514,6 +986,8 @@ function doRoll(){
   formatOdds(auras[id])
  );
 
+ spawnBurst(auras[id]);
+ checkMilestones();
  autoCraftCheck();
  update();
  save();
@@ -544,11 +1018,11 @@ function consume(recipe){
 }
 
 function craft(type,i){
- let item=type==="potion"?potions[i]:gloves[i];
+ let item=type==="potion"?potions[i]:type==="glove"?gloves[i]:randomizers[i];
  if(!hasRecipe(item.recipe)){toast("Missing required auras");return}
  consume(item.recipe);
 
- let key=type==="potion"?"potions":"gloves";
+ let key=type==="potion"?"potions":type==="glove"?"gloves":"randomizers";
  inventory[key][i]++;
 
  toast("Crafted "+item.name);
@@ -591,7 +1065,8 @@ function autoCraftSet(type,i){
 function autoCraftCheck(){
  [
   ["potion",potions,"potions"],
-  ["glove",gloves,"gloves"]
+  ["glove",gloves,"gloves"],
+  ["randomizer",randomizers,"randomizers"]
  ].forEach(([type,list,key])=>{
   let i=autoCraft[type];
   if(i!==null&&i!==undefined&&hasRecipe(list[i].recipe)){
@@ -606,45 +1081,22 @@ function autoCraftCheck(){
 function spawnBiome(b){
  currentBiome=b;
  biomeTime=b.time;
+ biomeVisits[b.name]=(biomeVisits[b.name]||0)+1;
  document.body.style.background=b.bg;
  toast("🌎 "+b.name+" — x"+b.luck.toLocaleString()+" LUCK");
  update();
  save();
 }
 
-setInterval(()=>{
- biomeTime--;
- if(biomeTime<=0){
-  let next=biomes[Math.floor(Math.random()*biomes.length)];
-  spawnBiome(next);
- }
- let t=document.getElementById("timer");
- if(t)t.innerText=biomeTime+"s left";
-},1000);
-
-/* ================= VFX ENGINE ================= */
-
-function vfx(id){
- let v=document.getElementById("vfx");
- v.innerHTML="";
- let arm1=document.getElementById("arm1");
- if(arm1) arm1.className="arm a1";
-
- let name=auras[id].name;
- document.getElementById("equippedName").innerText=name;
- document.getElementById("equippedRarity").innerText=formatOdds(auras[id]);
-
- if(name==="Luffy"){
-  let el=document.createElement("div");
-  el.className="stretchArm";
-  v.appendChild(el);
-  if(arm1) arm1.style.display="none";
- } else {
-  if(arm1) arm1.style.display="block";
- }
+function useRandomizer(i){
+ if(inventory.randomizers[i]<=0)return;
+ inventory.randomizers[i]--;
+ spawnBiome(biomes[1+Math.floor(Math.random()*(biomes.length-1))]);
+ update();
+ save();
 }
 
-/* ================= UI & RENDERING ================= */
+/* ================= UI ================= */
 
 function toggleMenu(){
  document.getElementById("panel").classList.toggle("open");
@@ -685,30 +1137,37 @@ function recipeText(recipe){
 
 function renderAuras(){
  let html="<h3>AURAS — "+auras.length+"</h3>";
+
  auras.forEach((a,i)=>{
-  let locked=a.owned<=0;
   html+=`
-  <div class="card ${locked?'locked':''}">
-   <b>${a.name}</b> (${formatOdds(a)})<br>
-   Owned: ${a.owned} (Total: ${a.total})<br>
-   ${!locked?`<button class="action" onclick="equipAura(${i})">Equip</button>`:''}
+  <div class="card ${a.total?"":"locked"}">
+   <b>#${i+1} ${a.total?a.name:"???"}</b>
+   <div class="small">Rarity: ${formatOdds(a)}</div>
+   ${a.total?`
+    <div>Owned: ${a.owned}</div>
+    <button class="action" onclick="equipAura(${i})">
+     ${equippedAura===i?"EQUIPPED":"EQUIP"}
+    </button>
+   `:""}
   </div>`;
  });
+
  document.getElementById("auras").innerHTML=html;
 }
 
 function renderPotions(){
  let html="<h3>POTIONS</h3>";
  potions.forEach((p,i)=>{
-  let count=inventory.potions[i]||0;
-  let can=hasRecipe(p.recipe);
   html+=`
   <div class="card">
-   <b>${p.name}</b> (+${p.luck}% Luck)<br>
-   Owned: ${count}<br>
-   <small>Requires:<br>${recipeText(p.recipe)}</small><br>
+   <b>${p.name}</b> (+${p.luck}% Luck)
+   <div>Owned: ${inventory.potions[i]}</div>
+   <div class="small">${recipeText(p.recipe)}</div>
    <button class="action craft" onclick="craft('potion',${i})">Craft</button>
-   ${count>0?`<button class="action" onclick="usePotion(${i})">Use</button>`:''}
+   <button class="action" onclick="usePotion(${i})">Use</button>
+   <button class="action" onclick="autoCraftSet('potion',${i})">
+    ${autoCraft.potion===i?"Auto-Craft: ON":"Auto-Craft: OFF"}
+   </button>
   </div>`;
  });
  document.getElementById("potions").innerHTML=html;
@@ -717,48 +1176,731 @@ function renderPotions(){
 function renderGloves(){
  let html="<h3>GLOVES</h3>";
  gloves.forEach((g,i)=>{
-  let count=inventory.gloves[i]||0;
   html+=`
   <div class="card">
-   <b>${g.name}</b> (+${g.luck} Luck)<br>
-   Owned: ${count}<br>
-   <small>Requires:<br>${recipeText(g.recipe)}</small><br>
+   <b>${g.name}</b> (+${g.luck}x Luck)
+   <div>Owned: ${inventory.gloves[i]}</div>
+   <div class="small">${recipeText(g.recipe)}</div>
    <button class="action craft" onclick="craft('glove',${i})">Craft</button>
-   ${count>0?`<button class="action" onclick="equipGlove(${i})">Equip</button>`:''}
+   <button class="action" onclick="equipGlove(${i})">
+    ${equippedGlove===i?"EQUIPPED":"Equip"}
+   </button>
+   <button class="action" onclick="autoCraftSet('glove',${i})">
+    ${autoCraft.glove===i?"Auto-Craft: ON":"Auto-Craft: OFF"}
+   </button>
   </div>`;
  });
  document.getElementById("gloves").innerHTML=html;
 }
 
 function renderBiomes(){
- let html="<h3>BIOMES</h3>";
+ let html="<h3>BIOMES & RANDOMIZERS</h3>";
+
+ randomizers.forEach((r,i)=>{
+  html+=`
+  <div class="card">
+   <b>${r.name}</b>
+   <div>Owned: ${inventory.randomizers[i]}</div>
+   <div class="small">${recipeText(r.recipe)}</div>
+   <button class="action craft" onclick="craft('randomizer',${i})">Craft</button>
+   <button class="action" onclick="useRandomizer(${i})">Use</button>
+  </div>`;
+ });
+
+ html+="<h4>Discovered Biomes</h4>";
+
  biomes.forEach(b=>{
   html+=`
   <div class="card">
-   <b>${b.name}</b><br>
-   Luck Multiplier: x${b.luck.toLocaleString()}<br>
-   Duration: ${b.time}s
+   <b>${b.name}</b> (x${b.luck.toLocaleString()} Luck)
+   <div>Visits: ${biomeVisits[b.name]||0}</div>
   </div>`;
  });
+
  document.getElementById("biomes").innerHTML=html;
 }
 
+function renderLeaderboard(){
+ let html="<h3>LEADERBOARD</h3>";
+
+ html+=`
+ <div class="card">
+ <b>Rarest Aura Discovered:</b>
+ ${rarest>=0?auras[rarest].name+" ("+formatOdds(auras[rarest])+")":"None"}
+ </div>`;
+
+ html+=`
+ <div class="card">
+ <b>Total Rolls Executed:</b> ${rolls.toLocaleString()}
+ </div>`;
+
+ html+=`
+ <div class="card">
+ <b>Active Multiplier:</b> x${totalLuck().toLocaleString()}
+ </div>`;
+
+ document.getElementById("leaderboard").innerHTML=html;
+}
+
+/* ================= PARTICLES ================= */
+
+function clearVfx(){
+ document.getElementById("vfx").innerHTML="";
+ document.getElementById("head").innerHTML="";
+}
+
+function add(className,style="",text=""){
+ let e=document.createElement("div");
+ e.className="fx "+className;
+ e.style.cssText=style;
+ if(text)e.innerHTML=text;
+ document.getElementById("vfx").appendChild(e);
+ return e;
+}
+
+function addHead(html){
+ document.getElementById("head").innerHTML=html;
+}
+
+function randomParticle(className,count,colors,animation){
+ for(let i=0;i<count;i++){
+  let e=document.createElement("div");
+  e.className="particle "+className;
+  e.style.left=(25+Math.random()*50)+"%";
+  e.style.top=(25+Math.random()*55)+"%";
+  if(colors)e.style.background=colors[Math.floor(Math.random()*colors.length)];
+  if(animation)e.style.animation=animation;
+  document.getElementById("vfx").appendChild(e);
+ }
+}
+
+function spawnBurst(aura){
+ let v=document.getElementById("vfx");
+ for(let i=0;i<25;i++){
+  let s=document.createElement("div");
+  s.className="particle";
+  s.style.background=aura.color;
+  s.style.left="50%";
+  s.style.top="50%";
+
+  let angle=Math.random()*Math.PI*2;
+  let dist=80+Math.random()*180;
+
+  s.animate([
+   {transform:"translate(0,0) scale(1)",opacity:1},
+   {transform:`translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px) scale(0)`,opacity:0}
+  ],{duration:900+Math.random()*500,easing:"cubic-bezier(.25,1,.5,1)"});
+
+  v.appendChild(s);
+  setTimeout(()=>s.remove(),1500);
+ }
+}
+
+/* ================= UNIQUE VFX ================= */
+
+function vfx(i){
+ clearVfx();
+
+ let name=auras[i].name;
+ let v=document.getElementById("vfx");
+
+ /* 1 Spark */
+ if(name==="Spark"){
+  for(let x=0;x<30;x++)
+   add("particle",`left:${20+Math.random()*60}%;top:${20+Math.random()*60}%;background:#fff;box-shadow:0 0 10px #fff;animation:flash ${.3+Math.random()}s infinite`);
+ }
+
+ /* 2 Pebble */
+ else if(name==="Pebble"){
+  for(let x=0;x<7;x++)add("pebble",`left:${40+Math.random()*15}%;top:${70+Math.random()*8}%`);
+  for(let x=0;x<12;x++)add("pebbleDust",`left:${40+Math.random()*20}%;top:${72+Math.random()*10}%`);
+ }
+
+ /* 3 Leaf */
+ else if(name==="Leaf"){
+  for(let x=0;x<18;x++)add("leaf",`left:${20+Math.random()*60}%;top:${10+Math.random()*40}%;animation-delay:${Math.random()*3}s`);
+ }
+
+ /* 4 Breeze */
+ else if(name==="Breeze"){
+  for(let x=0;x<8;x++)add("wind",`left:${25+Math.random()*40}%;top:${25+Math.random()*45}%;animation-delay:${Math.random()*2}s`);
+ }
+
+ /* 5 Drop */
+ else if(name==="Drop"){
+  for(let x=0;x<20;x++)add("drop",`left:${25+Math.random()*50}%;top:${10+Math.random()*30}%;animation-delay:${Math.random()*2}s`);
+ }
+
+ /* 6 Dew */
+ else if(name==="Dew"){
+  for(let x=0;x<25;x++)add("dew",`left:${25+Math.random()*50}%;top:${20+Math.random()*50}%;animation-delay:${Math.random()*2}s`);
+ }
+
+ /* 7 Dust */
+ else if(name==="Dust"){
+  for(let x=0;x<25;x++)add("dust",`left:${35+Math.random()*30}%;top:${65+Math.random()*15}%;animation-delay:${Math.random()*2}s`);
+ }
+
+ /* 8 Glow */
+ else if(name==="Glow"){
+  add("glowRing","left:calc(50% - 95px);top:calc(50% - 55px)");
+ }
+
+ /* 9 Ember */
+ else if(name==="Ember"){
+  for(let x=0;x<25;x++)add("ember",`left:${25+Math.random()*50}%;top:${50+Math.random()*35}%;animation-delay:${Math.random()*2}s`);
+ }
+
+ /* 10 Frost */
+ else if(name==="Frost"){
+  for(let x=0;x<8;x++)add("frost",`left:${20+Math.random()*60}%;top:${55+Math.random()*25}%`);
+ }
+
+ /* 11 Flame */
+ else if(name==="Flame"){
+  for(let x=0;x<8;x++)add("flame",`left:${25+Math.random()*50}%;top:${35+Math.random()*35}%;animation-delay:${Math.random()}s`);
+ }
+
+ /* 12 Mist */
+ else if(name==="Mist"){
+  for(let x=0;x<7;x++)add("mist",`left:${25+Math.random()*45}%;top:${65+Math.random()*15}%;animation-delay:${Math.random()}s`);
+ }
+
+ /* 13 Stone */
+ else if(name==="Stone"){
+  for(let x=0;x<9;x++)add("stone",`left:${25+Math.random()*50}%;top:${35+Math.random()*40}%`);
+ }
+
+ /* 14 Bloom */
+ else if(name==="Bloom"){
+  for(let x=0;x<14;x++)add("bloom",`left:${20+Math.random()*60}%;top:${55+Math.random()*35}%;animation-delay:${Math.random()*2}s`);
+  for(let x=0;x<18;x++)add("leaf",`left:${20+Math.random()*60}%;top:${15+Math.random()*45}%;animation-delay:${Math.random()*3}s`);
+ }
+
+ /* 15 Cloud */
+ else if(name==="Cloud"){
+  add("cloud","left:calc(50% - 50px);top:20px");
+  for(let x=0;x<8;x++)add("drop",`left:${47+Math.random()*8}%;top:28%;animation-delay:${Math.random()*2}s`);
+ }
+
+ /* 16 Wave */
+ else if(name==="Wave"){
+  for(let x=0;x<4;x++)add("wave",`left:calc(50% - 90px);top:62%;animation-delay:${x*.5}s`);
+ }
+
+ /* 17 Shadow */
+ else if(name==="Shadow"){
+  add("shadowSmoke","left:calc(50% - 90px);top:30%");
+  for(let x=0;x<20;x++)add("particle",`left:${25+Math.random()*50}%;top:${35+Math.random()*45}%;background:#111;animation:drift ${1+Math.random()*2}s infinite`);
+ }
+
+ /* 18 Thunder */
+ else if(name==="Thunder"){
+  for(let x=0;x<9;x++)add("bolt",`left:${25+Math.random()*50}%;top:${15+Math.random()*65}%;animation-delay:${Math.random()*2}s`);
+ }
+
+ /* 19 Crystal */
+ else if(name==="Crystal"){
+  for(let x=0;x<7;x++)add("crystal",`left:${25+Math.random()*50}%;top:${25+Math.random()*50}%;animation-delay:${x*.3}s`);
+ }
+
+ /* 20 Venom */
+ else if(name==="Venom"){
+  for(let x=0;x<9;x++)add("venom",`left:${25+Math.random()*50}%;top:${25+Math.random()*45}%;animation-delay:${Math.random()}s`);
+ }
+
+ /* 21 Solar */
+ else if(name==="Solar"){
+  add("sun","left:calc(50% - 45px);top:18%");
+  for(let x=0;x<8;x++)add("bolt",`left:${25+Math.random()*50}%;top:${25+Math.random()*45}%;background:#ffb000;transform:rotate(${Math.random()*360}deg)`);
+ }
+
+ /* 22 Lunar */
+ else if(name==="Lunar"){
+  add("moon","left:calc(50% - 42px);top:18%");
+  for(let x=0;x<20;x++)add("star",`left:${20+Math.random()*60}%;top:${15+Math.random()*55}%`,"✦");
+ }
+
+ /* 23 Comet */
+ else if(name==="Comet"){
+  let c=add("comet","left:calc(50% - 15px);top:20%");
+  c.style.animationDuration="3s";
+  for(let x=0;x<15;x++)add("particle",`left:${30+Math.random()*35}%;top:${25+Math.random()*45}%;background:#fff;animation:drift ${1+Math.random()}s infinite`);
+ }
+
+ /* 24 Void */
+ else if(name==="Void"){
+  add("voidBall","left:calc(50% - 60px);top:28%");
+  for(let x=0;x<20;x++)add("particle",`left:${20+Math.random()*60}%;top:${20+Math.random()*60}%;background:#111;animation:drift ${1+Math.random()}s infinite`);
+ }
+
+ /* 25 Inferno */
+ else if(name==="Inferno"){
+  add("inferno","left:calc(50% - 130px);top:25%");
+  for(let x=0;x<12;x++)add("flame",`left:${20+Math.random()*60}%;top:${25+Math.random()*50}%`);
+ }
+
+ /* 26 Glacier */
+ else if(name==="Glacier"){
+  for(let x=0;x<7;x++)add("ice",`left:${15+Math.random()*70}%;top:${45+Math.random()*35}%`);
+ }
+
+ /* 27 Tempest */
+ else if(name==="Tempest"){
+  add("tempest","left:calc(50% - 140px);top:25%");
+  for(let x=0;x<15;x++)add("drop",`left:${15+Math.random()*70}%;top:${10+Math.random()*65}%`);
+  for(let x=0;x<5;x++)add("bolt",`left:${25+Math.random()*50}%;top:${15+Math.random()*50}%`);
+ }
+
+ /* 28 Abyss */
+ else if(name==="Abyss"){
+  add("abyss","left:calc(50% - 90px);top:25%");
+ }
+
+ /* 29 Eclipse */
+ else if(name==="Eclipse"){
+  add("eclipse","left:calc(50% - 52px);top:18%");
+ }
+
+ /* 30 Phantom */
+ else if(name==="Phantom"){
+  for(let x=0;x<5;x++)add("ghost",`left:${25+Math.random()*45}%;top:${20+Math.random()*45}%;animation-delay:${x*.3}s`);
+ }
+
+ /* 31 Prism */
+ else if(name==="Prism"){
+  for(let x=0;x<10;x++)add("prism",`left:${20+Math.random()*60}%;top:${20+Math.random()*55}%;animation-delay:${Math.random()}s`);
+ }
+
+ /* 32 Nebula */
+ else if(name==="Nebula"){
+  add("nebula","left:calc(50% - 150px);top:25%");
+ }
+
+ /* 33 Gravity */
+ else if(name==="Gravity"){
+  for(let x=0;x<15;x++)add("gravityRock",`left:${20+Math.random()*60}%;top:${20+Math.random()*60}%;animation-delay:${Math.random()}s`);
+ }
+
+ /* 34 Starlight */
+ else if(name==="Starlight"){
+  for(let x=0;x<70;x++)add("star",`left:${10+Math.random()*80}%;top:${10+Math.random()*75}%;animation-delay:${Math.random()*3}s`,"✦");
+ }
+
+ /* 35 Bloodmoon */
+ else if(name==="Bloodmoon"){
+  add("bloodmoon","left:calc(50% - 72px);top:12%");
+  for(let x=0;x<25;x++)add("particle",`left:${20+Math.random()*60}%;top:${25+Math.random()*55}%;background:#b00020;animation:drift ${1+Math.random()*2}s infinite`);
+ }
+
+ /* 36 Aurora */
+ else if(name==="Aurora"){
+  for(let x=0;x<5;x++)add("aurora",`left:${20+x*12}%;top:8%;transform:rotate(${x*15-30}deg);animation-delay:${x*.3}s`);
+ }
+
+ /* 37 Overdrive */
+ else if(name==="Overdrive"){
+  for(let x=0;x<18;x++)add("speed",`left:${10+Math.random()*75}%;top:${20+Math.random()*65}%;animation-delay:${Math.random()}s`);
+ }
+
+ /* 38 Celestial */
+ else if(name==="Celestial"){
+  add("celestialRing","left:calc(50% - 110px);top:25%");
+  for(let x=0;x<18;x++)add("star",`left:${20+Math.random()*60}%;top:${15+Math.random()*65}%`,"★");
+ }
+
+ /* 39 Oblivion */
+ else if(name==="Oblivion"){
+  add("oblivion","left:calc(50% - 120px);top:25%");
+ }
+
+ /* 40 Divine */
+ else if(name==="Divine"){
+  for(let x=0;x<6;x++)add("divineBeam",`left:${25+x*10}%;top:5%;animation-delay:${x*.2}s`);
+ }
+
+ /* 41 Galaxy */
+ else if(name==="Galaxy"){
+  add("galaxy","left:calc(50% - 140px);top:28%");
+  for(let x=0;x<20;x++)add("star",`left:${20+Math.random()*60}%;top:${20+Math.random()*60}%`,"✦");
+ }
+
+ /* 42 Singularity */
+ else if(name==="Singularity"){
+  add("singularity","left:calc(50% - 42px);top:25%");
+ }
+
+ /* 43 Eternal */
+ else if(name==="Eternal"){
+  add("eternal","left:calc(50% - 110px);top:25%");
+ }
+
+ /* 44 Rift */
+ else if(name==="Rift"){
+  for(let x=0;x<5;x++)add("rift",`left:${25+x*12}%;top:${15+x*8}%`);
+ }
+
+ /* 45 Chronos */
+ else if(name==="Chronos"){
+  add("clock","left:calc(50% - 85px);top:20%");
+  for(let x=0;x<8;x++)add("particle",`left:${20+Math.random()*60}%;top:${20+Math.random()*55}%;background:#ffd34e;animation:drift 2s infinite reverse`);
+ }
+
+ /* 46 Seraph */
+ else if(name==="Seraph"){
+  add("wing","left:8%;top:30%;transform:scaleX(-1)");
+  add("wing","right:8%;top:30%");
+  add("wing","left:18%;top:42%;transform:scaleX(-1) rotate(-20deg)");
+  add("wing","right:18%;top:42%;transform:rotate(-20deg)");
+  add("wing","left:25%;top:20%;transform:scaleX(-1) rotate(15deg)");
+  add("wing","right:25%;top:20%;transform:rotate(15deg)");
+  for(let x=0;x<20;x++)add("particle",`left:${20+Math.random()*60}%;top:${20+Math.random()*65}%;background:#ffd34e;animation:fall 3s infinite`);
+ }
+
+ /* 47 Omega */
+ else if(name==="Omega"){
+  add("shock","left:calc(50% - 160px);top:20%");
+  add("shock","left:calc(50% - 160px);top:20%;animation-delay:.4s");
+ }
+
+ /* 48 Genesis */
+ else if(name==="Genesis"){
+  add("genesis","left:calc(50% - 95px);top:25%");
+  for(let x=0;x<20;x++)add("star",`left:${20+Math.random()*60}%;top:${15+Math.random()*65}%`,"✦");
+  for(let x=0;x<8;x++)add("bloom",`left:${20+Math.random()*60}%;top:${55+Math.random()*35}%`);
+ }
+
+ /* 49 Infinity */
+ else if(name==="Infinity"){
+  add("infinity","left:calc(50% - 90px);top:20%","∞");
+ }
+
+ /* 50 Mythic */
+ else if(name==="Mythic"){
+  for(let x=0;x<5;x++)add("rune",`left:${25+x*12}%;top:${25+x*6}%`,"✦");
+ }
+
+ /* 51 Cosmic */
+ else if(name==="Cosmic"){
+  for(let x=0;x<8;x++)add("planet",`left:${20+Math.random()*60}%;top:${20+Math.random()*60}%`);
+  for(let x=0;x<25;x++)add("star",`left:${10+Math.random()*80}%;top:${10+Math.random()*75}%`,"✦");
+ }
+
+ /* 52 Astral */
+ else if(name==="Astral"){
+  add("astral","left:calc(50% - 50px);top:20%");
+ }
+
+ /* 53 Heavenly */
+ else if(name==="Heavenly"){
+  for(let x=0;x<8;x++)add("heavenBeam",`left:${15+x*10}%;top:0%;animation-delay:${x*.15}s`);
+ }
+
+ /* 54 Doom */
+ else if(name==="Doom"){
+  add("doom","left:calc(50% - 130px);top:20%");
+ }
+
+ /* 55 Worldbreaker */
+ else if(name==="Worldbreaker"){
+  for(let x=0;x<9;x++)add("crack",`left:${10+Math.random()*70}%;top:${65+Math.random()*20}%;transform:rotate(${Math.random()*40-20}deg)`);
+ }
+
+ /* 56 Reality */
+ else if(name==="Reality"){
+  add("reality","left:calc(50% - 125px);top:20%");
+  for(let x=0;x<12;x++)add("glitchText",`left:${10+Math.random()*75}%;top:${10+Math.random()*75}%`,"0101");
+ }
+
+ /* 57 Ancient */
+ else if(name==="Ancient"){
+  add("ancient","left:calc(50% - 35px);top:25%","𒀭");
+ }
+
+ /* 58 Forbidden */
+ else if(name==="Forbidden"){
+  add("seal","left:calc(50% - 85px);top:25%");
+  for(let x=0;x<8;x++)add("rune",`left:${25+Math.random()*50}%;top:${20+Math.random()*55}%`,"☠");
+ }
+
+ /* 59 Immortal */
+ else if(name==="Immortal"){
+  add("immortal","left:calc(50% - 90px);top:25%");
+  for(let x=0;x<20;x++)add("particle",`left:${20+Math.random()*60}%;top:${20+Math.random()*60}%;background:#ffd34e;animation:rise 2s infinite`);
+ }
+
+ /* 60 Transcendent */
+ else if(name==="Transcendent"){
+  add("transRing","left:calc(50% - 125px);top:20%");
+  add("transRing","left:calc(50% - 90px);top:30%;width:180px;height:180px;animation-duration:2s");
+ }
+
+ /* 61 Absolute */
+ else if(name==="Absolute"){
+  add("absolute","left:calc(50% - 120px);top:20%");
+ }
+
+ /* 62 Unbound */
+ else if(name==="Unbound"){
+  for(let x=0;x<8;x++)add("chain",`left:${20+Math.random()*60}%;top:${20+Math.random()*60}%;transform:rotate(${Math.random()*180}deg)`);
+  for(let x=0;x<20;x++)add("particle",`left:${20+Math.random()*60}%;top:${20+Math.random()*60}%;background:#fff;animation:drift 1s infinite`);
+ }
+
+ /* 63 Limitless */
+ else if(name==="Limitless"){
+  for(let x=0;x<12;x++)add("lines",`left:${5+Math.random()*70}%;top:${15+Math.random()*70}%;transform:rotate(${Math.random()*180}deg)`);
+ }
+
+ /* 64 Paradox */
+ else if(name==="Paradox"){
+  add("paradoxA","left:calc(50% - 90px);top:25%;border-color:#00eaff");
+  add("paradoxB","left:calc(50% - 90px);top:25%;border-color:#ff0055;animation-direction:reverse");
+ }
+
+ /* 65 Omniversal */
+ else if(name==="Omniversal"){
+  for(let x=0;x<8;x++)add("universe",`left:${15+Math.random()*70}%;top:${15+Math.random()*65}%`);
+ }
+
+ /* 66 Finality */
+ else if(name==="Finality"){
+  add("finalClock","left:calc(50% - 95px);top:18%");
+  for(let x=0;x<15;x++)add("particle",`left:${20+Math.random()*60}%;top:${20+Math.random()*60}%;background:#111;animation:float 4s infinite`);
+ }
+
+ /* 67 Godly */
+ else if(name==="Godly"){
+  add("godRing","left:calc(50% - 150px);top:18%");
+  for(let x=0;x<7;x++)add("divineBeam",`left:${10+x*13}%;top:0%`);
+ }
+
+ /* 68 The Chosen */
+ else if(name==="The Chosen"){
+  add("chosenMark","left:calc(50% - 85px);top:20%");
+  for(let x=0;x<6;x++)add("divineBeam",`left:${28+x*9}%;top:10%;transform:rotate(${x*15-40}deg)`);
+ }
+
+ /* 69 The First */
+ else if(name==="The First"){
+  add("firstRune","left:calc(50% - 50px);top:20%","✦");
+ }
+
+ /* 70 Beyond */
+ else if(name==="Beyond"){
+  add("beyond","left:calc(50% - 200px);top:15%");
+  for(let x=0;x<30;x++)add("star",`left:${Math.random()*90}%;top:${Math.random()*80}%`,"✦");
+ }
+
+ /* 71 Limitless X */
+ else if(name==="Limitless X"){
+  add("xRing","left:calc(50% - 165px);top:15%");
+  add("xRing","left:calc(50% - 120px);top:25%;width:240px;height:240px;animation-duration:1s");
+  add("xRing","left:calc(50% - 75px);top:35%;width:150px;height:150px;animation-duration:.7s");
+ }
+
+ /* 72 Eternal Flame */
+ else if(name==="Eternal Flame"){
+  for(let x=0;x<10;x++)add("whiteFire",`left:${15+Math.random()*70}%;top:${25+Math.random()*45}%`);
+ }
+
+ /* 73 Origin */
+ else if(name==="Origin"){
+  add("origin","left:calc(50% - 22px);top:35%");
+ }
+
+ /* 74 The End */
+ else if(name==="The End"){
+  add("endSphere","left:calc(50% - 130px);top:20%");
+ }
+
+ /* 75 Null */
+ else if(name==="Null"){
+  add("nullFx","left:calc(50% - 115px);top:20%");
+  for(let x=0;x<25;x++)add("particle",`left:${20+Math.random()*60}%;top:${20+Math.random()*60}%;background:#000;animation:drift 1s infinite`);
+ }
+
+ /* 76 Impossible */
+ else if(name==="Impossible"){
+  add("impossible","left:calc(50% - 115px);top:20%");
+  for(let x=0;x<12;x++)add("crack",`left:${20+Math.random()*60}%;top:${20+Math.random()*60}%`);
+ }
+
+ /* 77 Infinite Void */
+ else if(name==="Infinite Void"){
+  add("infiniteVoid","left:calc(50% - 180px);top:10%");
+ }
+
+ /* 78 Creator */
+ else if(name==="Creator"){
+  add("creator","left:calc(50% - 27px);top:35%");
+  for(let x=0;x<25;x++)add("star",`left:${15+Math.random()*70}%;top:${15+Math.random()*70}%`,"✦");
+  for(let x=0;x<8;x++)add("bloom",`left:${20+Math.random()*60}%;top:${50+Math.random()*40}%`);
+ }
+
+ /* 79 Absolute Zero */
+ else if(name==="Absolute Zero"){
+  add("zero","left:calc(50% - 120px);top:20%");
+  for(let x=0;x<12;x++)add("ice",`left:${15+Math.random()*70}%;top:${40+Math.random()*40}%`);
+ }
+
+ /* 80 1/0 */
+ else if(name==="1/0"){
+  add("glitchAura","left:calc(50% - 150px);top:18%");
+  for(let x=0;x<18;x++)add("glitchText",`left:${10+Math.random()*80}%;top:${10+Math.random()*75}%`,["1/0","ERROR","NULL","0101","1B"][Math.floor(Math.random()*5)]);
+ }
+
+ /* 81 GOJO */
+ else if(name==="Gojo"){
+  addHead(`<div style="position:absolute;top:18px;left:-3px;width:61px;height:18px;background:#111;border-radius:4px;z-index:5"></div>`);
+  add("gojoRed","left:calc(50% - 150px);top:42%");
+  add("gojoBlue","left:calc(50% + 95px);top:42%");
+  add("particle","left:50%;top:45%;background:#fff;box-shadow:0 0 25px #fff;animation:pulse 1s infinite");
+ }
+
+ /* 82 ITACHI */
+ else if(name==="Itachi"){
+  add("itachiEye","left:calc(50% - 90px);top:8%");
+  for(let x=0;x<4;x++)add("crow",`left:${72+x*5}%;top:${18+x*8}%`);
+  for(let x=0;x<15;x++)add("particle",`left:${25+Math.random()*50}%;top:${25+Math.random()*55}%;background:#8b0018;animation:drift 2s infinite`);
+ }
+
+ /* 83 NARUTO */
+ else if(name==="Naruto"){
+  for(let x=0;x<8;x++)add("flame",`left:${20+Math.random()*60}%;top:${25+Math.random()*55}%;background:linear-gradient(#fff,#ffcc00,#ff7200)`);
+  for(let x=0;x<5;x++)add("stretchArm",`left:${45+Math.random()*10}%;top:${45+Math.random()*20}%;background:#ffb000;transform:rotate(${x*70}deg)`);
+ }
+
+ /* 84 JIRAIYA */
+ else if(name==="Jiraiya"){
+  for(let x=0;x<7;x++)add("frog",`left:${10+Math.random()*80}%;top:${65+Math.random()*20}%`,"🐸");
+  add("scroll","left:calc(50% + 50px);top:30%");
+  for(let x=0;x<12;x++)add("particle",`left:${25+Math.random()*50}%;top:${20+Math.random()*55}%;background:#e44;animation:rise 2s infinite`);
+ }
+
+ /* 85 LUFFY */
+ else if(name==="Luffy"){
+  for(let x=0;x<5;x++)add("stretchArm",`left:${40+Math.random()*15}%;top:${40+Math.random()*20}%;animation-duration:${1+x*.2}s;transform:rotate(${x*72}deg)`);
+  for(let x=0;x<8;x++)add("smoke",`left:${20+Math.random()*60}%;top:${20+Math.random()*50}%;animation-delay:${Math.random()}s`);
+ }
+
+ /* 86 GEAR 5 */
+ else if(name==="Gear 5"){
+  for(let x=0;x<5;x++)add("smoke",`left:${20+x*15}%;top:${18+Math.random()*15}%;width:85px;height:85px`);
+  for(let x=0;x<8;x++)add("bolt",`left:${20+Math.random()*60}%;top:${20+Math.random()*55}%;background:#fff;animation-delay:${Math.random()}s`);
+  for(let x=0;x<5;x++)add("wave",`left:${25+Math.random()*50}%;top:${30+Math.random()*35}%;border-color:#fff transparent transparent`);
+ }
+
+ /* 87 ZORO */
+ else if(name==="Zoro"){
+  for(let x=0;x<3;x++)add("sword",`left:${35+x*12}%;top:25%;transform:rotate(${x*25-20}deg)`);
+  for(let x=0;x<10;x++)add("particle",`left:${25+Math.random()*50}%;top:${25+Math.random()*50}%;background:#087f52;animation:drift 1.5s infinite`);
+ }
+
+ /* 88 JINBEI */
+ else if(name==="Jinbei"){
+  for(let x=0;x<5;x++)add("wave",`left:calc(50% - 90px);top:${45+x*7}%;animation-delay:${x*.2}s`);
+  for(let x=0;x<15;x++)add("drop",`left:${15+Math.random()*70}%;top:${20+Math.random()*55}%`);
+ }
+
+ /* 89 SANJI */
+ else if(name==="Sanji"){
+  add("fireFoot","left:35%;top:55%;transform:rotate(-20deg)");
+  add("fireFoot","right:35%;top:55%;transform:rotate(20deg)");
+  for(let x=0;x<12;x++)add("ember",`left:${20+Math.random()*60}%;top:${35+Math.random()*50}%`);
+ }
+
+ /* 90 KAKASHI */
+ else if(name==="Kakashi"){
+  addHead(`<div style="position:absolute;left:22px;top:27px;width:67px;height:23px;background:#111;border-radius:4px 4px 12px 12px;z-index:4"></div>`);
+  add("kakashiDog","left:calc(50% + 70px);top:52%","🐶");
+  for(let x=0;x<15;x++)add("bolt",`left:${25+Math.random()*50}%;top:${20+Math.random()*60}%`);
+ }
+
+ /* 91 SASUKE */
+ else if(name==="Sasuke"){
+  add("chidoriFx","left:calc(50% - 35px);top:45%");
+  add("glitchText","left:calc(50% + 55px);top:20%","◉");
+  for(let x=0;x<10;x++)add("bolt",`left:${20+Math.random()*60}%;top:${20+Math.random()*55}%;background:#8b5cff`);
+ }
+
+ /* 92 ITADORI */
+ else if(name==="Itadori"){
+  add("sukunaDomain","left:calc(50% - 170px);top:8%");
+  for(let x=0;x<20;x++)add("finger",`left:${15+Math.random()*70}%;top:${10+Math.random()*70}%`,"☠");
+  for(let x=0;x<10;x++)add("particle",`left:${25+Math.random()*50}%;top:${35+Math.random()*45}%;background:#b00020;animation:drift 1s infinite`);
+ }
+
+ /* 93 MAHORAGA */
+ else if(name==="Mahoraga"){
+  add("maho","left:calc(50% - 65px);top:-5%","☸");
+  for(let x=0;x<10;x++)add("divineBeam",`left:${15+Math.random()*70}%;top:${15+Math.random()*60}%;background:#fff`);
+ }
+
+ /* every aura gets a subtle identity-specific fallback, NOT a generic glow */
+ if(!v.children.length){
+  add("particle",`left:50%;top:50%;background:${auras[i].color};width:10px;height:10px;animation:pulse 1s infinite`);
+ }
+}
+
+/* ================= MILESTONES ================= */
+
+function checkMilestones(){
+ if(rolls>=10000&&!milestones[10000]){
+  milestones[10000]=1;
+  inventory.potions[0]++;
+  toast("🏆 10K ROLLS — FREE POTION");
+ }
+}
+
+/* ================= UPDATE ================= */
+
 function update(){
- document.getElementById("rolls").innerText=rolls;
+ document.getElementById("rolls").innerText=rolls.toLocaleString();
  document.getElementById("rarest").innerText=rarest>=0?auras[rarest].name:"None";
  document.getElementById("biome").innerText=currentBiome.name;
+
+ let autoBtn=document.getElementById("auto");
+ autoBtn.innerHTML=auto?"AUTO: ON":"AUTO ROLL<br><small>50 rolls</small>";
+
+ let eqName=document.getElementById("equippedName");
+ let eqRarity=document.getElementById("equippedRarity");
+
+ if(equippedAura===null){
+  eqName.innerText="Nothing Equipped";
+  eqRarity.innerText="";
+ }else{
+  eqName.innerText=auras[equippedAura].name;
+  eqRarity.innerText=formatOdds(auras[equippedAura]);
+ }
 
  renderAuras();
  renderPotions();
  renderGloves();
  renderBiomes();
+ renderLeaderboard();
 }
 
-window.onload=function(){
- load();
- update();
- if(equippedAura!==null)vfx(equippedAura);
-};
+/* ================= BIOME TIMER ================= */
+
+setInterval(()=>{
+ biomeTime--;
+ document.getElementById("timer").innerText=biomeTime+"s remaining";
+
+ if(biomeTime<=0){
+  let next=biomes[Math.floor(Math.random()*biomes.length)];
+  spawnBiome(next);
+ }
+},1000);
+
+/* ================= INIT ================= */
+
+load();
+
+if(equippedAura!==null)vfx(equippedAura);
+
+spawnBiome(currentBiome);
+update();
 </script>
 </body>
 </html>
+```
