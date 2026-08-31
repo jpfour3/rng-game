@@ -1,6 +1,5 @@
-```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -15,7 +14,7 @@ body{
  background:#fff;
  color:#111;
  overflow:hidden;
- transition:background 1s ease;
+ transition:.5s;
 }
 
 #game{
@@ -26,59 +25,35 @@ body{
 }
 
 /* =========================
-   TOP INFO
+   BACKGROUND FX
 ========================= */
 
-#top{
+#fx{
  position:absolute;
- left:18px;
- top:15px;
- font-size:14px;
- z-index:50;
- line-height:1.6;
+ inset:0;
+ pointer-events:none;
+ overflow:hidden;
+ z-index:1;
 }
 
-#bottomInfo{
+.particle{
  position:absolute;
- left:18px;
- bottom:95px;
- font-size:14px;
- z-index:50;
+ pointer-events:none;
+ animation:float 2s linear infinite;
 }
 
-/* =========================
-   ADMIN
-========================= */
-
-#admin{
- position:absolute;
- right:18px;
- top:15px;
- z-index:60;
- display:flex;
- flex-direction:column;
- align-items:flex-end;
- gap:5px;
+@keyframes float{
+ 0%{transform:translateY(20px) scale(.3);opacity:0}
+ 30%{opacity:1}
+ 100%{transform:translateY(-180px) scale(1.2);opacity:0}
 }
 
-#admin label{
- font-size:12px;
- font-weight:bold;
- opacity:.7;
+.spin{
+ animation:spin 4s linear infinite;
 }
 
-#adminInput{
- width:125px;
- padding:7px 9px;
- border:1px solid #bbb;
- border-radius:8px;
- outline:none;
- background:#fff;
- color:#111;
-}
-
-#adminInput:focus{
- border-color:#111;
+@keyframes spin{
+ to{transform:rotate(360deg)}
 }
 
 /* =========================
@@ -86,251 +61,288 @@ body{
 ========================= */
 
 #stage{
- position:absolute;
- inset:0;
+ height:100%;
  display:flex;
  align-items:center;
  justify-content:center;
+ position:relative;
+ z-index:3;
 }
 
 #stick{
- width:110px;
- height:220px;
+ width:120px;
+ height:230px;
  position:relative;
- z-index:20;
- animation:float 2.2s ease-in-out infinite;
-}
-
-@keyframes float{
- 50%{transform:translateY(-7px)}
 }
 
 .head{
  position:absolute;
- left:28px;
+ left:32px;
  top:0;
- width:55px;
- height:55px;
+ width:56px;
+ height:56px;
  border:6px solid #111;
  border-radius:50%;
- z-index:30;
- background:transparent;
+ z-index:10;
+ background:white;
 }
 
 .body{
  position:absolute;
- left:53px;
+ left:57px;
  top:52px;
  width:6px;
- height:90px;
+ height:95px;
  background:#111;
- z-index:30;
+ z-index:10;
 }
 
 .arm,.leg{
  position:absolute;
- left:56px;
- width:65px;
+ left:60px;
+ width:70px;
  height:6px;
  background:#111;
  transform-origin:left;
- z-index:30;
+ z-index:10;
 }
 
-.a1{top:70px;transform:rotate(145deg)}
-.a2{top:70px;transform:rotate(35deg)}
-.l1{top:138px;transform:rotate(115deg)}
-.l2{top:138px;transform:rotate(65deg)}
+.a1{top:72px;transform:rotate(145deg)}
+.a2{top:72px;transform:rotate(35deg)}
+.l1{top:143px;transform:rotate(115deg)}
+.l2{top:143px;transform:rotate(65deg)}
 
 /* =========================
-   MASSIVE VFX SYSTEM
+   AURA VFX
 ========================= */
 
-#vfx{
+#auraFX{
  position:absolute;
- left:-180px;
- top:-180px;
- width:470px;
- height:470px;
+ left:-190px;
+ top:-170px;
+ width:500px;
+ height:500px;
  pointer-events:none;
- z-index:5;
+ z-index:2;
 }
 
-.vfxRing{
+/* basic aura */
+.aura-ring{
  position:absolute;
- border-radius:50%;
- left:50%;
- top:50%;
- transform:translate(-50%,-50%);
- opacity:0;
-}
-
-.ring1{
- width:180px;
- height:180px;
+ inset:80px;
  border:3px solid currentColor;
- animation:spin 5s linear infinite;
+ border-radius:50%;
+ animation:orbit 3s linear infinite;
 }
 
-.ring2{
- width:235px;
- height:235px;
- border:2px dashed currentColor;
- animation:spinReverse 7s linear infinite;
+.aura-ring.r2{
+ inset:45px;
+ border-style:dashed;
+ animation-duration:5s;
 }
 
-.ring3{
- width:285px;
- height:285px;
- border:2px solid currentColor;
- border-left-color:transparent;
- border-right-color:transparent;
- animation:spin 4s linear infinite;
+.aura-ring.r3{
+ inset:115px;
+ animation-duration:2s;
 }
 
-.ring4{
- width:330px;
- height:330px;
- border:1px dotted currentColor;
- animation:spinReverse 10s linear infinite;
+@keyframes orbit{
+ to{transform:rotate(360deg)}
 }
 
-@keyframes spin{
- to{transform:translate(-50%,-50%) rotate(360deg)}
-}
+/* =========================
+   SPECIAL SHAPES
+========================= */
 
-@keyframes spinReverse{
- to{transform:translate(-50%,-50%) rotate(-360deg)}
-}
-
-/* ORBITING PARTICLES */
-
-.orbit{
+.shard{
  position:absolute;
- left:50%;
- top:50%;
- width:100%;
- height:100%;
- transform:translate(-50%,-50%);
- animation:orbitSpin 4s linear infinite;
+ width:18px;
+ height:65px;
+ background:currentColor;
+ clip-path:polygon(50% 0,100% 75%,50% 100%,0 75%);
+ animation:shardSpin 3s linear infinite;
 }
 
-.orbit.fast{animation-duration:2s}
-.orbit.slow{animation-duration:8s}
-
-@keyframes orbitSpin{
- to{transform:translate(-50%,-50%) rotate(360deg)}
+@keyframes shardSpin{
+ 0%{transform:rotate(0deg) translateY(-170px)}
+ 100%{transform:rotate(360deg) translateY(-170px)}
 }
 
-.particle{
+.star{
  position:absolute;
- width:9px;
- height:9px;
+ width:55px;
+ height:55px;
+ background:currentColor;
+ clip-path:polygon(
+ 50% 0,61% 37%,100% 50%,61% 63%,
+ 50% 100%,39% 63%,0 50%,39% 37%
+ );
+ animation:pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse{
+ from{transform:scale(.7) rotate(0)}
+ to{transform:scale(1.3) rotate(180deg)}
+}
+
+.orb{
+ position:absolute;
+ width:25px;
+ height:25px;
  border-radius:50%;
  background:currentColor;
- box-shadow:0 0 12px currentColor,0 0 25px currentColor;
+ box-shadow:0 0 25px currentColor;
+ animation:orb 2s linear infinite;
 }
 
-.p1{left:50%;top:3%}
-.p2{left:82%;top:18%}
-.p3{left:95%;top:50%}
-.p4{left:78%;top:82%}
-.p5{left:50%;top:95%}
-.p6{left:18%;top:82%}
-.p7{left:3%;top:50%}
-.p8{left:18%;top:18%}
-
-/* ENERGY BEAMS */
-
-.beam{
- position:absolute;
- left:50%;
- top:50%;
- width:5px;
- height:210px;
- background:linear-gradient(transparent,currentColor,transparent);
- transform-origin:50% 0;
- opacity:0;
- filter:drop-shadow(0 0 10px currentColor);
+@keyframes orb{
+ 0%{transform:rotate(0deg) translateX(150px)}
+ 100%{transform:rotate(360deg) translateX(150px)}
 }
 
-.beam1{transform:rotate(0deg)}
-.beam2{transform:rotate(45deg)}
-.beam3{transform:rotate(90deg)}
-.beam4{transform:rotate(135deg)}
-.beam5{transform:rotate(180deg)}
-.beam6{transform:rotate(225deg)}
-.beam7{transform:rotate(270deg)}
-.beam8{transform:rotate(315deg)}
+/* =========================
+   80 UNIQUE AURA THEMES
+========================= */
 
-/* SYMBOLS */
+.v1{color:#aaa}
+.v2{color:#78aaff}
+.v3{color:#65c878}
+.v4{color:#ddd}
+.v5{color:#45dfff}
+.v6{color:#b7e8ff}
+.v7{color:#c49a6c}
+.v8{color:#fff06a}
+.v9{color:#ff914d}
+.v10{color:#9ce7ff}
 
-.symbol{
+.v11{color:#ff5722}
+.v12{color:#aeeeff}
+.v13{color:#777}
+.v14{color:#ff7de9}
+.v15{color:#b8dfff}
+.v16{color:#80dfff}
+.v17{color:#777}
+.v18{color:#75cfff}
+.v19{color:#72e5ff}
+.v20{color:#9c45ff}
+
+.v21{color:#ffcc33}
+.v22{color:#b46cff}
+.v23{color:#ff7aff}
+.v24{color:#9a5cff}
+.v25{color:#ff402f}
+.v26{color:#9eefff}
+.v27{color:#63d9ff}
+.v28{color:#582aff}
+.v29{color:#e83dff}
+.v30{color:#eee}
+
+.v31{color:#ff4cff}
+.v32{color:#5edfff}
+.v33{color:#a05cff}
+.v34{color:#fff}
+.v35{color:#ff3344}
+.v36{color:#8bffff}
+.v37{color:#ff77aa}
+.v38{color:#6affff}
+.v39{color:#777}
+.v40{color:#fff}
+
+.v41{color:#ffcc55}
+.v42{color:#b875ff}
+.v43{color:#6aff88}
+.v44{color:#ffdd66}
+.v45{color:#54ddff}
+.v46{color:#ff55ff}
+.v47{color:#ffff55}
+.v48{color:#ff6688}
+.v49{color:#aa66ff}
+.v50{color:#55ffff}
+
+.v51{color:#ff7744}
+.v52{color:#77bbff}
+.v53{color:#ffee77}
+.v54{color:#ff5577}
+.v55{color:#55ddff}
+.v56{color:#cc77ff}
+.v57{color:#77ff99}
+.v58{color:#ffcc55}
+.v59{color:#ff55bb}
+.v60{color:#6666ff}
+
+.v61{color:#ff3333}
+.v62{color:#33ddff}
+.v63{color:#ffcc33}
+.v64{color:#dd55ff}
+.v65{color:#33ff88}
+.v66{color:#ff55aa}
+.v67{color:#55aaff}
+.v68{color:#ffffff}
+.v69{color:#ff0055}
+.v70{color:#00ffff}
+
+.v71{color:#ff6600}
+.v72{color:#00ffcc}
+.v73{color:#ffff00}
+.v74{color:#ff0066}
+.v75{color:#00aaff}
+.v76{color:#bb00ff}
+.v77{color:#00ff44}
+.v78{color:#ffffff}
+.v79{color:#000}
+.v80{color:#fff}
+
+/* =========================
+   TOP UI
+========================= */
+
+#top{
  position:absolute;
- left:50%;
- top:50%;
- transform:translate(-50%,-50%);
- font-size:42px;
+ left:18px;
+ top:15px;
+ z-index:20;
+ font-size:14px;
+}
+
+#admin{
+ position:absolute;
+ right:18px;
+ top:15px;
+ z-index:30;
+ display:flex;
+ gap:5px;
+}
+
+#adminInput{
+ width:105px;
+ padding:7px;
+ border:1px solid #bbb;
+ border-radius:7px;
+}
+
+#adminBtn{
+ border:0;
+ border-radius:7px;
+ background:#111;
+ color:white;
+ padding:7px 10px;
+}
+
+#adminStatus{
+ position:absolute;
+ right:18px;
+ top:55px;
+ z-index:30;
+ font-size:12px;
  font-weight:bold;
- opacity:0;
- text-shadow:
- 0 0 10px currentColor,
- 0 0 25px currentColor,
- 0 0 50px currentColor;
- animation:symbolFloat 2s ease-in-out infinite;
 }
 
-@keyframes symbolFloat{
- 50%{
-  transform:translate(-50%,-65%) rotate(10deg);
- }
-}
-
-/* SHOCKWAVE */
-
-.shock{
+#bottomInfo{
  position:absolute;
- left:50%;
- top:50%;
- width:80px;
- height:80px;
- border:5px solid currentColor;
- border-radius:50%;
- transform:translate(-50%,-50%) scale(.2);
- opacity:0;
-}
-
-.shock.active{
- animation:shock .8s ease-out;
-}
-
-@keyframes shock{
- 0%{
-  transform:translate(-50%,-50%) scale(.2);
-  opacity:1;
- }
- 100%{
-  transform:translate(-50%,-50%) scale(4);
-  opacity:0;
- }
-}
-
-/* AURA FLOOR */
-
-.floor{
- position:absolute;
- left:50%;
- top:78%;
- width:250px;
- height:70px;
- transform:translateX(-50%);
- border-radius:50%;
- opacity:0;
- filter:blur(3px);
- box-shadow:
- 0 0 25px currentColor,
- 0 0 55px currentColor,
- 0 0 90px currentColor;
+ left:18px;
+ bottom:95px;
+ z-index:20;
+ font-size:14px;
 }
 
 /* =========================
@@ -347,36 +359,32 @@ body{
  border:0;
  border-radius:12px;
  background:#111;
- color:#fff;
+ color:white;
  font-size:25px;
- z-index:60;
- cursor:pointer;
+ z-index:30;
 }
 
 #panel{
  position:absolute;
- right:-440px;
+ right:-430px;
  top:0;
- width:440px;
+ width:430px;
  height:100%;
  background:#f4f4f4;
  padding:18px;
  overflow:auto;
  transition:.3s;
- z-index:55;
- box-shadow:-8px 0 30px #0003;
+ z-index:50;
+ box-shadow:-5px 0 20px #0002;
 }
 
-#panel.open{
- right:0;
-}
+#panel.open{right:0}
 
 .close{
  float:right;
  border:0;
  background:none;
  font-size:28px;
- cursor:pointer;
 }
 
 .tabs{
@@ -390,8 +398,6 @@ body{
  border:0;
  padding:8px;
  border-radius:7px;
- background:#ddd;
- cursor:pointer;
 }
 
 .tab.active{
@@ -405,32 +411,18 @@ body{
 .card{
  background:#fff;
  border:1px solid #ccc;
- border-radius:10px;
- padding:11px;
+ border-radius:9px;
+ padding:10px;
  margin:8px 0;
 }
 
-.itemHeader{
- display:flex;
- justify-content:space-between;
- cursor:pointer;
-}
-
-.details{
- display:none;
- margin-top:8px;
-}
-
-.details.open{
- display:block;
-}
+button{cursor:pointer}
 
 .action{
  border:0;
  border-radius:6px;
  padding:7px;
- margin:4px 3px 0 0;
- cursor:pointer;
+ margin-top:5px;
 }
 
 .craft{
@@ -439,35 +431,24 @@ body{
  width:100%;
 }
 
-.autoOn{
- background:#111;
- color:#fff;
+/* =========================
+   DROPDOWN CRAFTING
+========================= */
+
+.craftBox{
+ margin-top:7px;
 }
 
-.recipe{
- margin-top:8px;
+.craftBox summary{
+ cursor:pointer;
  padding:8px;
- background:#f1f1f1;
- border-radius:7px;
- font-size:13px;
+ background:#eee;
+ border-radius:6px;
+ font-weight:bold;
 }
 
-.need{
- margin:3px 0;
-}
-
-.need.good{color:#16851d}
-.need.bad{color:#b00000}
-
-.statLine{
- display:flex;
- justify-content:space-between;
- padding:3px 0;
-}
-
-.small{
- font-size:12px;
- opacity:.7;
+.craftInside{
+ padding-top:8px;
 }
 
 /* =========================
@@ -481,7 +462,7 @@ body{
  transform:translateX(-50%);
  display:flex;
  gap:10px;
- z-index:50;
+ z-index:30;
 }
 
 .roll{
@@ -492,32 +473,24 @@ body{
  border:0;
  border-radius:12px;
  font-weight:bold;
- cursor:pointer;
 }
 
-.roll:active{
- transform:scale(.96);
+.roll:disabled{
+ opacity:.4;
 }
-
-/* =========================
-   RESULT
-========================= */
 
 #result{
  position:absolute;
- top:58%;
+ top:57%;
  left:50%;
  transform:translate(-50%,-50%);
  text-align:center;
- font-size:29px;
+ font-size:30px;
  font-weight:bold;
  opacity:0;
- transition:.15s;
+ transition:.2s;
  pointer-events:none;
- z-index:45;
- text-shadow:
- 0 0 10px currentColor,
- 0 0 25px currentColor;
+ z-index:40;
 }
 
 #result.show{
@@ -525,17 +498,18 @@ body{
 }
 
 #result .rarity{
- font-size:16px;
- margin-top:7px;
+ font-size:15px;
+ margin-top:8px;
 }
 
-/* =========================
-   TOAST
-========================= */
+.small{
+ font-size:12px;
+ opacity:.7;
+}
 
 #toast{
  position:absolute;
- top:60px;
+ top:18px;
  left:50%;
  transform:translateX(-50%);
  background:#111;
@@ -546,48 +520,175 @@ body{
  z-index:100;
 }
 
+.voidMode{
+ animation:voidScreen .7s infinite alternate;
+}
+
+@keyframes voidScreen{
+ from{filter:brightness(.5)}
+ to{filter:brightness(1.2)}
+}
+
 /* =========================
-   RARE ROLL SCREEN EFFECT
+   ADMIN MODE
 ========================= */
 
-#screenFlash{
+body.adminMode #stage{
+ filter:drop-shadow(0 0 25px #000);
+}
+
+body.adminMode #adminStatus{
+ color:#ff2222;
+}
+
+body.adminMode #top{
+ text-decoration:line-through;
+}
+
+/* =========================
+   AURA-SPECIFIC VFX
+========================= */
+
+.vfx-spark .star{animation-duration:.4s}
+.vfx-pebble .orb{animation-duration:5s}
+.vfx-leaf .star{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.vfx-breeze .aura-ring{border-style:dotted}
+.vfx-drop .orb{border-radius:50% 50% 60% 60%}
+.vfx-dust .particle{width:4px;height:4px}
+.vfx-glow .star{filter:blur(3px)}
+.vfx-ember .particle{box-shadow:0 0 15px currentColor}
+.vfx-frost .shard{width:12px;height:80px}
+.vfx-thunder .aura-ring{border-width:6px}
+.vfx-flame .star{clip-path:polygon(50% 0,75% 35%,100% 45%,65% 60%,50% 100%,35% 60%,0 45%,25% 35%)}
+.vfx-wave .aura-ring{border-radius:45%}
+.vfx-shadow{filter:drop-shadow(0 0 15px #000)}
+.vfx-crystal .shard{width:25px;height:90px}
+.vfx-venom .orb{filter:blur(2px)}
+.vfx-solar .star{transform:scale(1.5)}
+.vfx-lunar .star{border-radius:50%}
+.vfx-comet .particle{width:7px;height:35px}
+.vfx-void .aura-ring{border-width:8px}
+.vfx-inferno .particle{animation-duration:.5s}
+.vfx-glacier .shard{width:20px;height:110px}
+.vfx-tempest .aura-ring{animation-duration:.5s}
+.vfx-abyss .aura-ring{border-style:dashed}
+.vfx-eclipse .star{box-shadow:0 0 40px currentColor}
+.vfx-phantom{opacity:.75}
+.vfx-prism .aura-ring{border-width:5px}
+.vfx-nebula .orb{width:45px;height:45px;filter:blur(8px)}
+.vfx-gravity .particle{animation-duration:4s}
+.vfx-starlight .star{width:90px;height:90px}
+.vfx-bloodmoon .star{border-radius:50%}
+.vfx-aurora .aura-ring{border-style:dotted}
+.vfx-overdrive .aura-ring{animation-duration:.3s}
+.vfx-celestial .star{width:100px;height:100px}
+.vfx-oblivion .aura-ring{border-width:10px}
+.vfx-divine .star{filter:drop-shadow(0 0 30px currentColor)}
+.vfx-galaxy .orb{width:60px;height:60px;filter:blur(10px)}
+.vfx-singularity .aura-ring{transform:scale(.5)}
+.vfx-eternal .aura-ring{border-width:7px}
+.vfx-rift .aura-ring{border-style:dashed}
+.vfx-chronos .aura-ring{animation-duration:10s}
+.vfx-seraph .star{width:120px;height:120px}
+.vfx-omega .aura-ring{border-width:12px}
+.vfx-genesis .star{width:130px;height:130px}
+.vfx-infinity .aura-ring{border-radius:40%}
+.vfx-mythic .particle{width:10px;height:10px}
+.vfx-cosmic .orb{width:80px;height:80px}
+.vfx-astral .star{width:110px;height:110px}
+.vfx-heavenly .star{filter:blur(2px)}
+.vfx-doom .aura-ring{border-width:14px}
+.vfx-worldbreaker .shard{width:30px;height:130px}
+.vfx-reality .aura-ring{border-radius:10%}
+.vfx-ancient .shard{animation-duration:8s}
+.vfx-forbidden .aura-ring{border-style:dashed}
+.vfx-immortal .star{width:150px;height:150px}
+.vfx-transcendent .aura-ring{border-width:16px}
+.vfx-absolute .star{width:160px;height:160px}
+.vfx-unbound .orb{width:90px;height:90px}
+.vfx-limitless .aura-ring{inset:10px}
+.vfx-paradox .aura-ring{animation-direction:reverse}
+.vfx-omniversal .star{width:180px;height:180px}
+.vfx-finality .aura-ring{border-width:20px}
+.vfx-godly .star{width:190px;height:190px}
+.vfx-chosen .particle{width:15px;height:15px}
+.vfx-first .aura-ring{border-width:25px}
+.vfx-beyond .orb{width:100px;height:100px}
+.vfx-limitlessx .aura-ring{inset:-20px}
+.vfx-eternalflame .particle{box-shadow:0 0 30px currentColor}
+.vfx-origin .star{width:220px;height:220px}
+.vfx-end .aura-ring{border-width:30px}
+.vfx-null .aura-ring{border-color:#000}
+.vfx-impossible{filter:invert(1)}
+.vfx-infinitevoid .aura-ring{inset:-50px}
+.vfx-creator .star{
+ width:210px;
+ height:210px;
+}
+.vfx-creator:after{
+ content:"01";
+ position:absolute;
+ font-size:80px;
+ font-weight:bold;
+ color:#111;
+ text-shadow:20px 30px #777;
+ left:160px;
+ top:170px;
+}
+.vfx-absolutezero .shard{
+ width:28px;
+ height:150px;
+}
+.vfx-absolutezero .aura-ring{
+ border-color:#9eefff;
+ box-shadow:0 0 30px #9eefff;
+}
+
+/* 1/0 */
+.vfx-impossibleone{
+ background:
+ repeating-linear-gradient(
+ 90deg,
+ #000 0,
+ #000 20px,
+ #111 21px,
+ #000 40px
+ );
+ border-radius:50%;
+}
+
+.vfx-impossibleone .aura-ring{
+ border:4px solid white;
+ box-shadow:
+ 0 0 25px white,
+ 0 0 60px #fff;
+}
+
+.vfx-impossibleone:after{
+ content:"1/0";
+ position:absolute;
+ color:white;
+ font-size:55px;
+ font-weight:bold;
+ left:170px;
+ top:210px;
+}
+
+/* =========================
+   RARITY FLASH
+========================= */
+
+.rarityFlash{
  position:absolute;
  inset:0;
  pointer-events:none;
- opacity:0;
  z-index:35;
-}
-
-#screenFlash.active{
- animation:flash .45s ease-out;
+ animation:flash .7s forwards;
 }
 
 @keyframes flash{
- 0%{opacity:.8}
- 100%{opacity:0}
-}
-
-#rarityBanner{
- position:absolute;
- left:50%;
- top:34%;
- transform:translateX(-50%);
- font-size:14px;
- font-weight:bold;
- letter-spacing:3px;
- opacity:0;
- z-index:44;
- pointer-events:none;
-}
-
-#rarityBanner.show{
- animation:banner 1s ease-out;
-}
-
-@keyframes banner{
- 0%{opacity:0;transform:translateX(-50%) scale(.5)}
- 20%{opacity:1;transform:translateX(-50%) scale(1.2)}
- 100%{opacity:0;transform:translateX(-50%) scale(1)}
+ 0%{background:white;opacity:.8}
+ 100%{background:transparent;opacity:0}
 }
 </style>
 </head>
@@ -596,15 +697,19 @@ body{
 
 <div id="game">
 
+<div id="fx"></div>
+
 <div id="top">
 <b>Rarest Rolled:</b> <span id="rarest">None</span><br>
 <b>Total Rolls:</b> <span id="rolls">0</span>
 </div>
 
 <div id="admin">
-<label>ADMIN</label>
-<input id="adminInput" placeholder="enter code">
+<input id="adminInput" placeholder="admin">
+<button id="adminBtn" onclick="toggleAdmin()">ENTER</button>
 </div>
+
+<div id="adminStatus"></div>
 
 <div id="bottomInfo">
 <b>Biome:</b> <span id="biome">Plains</span><br>
@@ -613,89 +718,41 @@ body{
 
 <div id="stage">
 
+<div id="auraFX"></div>
+
 <div id="stick">
-
-<div id="vfx">
-
-<div class="vfxRing ring1"></div>
-<div class="vfxRing ring2"></div>
-<div class="vfxRing ring3"></div>
-<div class="vfxRing ring4"></div>
-
-<div class="orbit fast">
- <div class="particle p1"></div>
- <div class="particle p3"></div>
- <div class="particle p5"></div>
- <div class="particle p7"></div>
-</div>
-
-<div class="orbit">
- <div class="particle p2"></div>
- <div class="particle p4"></div>
- <div class="particle p6"></div>
- <div class="particle p8"></div>
-</div>
-
-<div class="orbit slow">
- <div class="particle p1"></div>
- <div class="particle p4"></div>
- <div class="particle p7"></div>
-</div>
-
-<div class="beam beam1"></div>
-<div class="beam beam2"></div>
-<div class="beam beam3"></div>
-<div class="beam beam4"></div>
-<div class="beam beam5"></div>
-<div class="beam beam6"></div>
-<div class="beam beam7"></div>
-<div class="beam beam8"></div>
-
-<div class="symbol" id="symbol">✦</div>
-
-<div class="shock" id="shock"></div>
-
-<div class="floor" id="floor"></div>
-
-</div>
-
 <div class="head"></div>
 <div class="body"></div>
 <div class="arm a1"></div>
 <div class="arm a2"></div>
 <div class="leg l1"></div>
 <div class="leg l2"></div>
-
 </div>
+
 </div>
 
 <button id="menu" onclick="toggleMenu()">➜</button>
 
 <div id="buttons">
-
-<button class="roll" id="auto" onclick="toggleAuto()">
+<button class="roll" onclick="toggleAuto()" id="auto">
 AUTO ROLL<br><small>50 rolls</small>
 </button>
 
 <button class="roll" onclick="normalRoll()">
-ROLL<br><small>1 second</small>
+ROLL<br><small>1 sec</small>
 </button>
 
-<button class="roll" id="fast" onclick="fastRoll()">
+<button class="roll" onclick="fastRoll()" id="fast">
 FAST ROLL<br><small>150 rolls</small>
 </button>
-
 </div>
 
 <div id="result"></div>
 <div id="toast"></div>
-<div id="rarityBanner"></div>
-<div id="screenFlash"></div>
 
 <div id="panel">
 
 <button class="close" onclick="toggleMenu()">×</button>
-
 <h2>INDEX</h2>
 
 <div class="tabs">
@@ -743,6 +800,17 @@ const odds=[
 9000000,11000000,14000000,18000000,25000000,50000000,100000000,1000000000,10000000000,0
 ];
 
+const auraClasses=[
+"spark","pebble","leaf","breeze","drop","dew","dust","glow","ember","frost",
+"flame","mist","stone","bloom","cloud","wave","shadow","thunder","crystal","venom",
+"solar","lunar","comet","void","inferno","glacier","tempest","abyss","eclipse","phantom",
+"prism","nebula","gravity","starlight","bloodmoon","aurora","overdrive","celestial","oblivion","divine",
+"galaxy","singularity","eternal","rift","chronos","seraph","omega","genesis","infinity","mythic",
+"cosmic","astral","heavenly","doom","worldbreaker","reality","ancient","forbidden","immortal","transcendent",
+"absolute","unbound","limitless","paradox","omniversal","finality","godly","chosen","first","beyond",
+"limitlessx","eternalflame","origin","end","null","impossible","infinitevoid","creator","absolutezero","impossibleone"
+];
+
 const auras=names.map((name,i)=>({
  name,
  odds:odds[i],
@@ -777,43 +845,51 @@ let biomeTime=currentBiome.time;
 let biomeVisits={};
 
 /* =========================================================
-   RECIPES
+   POTIONS
 ========================================================= */
 
 const potions=[
-{name:"Lucky Brew",luck:5,recipe:{0:2,1:2,2:1}},
-{name:"Fortune Tonic",luck:15,recipe:{3:3,5:2,7:1}},
-{name:"Golden Elixir",luck:35,recipe:{8:3,10:2,12:2}},
-{name:"Mystic Potion",luck:75,recipe:{15:4,17:2,20:1}},
-{name:"Void Serum",luck:150,recipe:{22:3,25:3,28:2}},
-{name:"Celestial Potion",luck:300,recipe:{32:4,35:3,38:2}},
-{name:"Infinity Elixir",luck:600,recipe:{42:5,45:3,48:2}},
-{name:"Godly Potion",luck:1200,recipe:{52:5,55:4,58:3}},
-{name:"Reality Potion",luck:3000,recipe:{62:5,65:4,68:3}},
-{name:"10K LUCK ELIXIR",luck:10000,recipe:{72:10,73:8,74:6,75:5,76:4,77:3,78:2,79:1}}
+{name:"Lucky Brew",luck:5,recipe:[0,1,2]},
+{name:"Fortune Tonic",luck:15,recipe:[3,5,7]},
+{name:"Golden Elixir",luck:35,recipe:[8,10,12]},
+{name:"Mystic Potion",luck:75,recipe:[15,17,20]},
+{name:"Void Serum",luck:150,recipe:[22,25,28]},
+{name:"Celestial Potion",luck:300,recipe:[32,35,38]},
+{name:"Infinity Elixir",luck:600,recipe:[42,45,48]},
+{name:"Godly Potion",luck:1200,recipe:[52,55,58]},
+{name:"Reality Potion",luck:3000,recipe:[62,65,68]},
+{name:"10K LUCK ELIXIR",luck:10000,recipe:[72,73,74,75,76,77,78,79]}
 ];
+
+/* =========================================================
+   GLOVES
+========================================================= */
 
 const gloves=[
-{name:"Cloth Glove",luck:2,recipe:{0:3,2:2,4:1}},
-{name:"Iron Glove",luck:5,recipe:{5:3,7:2,9:1}},
-{name:"Golden Glove",luck:10,recipe:{10:4,12:3,15:1}},
-{name:"Crystal Glove",luck:20,recipe:{17:4,19:3,21:2}},
-{name:"Shadow Glove",luck:40,recipe:{25:5,27:3,29:2}},
-{name:"Void Glove",luck:80,recipe:{32:5,34:4,36:2}},
-{name:"Galaxy Glove",luck:160,recipe:{40:5,42:4,44:3}},
-{name:"Divine Glove",luck:350,recipe:{50:6,52:4,54:3}},
-{name:"Reality Glove",luck:800,recipe:{60:6,62:5,64:3}},
-{name:"Infinite Glove",luck:2000,recipe:{68:8,70:5,73:3}}
+{name:"Cloth Glove",luck:2,recipe:[0,2,4]},
+{name:"Iron Glove",luck:5,recipe:[5,7,9]},
+{name:"Golden Glove",luck:10,recipe:[10,12,15]},
+{name:"Crystal Glove",luck:20,recipe:[17,19,21]},
+{name:"Shadow Glove",luck:40,recipe:[25,27,29]},
+{name:"Void Glove",luck:80,recipe:[32,34,36]},
+{name:"Galaxy Glove",luck:160,recipe:[40,42,44]},
+{name:"Divine Glove",luck:350,recipe:[50,52,54]},
+{name:"Reality Glove",luck:800,recipe:[60,62,64]},
+{name:"Infinite Glove",luck:2000,recipe:[68,70,73]}
 ];
 
+/* =========================================================
+   RANDOMIZERS
+========================================================= */
+
 const randomizers=[
-{name:"Basic Biome Randomizer",luck:1.2,recipe:{8:2,9:2,10:1}},
-{name:"Rare Biome Randomizer",luck:1.5,recipe:{15:3,17:2,19:1}},
-{name:"Epic Biome Randomizer",luck:2,recipe:{25:4,28:3,30:2}},
-{name:"Legendary Biome Randomizer",luck:3,recipe:{38:4,40:3,43:2}},
-{name:"Mythic Biome Randomizer",luck:5,recipe:{50:5,53:4,55:2}},
-{name:"Divine Biome Randomizer",luck:8,recipe:{60:6,63:4,66:3}},
-{name:"Reality Randomizer",luck:15,recipe:{69:8,71:5,73:3}}
+{name:"Basic Biome Randomizer",luck:1.2,recipe:[8,9,10]},
+{name:"Rare Biome Randomizer",luck:1.5,recipe:[15,17,19]},
+{name:"Epic Biome Randomizer",luck:2,recipe:[25,28,30]},
+{name:"Legendary Biome Randomizer",luck:3,recipe:[38,40,43]},
+{name:"Mythic Biome Randomizer",luck:5,recipe:[50,53,55]},
+{name:"Divine Biome Randomizer",luck:8,recipe:[60,63,66]},
+{name:"Reality Randomizer",luck:15,recipe:[69,71,73]}
 ];
 
 let inventory={
@@ -836,6 +912,7 @@ let auto=false;
 let busy=false;
 let rarest=-1;
 let milestones={};
+let admin=false;
 
 /* =========================================================
    SAVE
@@ -843,7 +920,9 @@ let milestones={};
 
 function save(){
 
- localStorage.setItem("auraRollSave",JSON.stringify({
+ if(admin)return;
+
+ localStorage.setItem("auraRoll",JSON.stringify({
   auras,
   inventory,
   autoCraft,
@@ -866,7 +945,7 @@ function save(){
 
 function load(){
 
- let s=localStorage.getItem("auraRollSave");
+ let s=localStorage.getItem("auraRoll");
 
  if(!s)return;
 
@@ -875,12 +954,13 @@ function load(){
   let d=JSON.parse(s);
 
   if(d.auras)
-   d.auras.forEach((a,i)=>{
-    if(auras[i])Object.assign(auras[i],a);
-   });
+   d.auras.forEach((a,i)=>Object.assign(auras[i],a));
 
-  if(d.inventory)inventory=d.inventory;
-  if(d.autoCraft)autoCraft=d.autoCraft;
+  if(d.inventory)
+   inventory=d.inventory;
+
+  if(d.autoCraft)
+   autoCraft=d.autoCraft;
 
   rolls=d.rolls||0;
   equippedAura=d.equippedAura;
@@ -895,9 +975,7 @@ function load(){
 
   if(b)currentBiome=b;
 
- }catch(e){
-  console.log(e);
- }
+ }catch(e){}
 
 }
 
@@ -905,53 +983,52 @@ function load(){
    ADMIN
 ========================================================= */
 
-document.getElementById("adminInput").addEventListener("keydown",function(e){
+function toggleAdmin(){
 
- if(e.key!=="Enter")return;
+ let input=document.getElementById("adminInput").value.trim().toLowerCase();
 
- if(this.value.toLowerCase().trim()==="rocky"){
-
-  /*
-   Give every aura.
-   Give every craftable item.
-   Set a huge amount so crafting can be tested.
-  */
-
-  auras.forEach(a=>{
-   a.owned=999999;
-   a.total=Math.max(a.total,999999);
-  });
-
-  inventory.potions=potions.map(()=>9999);
-  inventory.gloves=gloves.map(()=>9999);
-  inventory.randomizers=randomizers.map(()=>9999);
-
-  rolls=999999;
-  rarest=79;
-
-  biomes.forEach(b=>{
-   biomeVisits[b.name]=999;
-  });
-
-  equippedAura=79;
-  equippedGlove=9;
-
-  applyAuraVFX(79);
-
-  toast("ADMIN: EVERYTHING UNLOCKED");
-
-  update();
-  save();
-
- }else{
-
-  toast("Invalid admin code");
-
+ if(input!=="rocky"){
+  toast("Wrong admin code");
+  return;
  }
 
- this.value="";
+ admin=!admin;
 
-});
+ document.body.classList.toggle("adminMode",admin);
+
+ document.getElementById("adminStatus").textContent=
+ admin?"ADMIN MODE ACTIVE":"";
+
+ if(admin){
+  giveEverything();
+  toast("ADMIN MODE ON — ROLLS VOIDED");
+ }else{
+  toast("ADMIN MODE OFF");
+ }
+
+ update();
+
+}
+
+/* ADMIN DOES NOT SAVE ANYTHING */
+
+function giveEverything(){
+
+ auras.forEach(a=>{
+  a.owned=999999;
+  a.total=999999;
+ });
+
+ inventory.potions.fill(999999);
+ inventory.gloves.fill(999999);
+ inventory.randomizers.fill(999999);
+
+ equippedAura=79;
+ equippedGlove=9;
+
+ applyAura();
+
+}
 
 /* =========================================================
    LUCK
@@ -960,14 +1037,14 @@ document.getElementById("adminInput").addEventListener("keydown",function(e){
 function totalLuck(){
 
  let glove=
-  equippedGlove===null
-  ?0
-  :gloves[equippedGlove].luck;
+ equippedGlove===null
+ ?0
+ :gloves[equippedGlove].luck;
 
  let aura=
-  equippedAura===null
-  ?0
-  :(equippedAura+1)*.02;
+ equippedAura===null
+ ?0
+ :(equippedAura+1)*.02;
 
  return (1+glove+aura+potionLuck)*currentBiome.luck;
 
@@ -979,12 +1056,14 @@ function totalLuck(){
 
 function chooseAura(){
 
+ let luck=totalLuck();
+
  let weights=auras.map((a,i)=>{
 
   if(i===79)
    return 0.000000000000000000000000001;
 
-  return (1/a.odds)*Math.pow(totalLuck(),.55);
+  return (1/a.odds)*Math.pow(luck,.55);
 
  });
 
@@ -1022,7 +1101,7 @@ function normalRoll(){
 
 function fastRoll(){
 
- if(rolls<150){
+ if(rolls<150 && !admin){
 
   toast("Fast Roll unlocks at 150 rolls");
 
@@ -1046,9 +1125,21 @@ function fastRoll(){
 
 function doRoll(){
 
- rolls++;
-
  let id=chooseAura();
+
+ /* ADMIN ROLLS ARE COMPLETELY VOID */
+
+ if(admin){
+
+  showResult(
+   "ADMIN ROLL VOID",
+   "Nothing saved"
+  );
+
+  return;
+ }
+
+ rolls++;
 
  auras[id].owned++;
  auras[id].total++;
@@ -1063,38 +1154,12 @@ function doRoll(){
   ?"1/0"
   :"1/"+auras[id].odds.toLocaleString();
 
+ showAuraVFX(id);
+
  showResult(
-  "✦ "+auras[id].name+" ✦",
+  "✨ "+auras[id].name+" ✨",
   rarity
  );
-
- applyAuraVFX(id);
-
- if(id>=60){
-
-  document.getElementById("screenFlash").classList.remove("active");
-
-  void document.getElementById("screenFlash").offsetWidth;
-
-  document.getElementById("screenFlash").classList.add("active");
-
- }
-
- if(id>=45){
-
-  let banner=document.getElementById("rarityBanner");
-
-  banner.textContent="RARE AURA";
-
-  banner.classList.remove("show");
-
-  void banner.offsetWidth;
-
-  banner.classList.add("show");
-
- }
-
- triggerShock();
 
  checkMilestones();
  autoCraftCheck();
@@ -1110,7 +1175,7 @@ function doRoll(){
 
 function toggleAuto(){
 
- if(rolls<50){
+ if(rolls<50 && !admin){
 
   toast("Auto Roll unlocks at 50 rolls");
 
@@ -1131,14 +1196,16 @@ function autoLoop(){
 
  if(!auto)return;
 
- let delay=rolls>=150?200:1000;
+ let delay=
+  rolls>=150
+  ?200
+  :1000;
 
  setTimeout(()=>{
 
   if(!auto)return;
 
   doRoll();
-
   autoLoop();
 
  },delay);
@@ -1146,75 +1213,35 @@ function autoLoop(){
 }
 
 /* =========================================================
-   RECIPE HELPERS
+   CRAFTING
 ========================================================= */
 
-function recipeArray(recipe){
+function hasRecipe(recipe){
 
- return Object.entries(recipe).map(([id,amount])=>({
-  id:Number(id),
-  amount:Number(amount)
- }));
+ return recipe.every(i=>auras[i].owned>0);
 
 }
 
-function canCraft(recipe){
+function consume(recipe){
 
- return recipeArray(recipe).every(x=>
-  auras[x.id].owned>=x.amount
- );
-
-}
-
-function consumeRecipe(recipe){
-
- recipeArray(recipe).forEach(x=>{
-  auras[x.id].owned-=x.amount;
+ recipe.forEach(i=>{
+  auras[i].owned--;
  });
 
 }
-
-function recipeHTML(recipe){
-
- return recipeArray(recipe).map(x=>{
-
-  let a=auras[x.id];
-
-  let rarity=
-   a.odds===0
-   ?"1/0"
-   :"1/"+a.odds.toLocaleString();
-
-  let good=a.owned>=x.amount;
-
-  return `
-   <div class="need ${good?"good":"bad"}">
-    ${a.owned}/${x.amount} ${a.name}
-    <span class="small">(${rarity})</span>
-   </div>
-  `;
-
- }).join("");
-
-}
-
-/* =========================================================
-   CRAFT
-========================================================= */
 
 function craftPotion(i){
 
  let p=potions[i];
 
- if(!canCraft(p.recipe)){
+ if(!hasRecipe(p.recipe)){
 
-  toast("Not enough auras");
-
+  toast("Missing required auras");
   return;
 
  }
 
- consumeRecipe(p.recipe);
+ consume(p.recipe);
 
  inventory.potions[i]++;
 
@@ -1229,15 +1256,14 @@ function craftGlove(i){
 
  let g=gloves[i];
 
- if(!canCraft(g.recipe)){
+ if(!hasRecipe(g.recipe)){
 
-  toast("Not enough auras");
-
+  toast("Missing required auras");
   return;
 
  }
 
- consumeRecipe(g.recipe);
+ consume(g.recipe);
 
  inventory.gloves[i]++;
 
@@ -1252,15 +1278,14 @@ function craftRandomizer(i){
 
  let r=randomizers[i];
 
- if(!canCraft(r.recipe)){
+ if(!hasRecipe(r.recipe)){
 
-  toast("Not enough auras");
-
+  toast("Missing required auras");
   return;
 
  }
 
- consumeRecipe(r.recipe);
+ consume(r.recipe);
 
  inventory.randomizers[i]++;
 
@@ -1271,92 +1296,15 @@ function craftRandomizer(i){
 
 }
 
-/* =========================================================
-   AUTO CRAFT
-========================================================= */
-
-function setAutoCraft(type,i){
-
- if(autoCraft[type]===i){
-
-  autoCraft[type]=null;
-
-  toast("Auto craft disabled");
-
- }else{
-
-  autoCraft[type]=i;
-
-  toast("Auto crafting "+getName(type,i));
-
- }
-
- update();
- save();
-
-}
-
-function getName(type,i){
-
- if(type==="potion")return potions[i].name;
- if(type==="glove")return gloves[i].name;
-
- return randomizers[i].name;
-
-}
-
-function autoCraftCheck(){
-
- const types=[
-  ["potion",potions,inventory.potions],
-  ["glove",gloves,inventory.gloves],
-  ["randomizer",randomizers,inventory.randomizers]
- ];
-
- types.forEach(([type,list,inv])=>{
-
-  let selected=autoCraft[type];
-
-  if(selected===null)return;
-
-  let item=list[selected];
-
-  while(canCraft(item.recipe)){
-
-   consumeRecipe(item.recipe);
-
-   inv[selected]++;
-
-  }
-
- });
-
-}
-
-/* =========================================================
-   USE / EQUIP
-========================================================= */
-
 function usePotion(i){
 
- if(inventory.potions[i]<=0){
-
-  toast("You don't own this potion");
-
-  return;
-
- }
+ if(inventory.potions[i]<=0)return;
 
  inventory.potions[i]--;
 
  potionLuck=potions[i].luck/100;
 
- toast(
-  potions[i].name+
-  " activated: +"+
-  potions[i].luck.toLocaleString()+
-  "% luck"
- );
+ toast(potions[i].name+" activated");
 
  update();
  save();
@@ -1368,7 +1316,6 @@ function equipGlove(i){
  if(inventory.gloves[i]<=0){
 
   toast("You don't own this glove");
-
   return;
 
  }
@@ -1386,20 +1333,74 @@ function equipAura(i){
 
  if(auras[i].owned<=0){
 
-  toast("You don't currently own this aura");
-
+  toast("You don't own this aura");
   return;
 
  }
 
  equippedAura=i;
 
- applyAuraVFX(i);
+ applyAura();
 
  toast("Equipped "+auras[i].name);
 
  update();
  save();
+
+}
+
+function autoCraftSet(type,i){
+
+ autoCraft[type]=
+  autoCraft[type]===i
+  ?null
+  :i;
+
+ update();
+ save();
+
+}
+
+function autoCraftCheck(){
+
+ if(autoCraft.potion!==null){
+
+  let i=autoCraft.potion;
+
+  if(hasRecipe(potions[i].recipe)){
+
+   consume(potions[i].recipe);
+   inventory.potions[i]++;
+
+  }
+
+ }
+
+ if(autoCraft.glove!==null){
+
+  let i=autoCraft.glove;
+
+  if(hasRecipe(gloves[i].recipe)){
+
+   consume(gloves[i].recipe);
+   inventory.gloves[i]++;
+
+  }
+
+ }
+
+ if(autoCraft.randomizer!==null){
+
+  let i=autoCraft.randomizer;
+
+  if(hasRecipe(randomizers[i].recipe)){
+
+   consume(randomizers[i].recipe);
+   inventory.randomizers[i]++;
+
+  }
+
+ }
 
 }
 
@@ -1436,7 +1437,6 @@ function naturalBiome(){
 function spawnBiome(b){
 
  currentBiome=b;
-
  biomeTime=b.time;
 
  biomeVisits[b.name]=(biomeVisits[b.name]||0)+1;
@@ -1452,19 +1452,16 @@ function spawnBiome(b){
 
 function useRandomizer(i){
 
- if(inventory.randomizers[i]<=0){
-
-  toast("You don't own this randomizer");
-
-  return;
-
- }
+ if(inventory.randomizers[i]<=0)return;
 
  inventory.randomizers[i]--;
 
  let possible=biomes.slice(1);
 
- let b=possible[Math.floor(Math.random()*possible.length)];
+ let b=
+  possible[
+   Math.floor(Math.random()*possible.length)
+  ];
 
  spawnBiome(b);
 
@@ -1485,7 +1482,7 @@ function checkMilestones(){
 
   inventory.potions[0]++;
 
-  toast("🏆 10,000 ROLLS — FREE POTION!");
+  toast("🏆 10K ROLLS — FREE POTION!");
 
  }
 
@@ -1498,7 +1495,6 @@ function checkMilestones(){
   if(!milestones[mark]){
 
    milestones[mark]=true;
-
    inventory.potions[0]++;
 
    toast(
@@ -1514,152 +1510,63 @@ function checkMilestones(){
 }
 
 /* =========================================================
-   VFX ENGINE
-========================================================= */
-
-function applyAuraVFX(id){
-
- let root=document.getElementById("vfx");
-
- let rings=document.querySelectorAll(".vfxRing");
- let particles=document.querySelectorAll(".particle");
- let beams=document.querySelectorAll(".beam");
- let symbol=document.getElementById("symbol");
- let floor=document.getElementById("floor");
-
- let hue=(id*47)%360;
-
- let color=`hsl(${hue},95%,60%)`;
-
- root.style.color=color;
-
- rings.forEach((r,i)=>{
-
-  r.style.color=color;
-
-  /*
-   More rare = more rings.
-  */
-
-  if(i<=Math.floor(id/20))
-   r.style.opacity=.65;
-  else
-   r.style.opacity=0;
-
- });
-
- particles.forEach((p,i)=>{
-
-  p.style.color=color;
-
-  /*
-   Rare auras get brighter particles.
-  */
-
-  p.style.opacity=id>=20?1:.65;
-
-  p.style.transform=
-   `scale(${1+Math.min(id/50,2)})`;
-
- });
-
- beams.forEach((b,i)=>{
-
-  b.style.color=color;
-
-  if(id>=10)
-   b.style.opacity=.18;
-  else
-   b.style.opacity=0;
-
-  if(id>=35)
-   b.style.opacity=.35;
-
-  if(id>=60)
-   b.style.opacity=.6;
-
- });
-
- /* Symbols become more dramatic with rarity */
-
- const symbols=[
-  "✦","◆","✧","◈","✹","☄","⚡","☯",
-  "∞","✵","✺","✸","◇","⬡","☀","☾",
-  "✧","𖤐","♢","◉"
- ];
-
- symbol.textContent=symbols[Math.floor(id/4)%symbols.length];
-
- symbol.style.color=color;
-
- symbol.style.opacity=id>=8?.75:0;
-
- symbol.style.fontSize=
-  (35+Math.min(id*1.3,70))+"px";
-
- floor.style.color=color;
- floor.style.opacity=id>=15?.35:0;
-
- /*
-  Higher tiers get increasingly large VFX.
- */
-
- root.style.transform=
-  `scale(${1+Math.min(id*.012,.9)})`;
-
-}
-
-/* =========================
-   SHOCKWAVE
-========================= */
-
-function triggerShock(){
-
- let shock=document.getElementById("shock");
-
- shock.classList.remove("active");
-
- void shock.offsetWidth;
-
- shock.classList.add("active");
-
-}
-
-/* =========================================================
    UI
 ========================================================= */
 
 function toggleMenu(){
 
- document.getElementById("panel")
- .classList.toggle("open");
+ document
+  .getElementById("panel")
+  .classList.toggle("open");
 
 }
 
 function showTab(id,btn){
 
- document.querySelectorAll(".section")
- .forEach(x=>x.classList.remove("active"));
+ document
+  .querySelectorAll(".section")
+  .forEach(x=>x.classList.remove("active"));
 
- document.querySelectorAll(".tab")
- .forEach(x=>x.classList.remove("active"));
+ document
+  .querySelectorAll(".tab")
+  .forEach(x=>x.classList.remove("active"));
 
- document.getElementById(id)
- .classList.add("active");
+ document
+  .getElementById(id)
+  .classList.add("active");
 
  btn.classList.add("active");
 
 }
 
-function toggleDetails(id){
+function rarityText(a){
 
- document.getElementById(id)
- .classList.toggle("open");
+ return a.odds===0
+  ?"1/0"
+  :"1/"+a.odds.toLocaleString();
+
+}
+
+function recipeText(recipe){
+
+ return recipe.map(i=>{
+
+  let a=auras[i];
+
+  return `
+   <div>
+   ${a.name}
+   — ${rarityText(a)}
+   — ${a.owned||0}/1
+   </div>
+  `;
+
+ }).join("");
 
 }
 
 /* =========================================================
-   RENDER AURAS
+   AURA INDEX
 ========================================================= */
 
 function renderAuras(){
@@ -1668,17 +1575,16 @@ function renderAuras(){
 
  auras.forEach((a,i)=>{
 
-  let rarity=
-   a.odds===0
-   ?"1/0"
-   :"1/"+a.odds.toLocaleString();
+  let owned=a.owned||0;
 
-  if(a.total===0){
+  if(a.total===0 && !admin){
 
    html+=`
    <div class="card">
-    <b>#${i+1} ???</b>
-    <div class="small">Rarity: ${rarity}</div>
+   <b>#${i+1} ???</b>
+   <div class="small">
+   Rarity: ${rarityText(a)}
+   </div>
    </div>
    `;
 
@@ -1686,27 +1592,22 @@ function renderAuras(){
 
    html+=`
    <div class="card">
+   <b>#${i+1} ${a.name}</b>
 
-    <b>#${i+1} ${a.name}</b>
+   <div>Owned: ${owned}</div>
 
-    <div class="statLine">
-     <span>Owned</span>
-     <b>${a.owned}</b>
-    </div>
+   <div>Ever Rolled:
+   ${a.total.toLocaleString()}</div>
 
-    <div class="statLine">
-     <span>Ever Earned</span>
-     <b>${a.total}</b>
-    </div>
+   <div class="small">
+   Rarity: ${rarityText(a)}
+   </div>
 
-    <div class="small">
-     Rarity: ${rarity}
-    </div>
-
-    <button class="action"
-     onclick="equipAura(${i})">
-     ${equippedAura===i?"EQUIPPED":"EQUIP"}
-    </button>
+   <button
+    class="action"
+    onclick="equipAura(${i})">
+    ${equippedAura===i?"EQUIPPED":"EQUIP"}
+   </button>
 
    </div>
    `;
@@ -1729,55 +1630,58 @@ function renderPotions(){
 
  potions.forEach((p,i)=>{
 
-  let id="potion"+i;
-
   html+=`
+
   <div class="card">
 
-   <div class="itemHeader"
-    onclick="toggleDetails('${id}')">
+   <b>${p.name}</b>
 
-    <b>${p.name}</b>
-    <span>⌄</span>
-
+   <div>
+   Owned: ${inventory.potions[i]}
    </div>
 
-   <div class="statLine">
-    <span>Owned</span>
-    <b>${inventory.potions[i]}</b>
+   <div>
+   Luck: +${p.luck.toLocaleString()}%
    </div>
 
-   <div class="small">
-    Luck: +${p.luck.toLocaleString()}%
-   </div>
+   <details class="craftBox">
 
-   <div id="${id}" class="details">
+    <summary>
+    CRAFTING REQUIREMENTS
+    </summary>
 
-    <div class="recipe">
-     <b>Required:</b>
-     ${recipeHTML(p.recipe)}
+    <div class="craftInside">
+
+     <b>Needs:</b>
+
+     ${recipeText(p.recipe)}
+
+     <button
+      class="action craft"
+      onclick="craftPotion(${i})">
+      CRAFT
+     </button>
+
     </div>
 
-    <button class="action craft"
-     onclick="craftPotion(${i})">
-     ADD / CRAFT
-    </button>
+   </details>
 
-    <button class="action"
-     onclick="usePotion(${i})">
-     USE
-    </button>
+   <button
+    class="action"
+    onclick="usePotion(${i})">
+    USE
+   </button>
 
-    <button class="action ${autoCraft.potion===i?"autoOn":""}"
-     onclick="setAutoCraft('potion',${i})">
-     ${autoCraft.potion===i
+   <button
+    class="action"
+    onclick="autoCraftSet('potion',${i})">
+    ${autoCraft.potion===i
       ?"AUTO CRAFTING"
       :"AUTO CRAFT"}
-    </button>
-
-   </div>
+   </button>
 
   </div>
+
   `;
 
  });
@@ -1796,55 +1700,60 @@ function renderGloves(){
 
  gloves.forEach((g,i)=>{
 
-  let id="glove"+i;
-
   html+=`
+
   <div class="card">
 
-   <div class="itemHeader"
-    onclick="toggleDetails('${id}')">
+   <b>${g.name}</b>
 
-    <b>${g.name}</b>
-    <span>⌄</span>
-
-   </div>
-
-   <div class="statLine">
-    <span>Owned</span>
-    <b>${inventory.gloves[i]}</b>
+   <div>
+   Owned: ${inventory.gloves[i]}
    </div>
 
    <div>
-    Permanent Luck: +${g.luck}
+   Permanent Luck: +${g.luck}
    </div>
 
-   <div id="${id}" class="details">
+   <details class="craftBox">
 
-    <div class="recipe">
-     <b>Required:</b>
-     ${recipeHTML(g.recipe)}
+    <summary>
+    CRAFTING REQUIREMENTS
+    </summary>
+
+    <div class="craftInside">
+
+     <b>Needs:</b>
+
+     ${recipeText(g.recipe)}
+
+     <button
+      class="action craft"
+      onclick="craftGlove(${i})">
+      CRAFT
+     </button>
+
     </div>
 
-    <button class="action craft"
-     onclick="craftGlove(${i})">
-     ADD / CRAFT
-    </button>
+   </details>
 
-    <button class="action"
-     onclick="equipGlove(${i})">
-     ${equippedGlove===i?"EQUIPPED":"EQUIP"}
-    </button>
+   <button
+    class="action"
+    onclick="equipGlove(${i})">
+    ${equippedGlove===i
+      ?"EQUIPPED"
+      :"EQUIP"}
+   </button>
 
-    <button class="action ${autoCraft.glove===i?"autoOn":""}"
-     onclick="setAutoCraft('glove',${i})">
-     ${autoCraft.glove===i
+   <button
+    class="action"
+    onclick="autoCraftSet('glove',${i})">
+    ${autoCraft.glove===i
       ?"AUTO CRAFTING"
       :"AUTO CRAFT"}
-    </button>
-
-   </div>
+   </button>
 
   </div>
+
   `;
 
  });
@@ -1862,68 +1771,77 @@ function renderBiomes(){
  let html="<h3>BIOMES</h3>";
 
  html+=`
+
  <div class="card">
 
   <b>Current: ${currentBiome.name}</b>
 
-  <div>Luck: x${currentBiome.luck}</div>
+  <div>
+  Luck: x${currentBiome.luck}
+  </div>
 
-  <div>${biomeTime}s remaining</div>
+  <div>
+  ${biomeTime}s remaining
+  </div>
 
  </div>
- `;
 
- html+="<h3>BIOME RANDOMIZERS</h3>";
+ `;
 
  randomizers.forEach((r,i)=>{
 
-  let id="rand"+i;
-
   html+=`
+
   <div class="card">
 
-   <div class="itemHeader"
-    onclick="toggleDetails('${id}')">
+   <b>${r.name}</b>
 
-    <b>${r.name}</b>
-    <span>⌄</span>
-
+   <div>
+   Owned: ${inventory.randomizers[i]}
    </div>
 
-   <div class="statLine">
-    <span>Owned</span>
-    <b>${inventory.randomizers[i]}</b>
+   <div>
+   Luck Effect: x${r.luck}
    </div>
 
-   <div>Effect: x${r.luck}</div>
+   <details class="craftBox">
 
-   <div id="${id}" class="details">
+    <summary>
+    CRAFTING REQUIREMENTS
+    </summary>
 
-    <div class="recipe">
-     <b>Required:</b>
-     ${recipeHTML(r.recipe)}
+    <div class="craftInside">
+
+     <b>Needs:</b>
+
+     ${recipeText(r.recipe)}
+
+     <button
+      class="action craft"
+      onclick="craftRandomizer(${i})">
+      CRAFT
+     </button>
+
     </div>
 
-    <button class="action craft"
-     onclick="craftRandomizer(${i})">
-     ADD / CRAFT
-    </button>
+   </details>
 
-    <button class="action"
-     onclick="useRandomizer(${i})">
-     USE
-    </button>
+   <button
+    class="action"
+    onclick="useRandomizer(${i})">
+    USE
+   </button>
 
-    <button class="action ${autoCraft.randomizer===i?"autoOn":""}"
-     onclick="setAutoCraft('randomizer',${i})">
-     ${autoCraft.randomizer===i
+   <button
+    class="action"
+    onclick="autoCraftSet('randomizer',${i})">
+    ${autoCraft.randomizer===i
       ?"AUTO CRAFTING"
       :"AUTO CRAFT"}
-    </button>
-
-   </div>
+   </button>
 
   </div>
+
   `;
 
  });
@@ -1935,11 +1853,14 @@ function renderBiomes(){
   let count=biomeVisits[b.name]||0;
 
   html+=`
+
   <div class="card">
 
    <b>${count?b.name:"???"}</b>
 
-   <div>Times Visited: ${count}</div>
+   <div>
+   Times Visited: ${count}
+   </div>
 
    ${
     count
@@ -1954,6 +1875,7 @@ function renderBiomes(){
    }
 
   </div>
+
   `;
 
  });
@@ -1973,18 +1895,26 @@ function renderLeaderboard(){
  <h3>LEADERBOARD</h3>
 
  <div class="card">
-  <b>#1 You</b>
-  <div>${rolls.toLocaleString()} rolls</div>
+ <b>#1 You</b>
+ <div>${rolls.toLocaleString()} rolls</div>
  </div>
 
  <div class="card">
-  <b>Rarest Rolled</b>
-  <div>${rarest>=0?auras[rarest].name:"None"}</div>
+ <b>Rarest Rolled</b>
+ <div>
+ ${
+  rarest>=0
+  ?auras[rarest].name
+  :"None"
+ }
+ </div>
  </div>
 
  <div class="card">
-  <b>Total Luck</b>
-  <div>x${totalLuck().toFixed(2)}</div>
+ <b>Total Luck</b>
+ <div>
+ x${totalLuck().toFixed(2)}
+ </div>
  </div>
 
  `;
@@ -1997,30 +1927,29 @@ function renderLeaderboard(){
 
 function update(){
 
- document.getElementById("rolls")
- .textContent=rolls.toLocaleString();
+ document.getElementById("rolls").textContent=
+  rolls.toLocaleString();
 
- document.getElementById("rarest")
- .textContent=
+ document.getElementById("rarest").textContent=
   rarest>=0
   ?auras[rarest].name
   :"None";
 
- document.getElementById("biome")
- .textContent=currentBiome.name;
+ document.getElementById("biome").textContent=
+  currentBiome.name;
 
- document.getElementById("timer")
- .textContent=biomeTime+"s remaining";
+ document.getElementById("timer").textContent=
+  biomeTime+"s remaining";
 
  document.getElementById("auto").innerHTML=
   (auto?"STOP AUTO":"AUTO ROLL")+
   "<br><small>"+
-  (rolls>=50?"Unlocked":"50 rolls")+
+  (rolls>=50||admin?"Unlocked":"50 rolls")+
   "</small>";
 
  document.getElementById("fast").innerHTML=
   "FAST ROLL<br><small>"+
-  (rolls>=150?"Unlocked":"150 rolls")+
+  (rolls>=150||admin?"Unlocked":"150 rolls")+
   "</small>";
 
  renderAuras();
@@ -2029,8 +1958,7 @@ function update(){
  renderBiomes();
  renderLeaderboard();
 
- if(equippedAura!==null)
-  applyAuraVFX(equippedAura);
+ applyAura();
 
 }
 
@@ -2044,17 +1972,15 @@ function showResult(name,rarity){
 
  r.innerHTML=
   name+
-  `<div class="rarity">${rarity}</div>`;
-
- r.classList.remove("show");
-
- void r.offsetWidth;
+  "<div class='rarity'>"+
+  rarity+
+  "</div>";
 
  r.classList.add("show");
 
  setTimeout(()=>{
   r.classList.remove("show");
- },900);
+ },1000);
 
 }
 
@@ -2069,11 +1995,223 @@ function toast(text){
  t.textContent=text;
  t.style.opacity=1;
 
- clearTimeout(window.toastTimer);
+ clearTimeout(window.tt);
 
- window.toastTimer=setTimeout(()=>{
+ window.tt=setTimeout(()=>{
   t.style.opacity=0;
  },1800);
+
+}
+
+/* =========================================================
+   BIG AURA VFX ENGINE
+========================================================= */
+
+function clearVFX(){
+
+ document.getElementById("auraFX").innerHTML="";
+ document.getElementById("fx").innerHTML="";
+
+}
+
+function createParticle(x,y,size=6){
+
+ let p=document.createElement("div");
+
+ p.className="particle";
+
+ p.style.left=x+"px";
+ p.style.top=y+"px";
+ p.style.width=size+"px";
+ p.style.height=size+"px";
+
+ document.getElementById("fx").appendChild(p);
+
+ setTimeout(()=>{
+  p.remove();
+ },2500);
+
+}
+
+function showAuraVFX(id){
+
+ clearVFX();
+
+ let box=document.getElementById("auraFX");
+
+ let cls=
+  auraClasses[id]||"spark";
+
+ box.className="vfx-"+cls+" v"+(id+1);
+
+ /* rings */
+
+ for(let i=0;i<3;i++){
+
+  let ring=document.createElement("div");
+
+  ring.className="aura-ring r"+(i+1);
+
+  box.appendChild(ring);
+
+ }
+
+ /* shards */
+
+ for(let i=0;i<8;i++){
+
+  let s=document.createElement("div");
+
+  s.className="shard";
+
+  s.style.left="240px";
+  s.style.top="230px";
+  s.style.transform=
+   "rotate("+(i*45)+"deg)";
+
+  box.appendChild(s);
+
+ }
+
+ /* stars */
+
+ for(let i=0;i<3;i++){
+
+  let star=document.createElement("div");
+
+  star.className="star";
+
+  star.style.left=(150+i*70)+"px";
+  star.style.top=(130+i*45)+"px";
+
+  box.appendChild(star);
+
+ }
+
+ /* orbiting orbs */
+
+ for(let i=0;i<5;i++){
+
+  let orb=document.createElement("div");
+
+  orb.className="orb";
+
+  orb.style.left="230px";
+  orb.style.top="220px";
+
+  orb.style.animationDelay=
+   (i*.2)+"s";
+
+  box.appendChild(orb);
+
+ }
+
+ /* particles */
+
+ for(let i=0;i<35;i++){
+
+  setTimeout(()=>{
+
+   let p=document.createElement("div");
+
+   p.className="particle";
+
+   p.style.left=
+    (35+Math.random()*430)+"px";
+
+   p.style.top=
+    (250+Math.random()*250)+"px";
+
+   p.style.width=
+    (3+Math.random()*10)+"px";
+
+   p.style.height=
+    (3+Math.random()*10)+"px";
+
+   p.style.borderRadius="50%";
+
+   box.appendChild(p);
+
+  },i*20);
+
+ }
+
+ /* rare aura screen flash */
+
+ if(id>=60){
+
+  let flash=document.createElement("div");
+
+  flash.className="rarityFlash";
+
+  document.getElementById("game")
+   .appendChild(flash);
+
+  setTimeout(()=>{
+   flash.remove();
+  },700);
+
+ }
+
+}
+
+/* =========================================================
+   EQUIPPED AURA
+========================================================= */
+
+function applyAura(){
+
+ clearVFX();
+
+ if(equippedAura===null)
+  return;
+
+ let box=document.getElementById("auraFX");
+
+ let id=equippedAura;
+
+ box.className=
+  "vfx-"+auraClasses[id]+
+  " v"+(id+1);
+
+ for(let i=0;i<3;i++){
+
+  let ring=document.createElement("div");
+
+  ring.className=
+   "aura-ring r"+(i+1);
+
+  box.appendChild(ring);
+
+ }
+
+ for(let i=0;i<8;i++){
+
+  let s=document.createElement("div");
+
+  s.className="shard";
+
+  s.style.left="240px";
+  s.style.top="230px";
+  s.style.transform=
+   "rotate("+(i*45)+"deg)";
+
+  box.appendChild(s);
+
+ }
+
+ for(let i=0;i<3;i++){
+
+  let star=document.createElement("div");
+
+  star.className="star";
+
+  star.style.left=(150+i*70)+"px";
+  star.style.top=(130+i*45)+"px";
+
+  box.appendChild(star);
+
+ }
 
 }
 
@@ -2092,7 +2230,9 @@ setInterval(()=>{
  }
 
  update();
- save();
+
+ if(!admin)
+  save();
 
 },1000);
 
@@ -2102,15 +2242,12 @@ setInterval(()=>{
 
 load();
 
-document.body.style.background=currentBiome.bg;
+document.body.style.background=
+ currentBiome.bg;
 
 update();
-
-if(equippedAura!==null)
- applyAuraVFX(equippedAura);
 
 </script>
 
 </body>
 </html>
-```
