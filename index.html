@@ -1,978 +1,309 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Aura Roll</title>
-    <style>
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #fff;
-        color: #111;
-        overflow: hidden;
-        transition: background 0.6s;
-      }
-      #game {
-        height: 100vh;
-        position: relative;
-        overflow: hidden;
-      }
-      #stage {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-      }
-
-      /* Circle UI relocated to Top-Left */
-      #top {
-        position: absolute;
-        left: 18px;
-        top: 15px;
-        z-index: 20;
-        font-size: 14px;
-        background: rgba(255, 255, 255, 0.85);
-        padding: 12px;
-        border-radius: 50%;
-        width: 130px;
-        height: 130px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-        border: 2px solid #111;
-      }
-
-      #stick {
-        width: 110px;
-        height: 210px;
-        position: relative;
-        z-index: 8;
-        transition: filter 0.3s ease;
-      }
-      .head {
-        position: absolute;
-        left: 28px;
-        top: 0;
-        width: 55px;
-        height: 55px;
-        border: 6px solid #111;
-        border-radius: 50%;
-        background: #fff;
-        z-index: 2;
-      }
-      .body {
-        position: absolute;
-        left: 53px;
-        top: 52px;
-        width: 6px;
-        height: 90px;
-        background: #111;
-      }
-      .arm,
-      .leg {
-        position: absolute;
-        left: 56px;
-        width: 65px;
-        height: 6px;
-        background: #111;
-        transform-origin: left;
-        transition: all 0.3s ease;
-      }
-      .a1 {
-        top: 70px;
-        transform: rotate(145deg);
-      }
-      .a2 {
-        top: 70px;
-        transform: rotate(35deg);
-      }
-      .l1 {
-        top: 138px;
-        transform: rotate(115deg);
-      }
-      .l2 {
-        top: 138px;
-        transform: rotate(65deg);
-      }
-
-      /* Continuous Aura Animation */
-      .aura-active {
-        animation: auraPulse 1.5s infinite alternate ease-in-out;
-      }
-
-      @keyframes auraPulse {
-        0% {
-          filter: drop-shadow(0 0 10px var(--aura-color, #00f3ff)) drop-shadow(0 0 20px var(--aura-color, #00f3ff));
-          transform: scale(1);
-        }
-        100% {
-          filter: drop-shadow(0 0 25px var(--aura-color, #00f3ff)) drop-shadow(0 0 40px var(--aura-color, #00f3ff));
-          transform: scale(1.04);
-        }
-      }
-
-      #vfx {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        z-index: 2;
-        overflow: hidden;
-      }
-
-      /* CUSTOM CHARACTER VISUAL EFFECTS */
-      .gojo-bandana {
-        position: absolute;
-        top: 18px;
-        left: -3px;
-        width: 61px;
-        height: 18px;
-        background: #111;
-        border-radius: 4px;
-        z-index: 5;
-      }
-      .gojo-red-orb {
-        position: absolute;
-        left: calc(50% - 140px);
-        top: 50%;
-        width: 50px;
-        height: 50px;
-        background: radial-gradient(circle, #ff0055 0%, transparent 70%);
-        border-radius: 50%;
-        box-shadow: 0 0 25px #ff0055;
-        animation: floatGojo 2s infinite ease-in-out alternate;
-      }
-      .gojo-blue-orb {
-        position: absolute;
-        left: calc(50% + 90px);
-        top: 50%;
-        width: 50px;
-        height: 50px;
-        background: radial-gradient(circle, #00d9ff 0%, transparent 70%);
-        border-radius: 50%;
-        box-shadow: 0 0 25px #00d9ff;
-        animation: floatGojo 2s infinite ease-in-out alternate-reverse;
-      }
-      @keyframes floatGojo {
-        0% { transform: translateY(-15px); }
-        100% { transform: translateY(15px); }
-      }
-
-      .itachi-bg {
-        position: absolute;
-        top: 30%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 320px;
-        height: 320px;
-        border-radius: 50%;
-        border: 12px solid #ff0000;
-        box-shadow: 0 0 40px #ff0000;
-        opacity: 0.25;
-      }
-      .crow {
-        position: absolute;
-        width: 14px;
-        height: 8px;
-        background: #111;
-        clip-path: polygon(0 50%, 40% 0, 100% 50%, 40% 100%);
-        animation: flyCrow 3s linear infinite;
-      }
-      @keyframes flyCrow {
-        0% { transform: translate(-100px, 100px) rotate(-20deg); opacity: 0; }
-        50% { opacity: 1; }
-        100% { transform: translate(300px, -200px) rotate(-20deg); opacity: 0; }
-      }
-
-      .kurama-cloak {
-        position: absolute;
-        inset: -20px;
-        background: radial-gradient(circle, rgba(255, 140, 0, 0.4) 0%, transparent 75%);
-        filter: blur(8px);
-        animation: kuramaPulse 0.8s infinite alternate;
-      }
-      @keyframes kuramaPulse {
-        0% { transform: scale(0.95); opacity: 0.6; }
-        100% { transform: scale(1.1); opacity: 0.9; }
-      }
-
-      .gear5-hair {
-        position: absolute;
-        top: -15px;
-        left: 15px;
-        width: 80px;
-        height: 40px;
-        background: #fff;
-        border-radius: 20px;
-        box-shadow: 0 0 15px #fff;
-        z-index: 6;
-      }
-
-      .sword-mouth {
-        position: absolute;
-        width: 90px;
-        height: 4px;
-        background: #d3d3d3;
-        box-shadow: 0 0 8px #a6c0fe;
-        top: 25px;
-        left: 10px;
-        transform: rotate(-10deg);
-        z-index: 10;
-      }
-
-      .chidori {
-        position: absolute;
-        width: 45px;
-        height: 45px;
-        background: radial-gradient(circle, #fff, #00d9ff);
-        border-radius: 50%;
-        box-shadow: 0 0 20px #00d9ff, 0 0 40px #fff;
-        animation: lightning 0.1s infinite alternate;
-      }
-      @keyframes lightning {
-        0% { transform: scale(0.9); }
-        100% { transform: scale(1.1); }
-      }
-
-      .mahoraga-wheel {
-        position: absolute;
-        top: -60px;
-        left: 15px;
-        width: 80px;
-        height: 80px;
-        border: 6px solid #ffd700;
-        border-radius: 50%;
-        box-shadow: 0 0 15px #ffd700;
-        animation: spin 6s linear infinite;
-      }
-      @keyframes spin { 100% { transform: rotate(360deg); } }
-
-      #bottomInfo {
-        position: absolute;
-        left: 18px;
-        bottom: 95px;
-        z-index: 20;
-        font-size: 14px;
-      }
-
-      #admin {
-        position: absolute;
-        right: 18px;
-        top: 15px;
-        z-index: 25;
-        display: flex;
-        gap: 5px;
-      }
-      #admin input {
-        width: 90px;
-        padding: 7px;
-        border: 1px solid #aaa;
-        border-radius: 7px;
-      }
-      #admin button {
-        padding: 7px 9px;
-        border: 0;
-        border-radius: 7px;
-        background: #111;
-        color: #fff;
-      }
-
-      #menu {
-        position: absolute;
-        right: 18px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 48px;
-        height: 75px;
-        border: 0;
-        border-radius: 12px;
-        background: #111;
-        color: #fff;
-        font-size: 25px;
-        z-index: 25;
-      }
-
-      #panel {
-        position: absolute;
-        right: -440px;
-        top: 0;
-        width: 440px;
-        height: 100%;
-        background: #f4f4f4;
-        padding: 18px;
-        overflow: auto;
-        transition: 0.3s;
-        z-index: 30;
-        box-shadow: -5px 0 20px #0002;
-      }
-      #panel.open { right: 0; }
-
-      .close {
-        float: right;
-        border: 0;
-        background: none;
-        font-size: 28px;
-      }
-
-      .tabs {
-        display: flex;
-        gap: 5px;
-        flex-wrap: wrap;
-        margin: 35px 0 15px;
-      }
-      .tab {
-        border: 0;
-        padding: 8px;
-        border-radius: 7px;
-      }
-      .tab.active {
-        background: #111;
-        color: #fff;
-      }
-
-      .section { display: none; }
-      .section.active { display: block; }
-
-      .card {
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 9px;
-        padding: 10px;
-        margin: 8px 0;
-      }
-      .card.locked { opacity: 0.5; }
-
-      button { cursor: pointer; }
-
-      .action {
-        border: 0;
-        border-radius: 6px;
-        padding: 7px;
-        margin-top: 5px;
-      }
-
-      .craft {
-        background: #111;
-        color: #fff;
-        width: 100%;
-      }
-
-      #buttons {
-        position: absolute;
-        bottom: 18px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 10px;
-        z-index: 20;
-      }
-
-      .roll {
-        width: 125px;
-        height: 55px;
-        background: #111;
-        color: #fff;
-        border: 0;
-        border-radius: 12px;
-        font-weight: bold;
-      }
-
-      #result {
-        position: absolute;
-        top: 57%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        font-size: 28px;
-        font-weight: bold;
-        opacity: 0;
-        transition: 0.2s;
-        pointer-events: none;
-        z-index: 22;
-        text-shadow: 0 2px 12px #fff;
-      }
-
-      #result.show { opacity: 1; }
-
-      .small {
-        font-size: 12px;
-        opacity: 0.7;
-      }
-
-      #toast {
-        position: absolute;
-        top: 18px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #111;
-        color: #fff;
-        padding: 10px 18px;
-        border-radius: 9px;
-        opacity: 0;
-        z-index: 50;
-        transition: opacity 0.3s;
-        pointer-events: none;
-      }
-
-      .spark {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        position: absolute;
-        animation: sparkFly 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-      }
-
-      @keyframes sparkFly {
-        0% { transform: translate(0, 0) scale(1); opacity: 1; }
-        100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
-      }
-    </style>
-  </head>
-
-  <body>
-    <div id="game">
-      <div id="top">
-        <b>Rarest:</b>
-        <span id="rarest">None</span>
-        <br />
-        <b>Rolls:</b>
-        <span id="rolls">0</span>
-      </div>
-
-      <div id="admin">
-        <input id="adminInput" placeholder="admin" />
-        <button onclick="adminToggle()">OK</button>
-      </div>
-
-      <div id="bottomInfo">
-        <b>Biome:</b>
-        <span id="biome">Plains</span>
-        <br />
-        <span id="timer" class="small"></span>
-      </div>
-
-      <div id="stage">
-        <div id="vfx"></div>
-
-        <div id="stick">
-          <div class="head" id="head"></div>
-          <div class="body"></div>
-          <div class="arm a1" id="arm1"></div>
-          <div class="arm a2" id="arm2"></div>
-          <div class="leg l1" id="leg1"></div>
-          <div class="leg l2" id="leg2"></div>
-        </div>
-      </div>
-
-      <button id="menu" onclick="toggleMenu()">➜</button>
-
-      <div id="buttons">
-        <button class="roll" onclick="toggleAuto()" id="auto">
-          AUTO ROLL<br /><small>50 rolls</small>
-        </button>
-        <button class="roll" onclick="normalRoll()">
-          ROLL<br /><small>1 sec</small>
-        </button>
-        <button class="roll" onclick="fastRoll()" id="fast">
-          FAST ROLL<br /><small>150 rolls</small>
-        </button>
-      </div>
-
-      <div id="result"></div>
-      <div id="toast"></div>
-
-      <div id="panel">
-        <button class="close" onclick="toggleMenu()">×</button>
-        <h2>INDEX</h2>
-        <div class="tabs">
-          <button class="tab active" onclick="showTab('auras', this)">Auras</button>
-          <button class="tab" onclick="showTab('potions', this)">Potions</button>
-          <button class="tab" onclick="showTab('gloves', this)">Gloves</button>
-          <button class="tab" onclick="showTab('biomes', this)">Biomes</button>
-          <button class="tab" onclick="showTab('leaderboard', this)">Leaderboard</button>
-        </div>
-
-        <div id="auras" class="section active"></div>
-        <div id="potions" class="section"></div>
-        <div id="gloves" class="section"></div>
-        <div id="biomes" class="section"></div>
-        <div id="leaderboard" class="section"></div>
-      </div>
-    </div>
-
-    <script>
-      /* AURAS */
-      const names = [
-        "Spark", "Pebble", "Leaf", "Breeze", "Drop", "Dew", "Dust", "Glow",
-        "Ember", "Frost", "Flame", "Mist", "Stone", "Bloom", "Cloud", "Wave",
-        "Shadow", "Thunder", "Crystal", "Venom", "Solar", "Lunar", "Comet", "Void",
-        "Inferno", "Glacier", "Tempest", "Abyss", "Eclipse", "Phantom", "Prism", "Nebula",
-        "Gravity", "Starlight", "Bloodmoon", "Aurora", "Overdrive", "Celestial", "Oblivion", "Divine",
-        "Galaxy", "Singularity", "Eternal", "Rift", "Chronos", "Seraph", "Omega", "Genesis",
-        "Infinity", "Mythic", "Cosmic", "Astral", "Heavenly", "Doom", "Worldbreaker", "Reality",
-        "Ancient", "Forbidden", "Immortal", "Transcendent", "Absolute", "Unbound", "Limitless", "Paradox",
-        "Omniversal", "Finality", "Godly", "The Chosen", "The First", "Beyond", "Limitless X", "Eternal Flame",
-        "Origin", "The End", "Null", "Impossible", "Infinite Void", "Creator", "Absolute Zero", "1/0",
-        "Gojo", "Itachi", "Naruto", "Jiraiya", "Luffy", "Gear 5", "Zoro", "Jinbei", "Sanji",
-        "Kakashi", "Sasuke", "Itadori", "Mahoraga", "Yuta"
-      ];
-
-      const odds = [
-        5, 12, 20, 35, 50, 70, 90, 120, 160, 210, 275, 350, 450, 575, 725, 900, 1100, 1350, 1650, 2000, 2400, 2900,
-        3500, 4200, 5000, 6000, 7200, 8600, 10000, 12000, 14500, 17500, 21000, 25000, 30000, 36000, 43000, 51000, 60000,
-        70000, 82000, 95000, 110000, 130000, 150000, 175000, 200000, 230000, 260000, 300000, 350000, 400000, 460000,
-        525000, 600000, 700000, 800000, 950000, 1100000, 1300000, 1500000, 1800000, 2100000, 2500000, 3000000, 3500000,
-        4200000, 5000000, 6000000, 7500000, 9000000, 11000000, 14000000, 18000000, 25000000, 50000000, 100000000,
-        1000000000, 10000000000, 0, 25000000000, 50000000000, 100000000000, 250000000000, 500000000000, 1000000000000,
-        2500000000000, 5000000000000, 10000000000000, 25000000000000, 50000000000000, 100000000000000, 250000000000000,
-        1000000000000000
-      ];
-
-      const auraColors = [
-        "#a0a0a0", "#7cfc00", "#3cb371", "#87ceeb", "#00bfff", "#e0ffff", "#d2b48c", "#ffd700",
-        "#ff4500", "#00ffff", "#ff0000", "#f08080", "#808080", "#ff69b4", "#f0f8ff", "#1e90ff",
-        "#4b0082", "#8a2be2", "#da70d6", "#00ff7f", "#ff8c00", "#f0e68c", "#7b68ee", "#2f4f4f",
-        "#b22222", "#00008b", "#4682b4", "#191970", "#483d8b", "#9400d3", "#ff00ff", "#8b008b",
-        "#9932cc", "#fff8dc", "#8b0000", "#00fa9a", "#ff1493", "#00bfff", "#000000", "#ffd700",
-        "#4b0082", "#9400d3", "#ff00ff", "#00ffff", "#708090", "#ff1493", "#ff0000", "#e6e6fa",
-        "#000000", "#8a2be2", "#00ffff", "#e6e6fa", "#ffffff", "#800000", "#4b0082", "#ff00ff",
-        "#d3d3d3", "#000000", "#ffd700", "#8a2be2", "#ffffff", "#00ffff", "#ff0000", "#4169e1",
-        "#ff8c00", "#000000", "#ffd700", "#ff4500", "#ffffff", "#ff1493", "#ff0000", "#ff8c00",
-        "#ffffff", "#000000", "#666666", "#ff0055", "#00ffff", "#ffffff", "#00bfff", "#ff0000",
-        "#0000ff", "#ff0000", "#ffa500", "#00ff00", "#ff0055", "#ffff00", "#00ff00", "#0000ff",
-        "#ff4500", "#333333", "#4169e1", "#ff0000", "#8a2be2", "#00bfff"
-      ];
-
-      const auras = names.map((name, i) => ({
-        name,
-        odds: odds[i] || 1000000000000000,
-        color: auraColors[i] || "#00f3ff",
-        owned: 0,
-        total: 0
-      }));
-
-      /* BIOMES */
-      const biomes = [
-        { name: "Plains", rare: 1, time: 120, luck: 1, bg: "#fff" },
-        { name: "Forest", rare: 2, time: 100, luck: 50, bg: "#dff5df" },
-        { name: "Desert", rare: 4, time: 90, luck: 250, bg: "#f8e8b0" },
-        { name: "Rain", rare: 6, time: 80, luck: 1000, bg: "#cbdcf0" },
-        { name: "Water", rare: 8, time: 70, luck: 5000, bg: "#b8e8ff" },
-        { name: "Ocean", rare: 12, time: 60, luck: 25000, bg: "#55bfff" },
-        { name: "Tsunami", rare: 20, time: 50, luck: 100000, bg: "#3a91cf" },
-        { name: "Storm", rare: 30, time: 45, luck: 500000, bg: "#555b79" },
-        { name: "Volcano", rare: 45, time: 40, luck: 2500000, bg: "#e0714f" },
-        { name: "Aurora", rare: 60, time: 35, luck: 10000000, bg: "#7d86df" },
-        { name: "Void", rare: 100, time: 30, luck: 50000000, bg: "#181225" },
-        { name: "Galaxy", rare: 200, time: 25, luck: 250000000, bg: "#15102f" },
-        { name: "Heaven", rare: 400, time: 22, luck: 1000000000, bg: "#e8e8ff" },
-        { name: "Reality", rare: 800, time: 20, luck: 10000000000, bg: "#bbb" },
-        { name: "The End", rare: 1500, time: 20, luck: 1000000000000, bg: "#080808" }
-      ];
-
-      /* CRAFTING ITEMS */
-      const potions = [
-        ["Lucky Brew", 5, [0, 1, 2]],
-        ["Fortune Tonic", 15, [3, 5, 7]],
-        ["Golden Elixir", 35, [8, 10, 12]],
-        ["Mystic Potion", 75, [15, 17, 20]],
-        ["Void Serum", 150, [22, 25, 28]],
-        ["Celestial Potion", 300, [32, 35, 38]],
-        ["Infinity Elixir", 600, [42, 45, 48]],
-        ["Godly Potion", 1200, [52, 55, 58]],
-        ["Reality Potion", 3000, [62, 65, 68]],
-        ["10K LUCK ELIXIR", 10000, [72, 73, 74, 75, 76, 77, 78, 79]]
-      ].map((x) => ({ name: x[0], luck: x[1], recipe: x[2] }));
-
-      const gloves = [
-        ["Cloth Glove", 2, [0, 2, 4]],
-        ["Iron Glove", 5, [5, 7, 9]],
-        ["Golden Glove", 10, [10, 12, 15]],
-        ["Crystal Glove", 20, [17, 19, 21]],
-        ["Shadow Glove", 40, [25, 27, 29]],
-        ["Void Glove", 80, [32, 34, 36]],
-        ["Galaxy Glove", 160, [40, 42, 44]],
-        ["Divine Glove", 350, [50, 52, 54]],
-        ["Reality Glove", 800, [60, 62, 64]],
-        ["Infinite Glove", 2000, [68, 70, 73]]
-      ].map((x) => ({ name: x[0], luck: x[1], recipe: x[2] }));
-
-      const randomizers = [
-        ["Basic Biome Randomizer", 10, [8, 9, 10]],
-        ["Rare Biome Randomizer", 35, [15, 17, 19]],
-        ["Epic Biome Randomizer", 100, [25, 28, 30]],
-        ["Legendary Biome Randomizer", 300, [38, 40, 43]],
-        ["Mythic Biome Randomizer", 1000, [50, 53, 55]],
-        ["Divine Biome Randomizer", 3000, [60, 63, 66]],
-        ["Reality Randomizer", 10000, [69, 71, 73]]
-      ].map((x) => ({ name: x[0], luck: x[1], recipe: x[2] }));
-
-      let inventory = { potions: Array(10).fill(0), gloves: Array(10).fill(0), randomizers: Array(7).fill(0) };
-      let autoCraft = { potion: null, glove: null, randomizer: null };
-      let rolls = 0, equippedAura = null, equippedGlove = null, potionLuck = 0, auto = false, busy = false, rarest = -1, admin = false;
-      let currentBiome = biomes[0], biomeTime = currentBiome.time, biomeVisits = {}, milestones = {};
-
-      /* SAVE / LOAD */
-      function save() {
-        if (admin) return;
-        localStorage.setItem("auraRoll", JSON.stringify({
-          auras, inventory, autoCraft, rolls, equippedAura,
-          equippedGlove, potionLuck, biomeVisits,
-          currentBiome: currentBiome.name, biomeTime, rarest, milestones
-        }));
-      }
-
-      function load() {
-        let s = localStorage.getItem("auraRoll");
-        if (!s) return;
-        try {
-          let d = JSON.parse(s);
-          if (d.auras) d.auras.forEach((a, i) => { if (auras[i]) Object.assign(auras[i], a); });
-          inventory = d.inventory || inventory;
-          autoCraft = d.autoCraft || autoCraft;
-          rolls = d.rolls || 0;
-          equippedAura = d.equippedAura ?? null;
-          equippedGlove = d.equippedGlove ?? null;
-          potionLuck = d.potionLuck || 0;
-          biomeVisits = d.biomeVisits || {};
-          rarest = d.rarest ?? -1;
-          milestones = d.milestones || {};
-          currentBiome = biomes.find((b) => b.name === d.currentBiome) || biomes[0];
-          biomeTime = d.biomeTime || currentBiome.time;
-        } catch (e) {}
-      }
-
-      /* ADMIN */
-      function adminToggle() {
-        let input = document.getElementById("adminInput");
-        if (input.value.toLowerCase() === "rocky") {
-          admin = !admin;
-          if (admin) {
-            auras.forEach((a) => { a.owned = 999999; a.total = 999999; });
-            inventory.potions.fill(999); inventory.gloves.fill(999); inventory.randomizers.fill(999);
-            equippedAura = 79; equippedGlove = 9;
-            toast("ADMIN MODE ON — NOTHING SAVES");
-          } else {
-            load();
-            toast("ADMIN MODE OFF — SAVING RESTORED");
-          }
-          update();
-        }
-      }
-
-      /* LUCK & ROLLS */
-      function totalLuck() {
-        let glove = equippedGlove === null ? 0 : gloves[equippedGlove].luck;
-        let aura = equippedAura === null ? 0 : (equippedAura + 1) * 0.02;
-        return (1 + glove + aura + potionLuck) * currentBiome.luck;
-      }
-
-      function chooseAura() {
-        let weights = auras.map((a) => Math.pow(1 / (a.odds || 1), 0.92) * Math.pow(totalLuck(), 0.7));
-        let total = weights.reduce((a, b) => a + b, 0);
-        let r = Math.random() * total;
-        for (let i = 0; i < weights.length; i++) {
-          r -= weights[i];
-          if (r <= 0) return i;
-        }
-        return 0;
-      }
-
-      function normalRoll() {
-        if (busy) return;
-        busy = true;
-        setTimeout(() => { doRoll(); busy = false; }, 1000);
-      }
-
-      function fastRoll() {
-        if (rolls < 150) { toast("Fast Roll unlocks at 150 rolls"); return; }
-        if (busy) return;
-        busy = true;
-        setTimeout(() => { doRoll(); busy = false; }, 200);
-      }
-
-      function doRoll() {
-        rolls++;
-        let id = chooseAura();
-        auras[id].owned++;
-        auras[id].total++;
-        if (id > rarest) rarest = id;
-        potionLuck = 0;
-
-        showResult("✨ " + auras[id].name + " ✨", auras[id].odds ? "1/" + auras[id].odds.toLocaleString() : "1/0");
-        spawnBurst(auras[id].color);
-        checkMilestones();
-        autoCraftCheck();
-        update();
-        save();
-      }
-
-      function toggleAuto() {
-        if (rolls < 50) { toast("Auto Roll unlocks at 50 rolls"); return; }
-        auto = !auto;
-        update();
-        if (auto) autoLoop();
-      }
-
-      function autoLoop() {
-        if (!auto) return;
-        setTimeout(() => { if (auto) { doRoll(); autoLoop(); } }, rolls >= 150 ? 200 : 1000);
-      }
-
-      function hasRecipe(recipe) { return recipe.every((i) => auras[i] && auras[i].owned > 0); }
-      function consume(recipe) { recipe.forEach((i) => { auras[i].owned--; }); }
-
-      function craft(type, i) {
-        let item = type === "potion" ? potions[i] : type === "glove" ? gloves[i] : randomizers[i];
-        if (!hasRecipe(item.recipe)) { toast("Missing required auras"); return; }
-        consume(item.recipe);
-        let key = type === "potion" ? "potions" : type === "glove" ? "gloves" : "randomizers";
-        inventory[key][i]++;
-        toast("Crafted " + item.name);
-        update();
-        save();
-      }
-
-      function usePotion(i) {
-        if (inventory.potions[i] <= 0) return;
-        inventory.potions[i]--;
-        potionLuck = potions[i].luck / 100;
-        toast(potions[i].name + " activated");
-        update();
-        save();
-      }
-
-      function equipGlove(i) {
-        if (inventory.gloves[i] <= 0) { toast("You don't own this glove"); return; }
-        equippedGlove = i;
-        toast("Equipped " + gloves[i].name);
-        update();
-        save();
-      }
-
-      function equipAura(i) {
-        if (auras[i].owned <= 0) { toast("You don't own this aura"); return; }
-        equippedAura = i;
-        vfx(i);
-        toast("Equipped " + auras[i].name);
-        update();
-        save();
-      }
-
-      function autoCraftSet(type, i) { autoCraft[type] = autoCraft[type] === i ? null : i; update(); save(); }
-
-      function autoCraftCheck() {
-        [["potion", potions, "potions"], ["glove", gloves, "gloves"], ["randomizer", randomizers, "randomizers"]].forEach(([type, list, key]) => {
-          let i = autoCraft[type];
-          if (i !== null && i !== undefined && hasRecipe(list[i].recipe)) {
-            consume(list[i].recipe);
-            inventory[key][i]++;
-          }
-        });
-      }
-
-      function spawnBiome(b) {
-        currentBiome = b;
-        biomeTime = b.time;
-        biomeVisits[b.name] = (biomeVisits[b.name] || 0) + 1;
-        document.body.style.background = b.bg;
-        toast("🌎 " + b.name + " — x" + b.luck.toLocaleString() + " LUCK");
-        update();
-        save();
-      }
-
-      function useRandomizer(i) {
-        if (inventory.randomizers[i] <= 0) return;
-        inventory.randomizers[i]--;
-        spawnBiome(biomes[1 + Math.floor(Math.random() * (biomes.length - 1))]);
-        update();
-        save();
-      }
-
-      function checkMilestones() {
-        if (rolls >= 10000 && !milestones[10000]) {
-          milestones[10000] = 1;
-          inventory.potions[0]++;
-          toast("🏆 10K ROLLS — FREE POTION");
-        }
-      }
-
-      function toggleMenu() { document.getElementById("panel").classList.toggle("open"); }
-
-      function showTab(id, button) {
-        document.querySelectorAll(".section").forEach((x) => x.classList.remove("active"));
-        document.querySelectorAll(".tab").forEach((x) => x.classList.remove("active"));
-        document.getElementById(id).classList.add("active");
-        button.classList.add("active");
-      }
-
-      function toast(msg) {
-        let t = document.getElementById("toast");
-        t.innerText = msg;
-        t.style.opacity = "1";
-        setTimeout(() => { t.style.opacity = "0"; }, 2000);
-      }
-
-      function showResult(title, rarity) {
-        let r = document.getElementById("result");
-        r.innerHTML = title + "<br><span class='small'>" + rarity + "</span>";
-        r.classList.add("show");
-        setTimeout(() => { r.classList.remove("show"); }, 1500);
-      }
-
-      function recipeText(recipe) {
-        return recipe.map((i) => {
-          let a = auras[i];
-          return (a ? a.name : "?") + " — " + (a ? a.owned : 0) + " owned";
-        }).join("<br> + ");
-      }
-
-      function renderAuras() {
-        let html = "<h3>AURAS — " + auras.length + "</h3>";
-        auras.forEach((a, i) => {
-          html += `<div class="card ${a.total ? "" : "locked"}">
-            <b>#${i + 1} ${a.total ? a.name : "???"}</b>
-            <div class="small">Rarity: ${a.odds ? "1/" + a.odds.toLocaleString() : "1/0"}</div>
-            ${a.total ? `<div>Owned: ${a.owned}</div><button class="action" onclick="equipAura(${i})">${equippedAura === i ? "EQUIPPED" : "EQUIP"}</button>` : ""}
-          </div>`;
-        });
-        document.getElementById("auras").innerHTML = html;
-      }
-
-      function renderPotions() {
-        let html = "<h3>POTIONS</h3>";
-        potions.forEach((p, i) => {
-          html += `<div class="card"><b>${p.name}</b> (+${p.luck}% Luck)
-            <div>Owned: ${inventory.potions[i]}</div>
-            <div class="small">${recipeText(p.recipe)}</div>
-            <button class="action craft" onclick="craft('potion', ${i})">Craft</button>
-            <button class="action" onclick="usePotion(${i})">Use</button>
-            <button class="action" onclick="autoCraftSet('potion', ${i})">${autoCraft.potion === i ? "Auto-Craft: ON" : "Auto-Craft: OFF"}</button>
-          </div>`;
-        });
-        document.getElementById("potions").innerHTML = html;
-      }
-
-      function renderGloves() {
-        let html = "<h3>GLOVES</h3>";
-        gloves.forEach((g, i) => {
-          html += `<div class="card"><b>${g.name}</b> (+${g.luck}x Luck)
-            <div>Owned: ${inventory.gloves[i]}</div>
-            <div class="small">${recipeText(g.recipe)}</div>
-            <button class="action craft" onclick="craft('glove', ${i})">Craft</button>
-            <button class="action" onclick="equipGlove(${i})">${equippedGlove === i ? "EQUIPPED" : "Equip"}</button>
-            <button class="action" onclick="autoCraftSet('glove', ${i})">${autoCraft.glove === i ? "Auto-Craft: ON" : "Auto-Craft: OFF"}</button>
-          </div>`;
-        });
-        document.getElementById("gloves").innerHTML = html;
-      }
-
-      function renderBiomes() {
-        let html = "<h3>BIOMES & RANDOMIZERS</h3>";
-        randomizers.forEach((r, i) => {
-          html += `<div class="card"><b>${r.name}</b>
-            <div>Owned: ${inventory.randomizers[i]}</div>
-            <div class="small">${recipeText(r.recipe)}</div>
-            <button class="action craft" onclick="craft('randomizer', ${i})">Craft</button>
-            <button class="action" onclick="useRandomizer(${i})">Use</button>
-          </div>`;
-        });
-        html += "<h4>Discovered Biomes</h4>";
-        biomes.forEach((b) => {
-          html += `<div class="card"><b>${b.name}</b> (x${b.luck.toLocaleString()} Luck)<div>Visits: ${biomeVisits[b.name] || 0}</div></div>`;
-        });
-        document.getElementById("biomes").innerHTML = html;
-      }
-
-      function renderLeaderboard() {
-        let html = "<h3>LEADERBOARD</h3>";
-        html += `<div class='card'><b>Rarest Aura Discovered:</b> ${rarest >= 0 ? auras[rarest].name + " (1/" + auras[rarest].odds.toLocaleString() + ")" : "None"}</div>`;
-        html += `<div class='card'><b>Total Rolls Executed:</b> ${rolls.toLocaleString()}</div>`;
-        html += `<div class='card'><b>Active Multiplier:</b> x${totalLuck().toLocaleString()}</div>`;
-        document.getElementById("leaderboard").innerHTML = html;
-      }
-
-      function spawnBurst(color) {
-        let container = document.getElementById("vfx");
-        for (let i = 0; i < 20; i++) {
-          let s = document.createElement("div");
-          s.className = "spark";
-          s.style.background = color;
-          s.style.left = "50%";
-          s.style.top = "50%";
-          let angle = Math.random() * Math.PI * 2;
-          let dist = 80 + Math.random() * 120;
-          s.style.setProperty("--x", `${Math.cos(angle) * dist}px`);
-          s.style.setProperty("--y", `${Math.sin(angle) * dist}px`);
-          container.appendChild(s);
-          setTimeout(() => s.remove(), 1200);
-        }
-      }
-
-      function vfx(index) {
-        let v = document.getElementById("vfx");
-        let stick = document.getElementById("stick");
-        let head = document.getElementById("head");
-        v.innerHTML = "";
-        head.innerHTML = "";
-        stick.className = "";
-        stick.style.setProperty("--aura-color", auras[index].color);
-        stick.classList.add("aura-active");
-
-        let name = auras[index].name;
-        if (name === "Gojo") {
-          head.innerHTML = `<div class="gojo-bandana"></div>`;
-          v.innerHTML = `<div class="gojo-red-orb"></div><div class="gojo-blue-orb"></div>`;
-        } else if (name === "Itachi") {
-          v.innerHTML = `<div class="itachi-bg"></div><div class="crow" style="top:40%;left:40%"></div><div class="crow" style="top:30%;left:60%"></div>`;
-        } else if (name === "Naruto") {
-          v.innerHTML = `<div class="kurama-cloak"></div>`;
-        } else if (name === "Gear 5") {
-          head.innerHTML = `<div class="gear5-hair"></div>`;
-        } else if (name === "Zoro") {
-          head.innerHTML = `<div class="sword-mouth"></div>`;
-        } else if (name === "Sasuke") {
-          v.innerHTML = `<div class="chidori" style="top:50%;left:52%"></div>`;
-        } else if (name === "Mahoraga") {
-          head.innerHTML = `<div class="mahoraga-wheel"></div>`;
-        }
-      }
-
-      function update() {
-        document.getElementById("rolls").innerText = rolls;
-        document.getElementById("rarest").innerText = rarest >= 0 ? auras[rarest].name : "None";
-        document.getElementById("biome").innerText = currentBiome.name;
-        document.getElementById("auto").innerText = auto ? "AUTO: ON" : "AUTO ROLL\n50 rolls";
-
-        renderAuras();
-        renderPotions();
-        renderGloves();
-        renderBiomes();
-        renderLeaderboard();
-      }
-
-      /* BIOME TIMER TICK */
-      setInterval(() => {
-        biomeTime--;
-        document.getElementById("timer").innerText = biomeTime + "s remaining";
-        if (biomeTime <= 0) {
-          let next = biomes[Math.floor(Math.random() * biomes.length)];
-          spawnBiome(next);
-        }
-      }, 1000);
-
-      /* INIT */
-      load();
-      if (equippedAura !== null) vfx(equippedAura);
-      spawnBiome(currentBiome);
-      update();
-    </script>
-  </body>
-</html>
+<!-- =========================
+     REPLACE YOUR #stick CSS
+     ========================= -->
+
+<style>
+#stick {
+  width: 110px;
+  height: 210px;
+  position: relative;
+  z-index: 8;
+  transition: transform .25s ease, filter .25s ease;
+}
+
+/* EQUIPPED INFO ABOVE PLAYER */
+#equippedInfo {
+  position: absolute;
+  left: 50%;
+  top: calc(50% - 175px);
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 15;
+  pointer-events: none;
+  min-width: 180px;
+}
+
+#equippedName {
+  font-size: 22px;
+  font-weight: 900;
+  text-shadow: 0 0 12px currentColor;
+}
+
+#equippedRarity {
+  font-size: 13px;
+  font-weight: bold;
+  opacity: .85;
+  margin-top: 3px;
+}
+
+/* Stronger base aura */
+.aura-active {
+  animation: auraBreath 1.15s infinite alternate ease-in-out;
+}
+
+@keyframes auraBreath {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.045);
+  }
+}
+
+/* VFX container */
+#vfx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+/* =========================
+   UNIQUE AURA VFX
+   ========================= */
+
+.vfx-orb {
+  position:absolute;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:var(--c);
+  box-shadow:
+    0 0 8px var(--c),
+    0 0 22px var(--c),
+    0 0 45px var(--c);
+  animation:orbFloat 2s ease-in-out infinite alternate;
+}
+
+@keyframes orbFloat {
+  from { transform:translateY(25px) scale(.7); opacity:.35; }
+  to { transform:translateY(-25px) scale(1.4); opacity:1; }
+}
+
+.vfx-ring {
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:220px;
+  height:220px;
+  margin:-110px;
+  border:4px solid var(--c);
+  border-radius:50%;
+  box-shadow:0 0 20px var(--c), inset 0 0 20px var(--c);
+  animation:ringSpin 4s linear infinite;
+}
+
+.vfx-ring2 {
+  width:150px;
+  height:150px;
+  margin:-75px;
+  border-style:dashed;
+  animation:ringSpin 2.5s linear infinite reverse;
+}
+
+@keyframes ringSpin {
+  to { transform:rotate(360deg); }
+}
+
+.vfx-particle {
+  position:absolute;
+  width:5px;
+  height:5px;
+  background:var(--c);
+  box-shadow:0 0 10px var(--c);
+  animation:particleRise 2s linear infinite;
+}
+
+@keyframes particleRise {
+  from {
+    transform:translateY(100px) scale(.2);
+    opacity:0;
+  }
+  30% { opacity:1; }
+  to {
+    transform:translateY(-160px) scale(1.3);
+    opacity:0;
+  }
+}
+
+.vfx-beam {
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:7px;
+  height:360px;
+  transform:translate(-50%,-50%);
+  background:linear-gradient(transparent,var(--c),transparent);
+  filter:blur(2px);
+  box-shadow:0 0 25px var(--c);
+  animation:beamPulse .25s infinite alternate;
+}
+
+@keyframes beamPulse {
+  from { opacity:.3; }
+  to { opacity:1; }
+}
+
+/* FLAME */
+.vfx-flame {
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:170px;
+  height:170px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(circle,
+    #fff 0%,
+    var(--c) 25%,
+    transparent 70%);
+  filter:blur(8px);
+  animation:flamePulse .45s infinite alternate;
+}
+
+@keyframes flamePulse {
+  from { transform:translate(-50%,-50%) scale(.8); }
+  to { transform:translate(-50%,-50%) scale(1.18); }
+}
+
+/* LIGHTNING */
+.vfx-lightning {
+  position:absolute;
+  width:3px;
+  height:90px;
+  background:#fff;
+  box-shadow:0 0 10px var(--c),0 0 25px var(--c);
+  transform:rotate(var(--r));
+  animation:lightningFlash .12s infinite;
+}
+
+@keyframes lightningFlash {
+  0%,100% { opacity:.1; }
+  50% { opacity:1; }
+}
+
+/* VOID */
+.vfx-void {
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:300px;
+  height:300px;
+  margin:-150px;
+  border-radius:50%;
+  background:radial-gradient(circle,#000 0%,#050505 35%,transparent 70%);
+  box-shadow:0 0 80px #000, inset 0 0 60px #000;
+  animation:voidPulse 2s infinite alternate;
+}
+
+@keyframes voidPulse {
+  from { transform:scale(.8); }
+  to { transform:scale(1.15); }
+}
+
+/* GLITCH 1/1B */
+.glitch-aura {
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:280px;
+  height:280px;
+  margin:-140px;
+  border:2px solid #00ffff;
+  box-shadow:
+    12px 0 #ff0055,
+    -12px 0 #00ffff,
+    0 0 30px #fff;
+  animation:glitchAura .08s infinite steps(2);
+}
+
+.glitch-aura::before,
+.glitch-aura::after {
+  content:"";
+  position:absolute;
+  inset:20px;
+  border:2px dashed #fff;
+}
+
+.glitch-aura::after {
+  inset:55px;
+  border-color:#ff0055;
+}
+
+@keyframes glitchAura {
+  0% {
+    transform:translate(0,0) skew(0);
+    filter:hue-rotate(0deg);
+  }
+  25% {
+    transform:translate(8px,-4px) skew(8deg);
+    filter:hue-rotate(90deg);
+  }
+  50% {
+    transform:translate(-7px,5px) skew(-10deg);
+    filter:hue-rotate(180deg);
+  }
+  75% {
+    transform:translate(5px,2px) skew(5deg);
+    filter:hue-rotate(270deg);
+  }
+  100% {
+    transform:translate(0,0);
+    filter:hue-rotate(360deg);
+  }
+}
+
+/* Anime-specific but still original VFX */
+.vfx-eye {
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:100px;
+  height:100px;
+  margin:-50px;
+  border-radius:50%;
+  border:6px solid #ff0000;
+  box-shadow:0 0 35px #ff0000;
+  animation:eyeSpin 3s linear infinite;
+}
+
+@keyframes eyeSpin {
+  to { transform:rotate(360deg); }
+}
+
+.vfx-cloud {
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:260px;
+  height:100px;
+  margin:-50px -130px;
+  border-radius:50%;
+  border:10px solid #fff;
+  box-shadow:0 0 25px #fff;
+  animation:cloudFloat 2s infinite alternate;
+}
+
+@keyframes cloudFloat {
+  from { transform:scale(.9) rotate(-3deg); }
+  to { transform:scale(1.1) rotate(3deg); }
+}
+
+.vfx-sword {
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:260px;
+  height:5px;
+  background:linear-gradient(90deg,transparent,#fff,var(--c),#fff,transparent);
+  box-shadow:0 0 20px var(--c);
+  transform:translate(-50%,-50%) rotate(-25deg);
+  animation:swordSlash .8s infinite alternate;
+}
+
+@keyframes swordSlash {
+  from { transform:translate(-50%,-50%) rotate(-35deg) scaleX(.7); }
+  to { transform:translate(-50%,-50%) rotate(25deg) scaleX(1.1); }
+}
+</style>
