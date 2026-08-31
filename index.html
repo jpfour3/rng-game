@@ -1,168 +1,123 @@
+```html
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Aura Roll</title>
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;font-family:Arial,sans-serif;background:#fff;color:#111;
- overflow:hidden;transition:.3s;
-}
-body.dark{background:#111;color:#eee}
-#game{height:100vh;width:100vw;position:relative}
-#stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-#stickman{position:relative;width:120px;height:220px}
-.head{width:55px;height:55px;border:6px solid currentColor;border-radius:50%;position:absolute;left:32px;top:0}
-.body{width:6px;height:90px;background:currentColor;position:absolute;left:57px;top:52px}
-.arm,.leg{position:absolute;height:6px;background:currentColor;transform-origin:left center}
-.arm{width:70px;top:75px;left:57px}
-.arm.a1{transform:rotate(145deg)}
-.arm.a2{transform:rotate(35deg)}
-.leg{width:80px;top:140px;left:57px}
-.leg.l1{transform:rotate(115deg)}
-.leg.l2{transform:rotate(65deg)}
-.auraGlow{position:absolute;width:150px;height:150px;border-radius:50%;left:-15px;top:-30px;opacity:.35;filter:blur(18px);z-index:-1}
-#leftTop{position:absolute;top:18px;left:20px;font-size:14px}
-#leftBottom{position:absolute;bottom:100px;left:20px;font-size:14px}
-#menuBtn{
- position:absolute;right:20px;top:50%;transform:translateY(-50%);
- width:45px;height:75px;border:0;border-radius:14px;background:#111;color:#fff;
- font-size:25px;cursor:pointer
-}
-body.dark #menuBtn{background:#eee;color:#111}
-#panel{
- position:absolute;right:-390px;top:0;width:390px;height:100%;
- background:#f5f5f5;box-shadow:-5px 0 20px #0002;
- transition:.3s;z-index:10;overflow-y:auto;padding:18px
-}
-body.dark #panel{background:#1d1d1d}
+body{margin:0;font-family:Arial;background:#fff;color:#111;overflow:hidden}
+#game{height:100vh;position:relative}
+#stage{height:100%;display:flex;align-items:center;justify-content:center}
+#stick{width:110px;height:210px;position:relative}
+.head{position:absolute;left:28px;top:0;width:55px;height:55px;border:6px solid #111;border-radius:50%}
+.body{position:absolute;left:53px;top:52px;width:6px;height:90px;background:#111}
+.arm,.leg{position:absolute;left:56px;width:65px;height:6px;background:#111;transform-origin:left}
+.a1{top:70px;transform:rotate(145deg)}
+.a2{top:70px;transform:rotate(35deg)}
+.l1{top:138px;transform:rotate(115deg)}
+.l2{top:138px;transform:rotate(65deg)}
+#glow{position:absolute;width:170px;height:170px;left:-30px;top:-35px;border-radius:50%;filter:blur(25px);opacity:.45;z-index:-1}
+#top{position:absolute;left:18px;top:15px;font-size:14px}
+#bottomInfo{position:absolute;left:18px;bottom:95px;font-size:14px}
+#menu{position:absolute;right:18px;top:50%;transform:translateY(-50%);width:48px;height:75px;border:0;border-radius:12px;background:#111;color:#fff;font-size:25px}
+#panel{position:absolute;right:-410px;top:0;width:410px;height:100%;background:#f4f4f4;padding:18px;overflow:auto;transition:.3s;z-index:10;box-shadow:-5px 0 20px #0002}
 #panel.open{right:0}
-.close{float:right;border:0;background:none;font-size:25px;cursor:pointer;color:inherit}
+.close{float:right;border:0;background:none;font-size:28px}
 .tabs{display:flex;gap:5px;flex-wrap:wrap;margin:35px 0 15px}
-.tab{border:0;padding:8px 10px;border-radius:8px;cursor:pointer}
+.tab{border:0;padding:8px;border-radius:7px}
 .tab.active{background:#111;color:#fff}
-body.dark .tab.active{background:#fff;color:#111}
 .section{display:none}.section.active{display:block}
-.card{
- padding:12px;margin:8px 0;border:1px solid #ccc;border-radius:10px;
- background:#fff
-}
-body.dark .card{background:#292929;border-color:#555}
+.card{background:#fff;border:1px solid #ccc;border-radius:9px;padding:10px;margin:8px 0}
 button{cursor:pointer}
-.craft{
- width:100%;padding:8px;border:0;border-radius:7px;background:#111;color:#fff
-}
-body.dark .craft{background:#eee;color:#111}
-.equip{margin-top:6px;padding:6px 10px;border:0;border-radius:6px}
-#bottom{
- position:absolute;bottom:18px;left:50%;transform:translateX(-50%);
- display:flex;gap:12px;z-index:5
-}
-.rollBtn{
- width:125px;height:55px;border:0;border-radius:13px;
- background:#111;color:white;font-size:16px;font-weight:bold
-}
-.rollBtn:disabled{opacity:.45}
-body.dark .rollBtn{background:#eee;color:#111}
-#rollText{
- position:absolute;top:54%;left:50%;transform:translate(-50%,-50%);
- font-size:28px;font-weight:bold;opacity:0;transition:.2s;
- text-align:center;pointer-events:none
-}
-#rollText.show{opacity:1}
-#settingsBtn{
- position:absolute;right:20px;bottom:20px;padding:9px 13px;border:0;
- border-radius:8px;background:#ddd
-}
-body.dark #settingsBtn{background:#333;color:#fff}
-#toast{
- position:absolute;top:20px;left:50%;transform:translateX(-50%);
- background:#111;color:#fff;padding:10px 16px;border-radius:10px;
- opacity:0;transition:.2s;z-index:30
-}
-.progress{height:7px;background:#ddd;border-radius:10px;overflow:hidden;margin-top:5px}
-.progress div{height:100%;width:0;background:#111}
-body.dark .progress{background:#444}
-body.dark .progress div{background:#fff}
+.action{border:0;border-radius:6px;padding:7px;margin-top:5px}
+.craft{background:#111;color:#fff;width:100%}
+#buttons{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:10px}
+.roll{width:125px;height:55px;background:#111;color:#fff;border:0;border-radius:12px;font-weight:bold}
+.roll:disabled{opacity:.4}
+#result{position:absolute;top:57%;left:50%;transform:translate(-50%,-50%);text-align:center;font-size:27px;font-weight:bold;opacity:0;transition:.2s;pointer-events:none}
+#result.show{opacity:1}
 .small{font-size:12px;opacity:.7}
+#toast{position:absolute;top:18px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:9px 14px;border-radius:9px;opacity:0;z-index:30}
 </style>
 </head>
 
 <body>
 <div id="game">
 
+<div id="top">
+<b>Rarest Rolled:</b> <span id="rarest">None</span><br>
+<b>Total Rolls:</b> <span id="rolls">0</span>
+</div>
+
+<div id="bottomInfo">
+<b>Biome:</b> <span id="biome">Plains</span><br>
+<span id="timer" class="small"></span>
+</div>
+
 <div id="stage">
- <div id="stickman">
-  <div class="auraGlow" id="auraGlow"></div>
-  <div class="head"></div>
-  <div class="body"></div>
-  <div class="arm a1"></div><div class="arm a2"></div>
-  <div class="leg l1"></div><div class="leg l2"></div>
- </div>
+<div id="stick">
+<div id="glow"></div>
+<div class="head"></div>
+<div class="body"></div>
+<div class="arm a1"></div><div class="arm a2"></div>
+<div class="leg l1"></div><div class="leg l2"></div>
+</div>
 </div>
 
-<div id="leftTop">
- <b>Rarest Rolled:</b> <span id="rarest">None</span><br>
- <b>Total Rolls:</b> <span id="rollCount">0</span>
+<button id="menu" onclick="toggleMenu()">➜</button>
+
+<div id="buttons">
+<button class="roll" onclick="toggleAuto()" id="auto">AUTO ROLL<br><small>50 rolls</small></button>
+<button class="roll" onclick="normalRoll()">ROLL<br><small>1.5 sec</small></button>
+<button class="roll" onclick="fastRoll()" id="fast">FAST ROLL<br><small>150 rolls</small></button>
 </div>
 
-<div id="leftBottom">
- <b>Biome:</b> <span id="currentBiome">Plains</span><br>
- <span class="small" id="biomeTimer"></span>
-</div>
-
-<button id="menuBtn" onclick="toggleMenu()">➜</button>
-
-<div id="bottom">
- <button class="rollBtn" id="autoBtn" onclick="toggleAuto()">AUTO ROLL<br><small>50 rolls</small></button>
- <button class="rollBtn" onclick="roll()">ROLL<br><small>3 seconds</small></button>
- <button class="rollBtn" id="fastBtn" onclick="fastRoll()">FAST ROLL<br><small>250 rolls</small></button>
-</div>
-
-<button id="settingsBtn" onclick="openSettings()">⚙</button>
-
-<div id="rollText"></div>
+<div id="result"></div>
 <div id="toast"></div>
 
 <div id="panel">
- <button class="close" onclick="toggleMenu()">×</button>
- <h2>INDEX</h2>
+<button class="close" onclick="toggleMenu()">×</button>
+<h2>INDEX</h2>
 
- <div class="tabs">
-  <button class="tab active" onclick="tab('auras',this)">Auras</button>
-  <button class="tab" onclick="tab('potions',this)">Potions</button>
-  <button class="tab" onclick="tab('gloves',this)">Gloves</button>
-  <button class="tab" onclick="tab('biomes',this)">Biomes</button>
-  <button class="tab" onclick="tab('leaderboard',this)">Leaderboard</button>
- </div>
+<div class="tabs">
+<button class="tab active" onclick="showTab('auras',this)">Auras</button>
+<button class="tab" onclick="showTab('potions',this)">Potions</button>
+<button class="tab" onclick="showTab('gloves',this)">Gloves</button>
+<button class="tab" onclick="showTab('biomes',this)">Biomes</button>
+<button class="tab" onclick="showTab('leaderboard',this)">Leaderboard</button>
+</div>
 
- <div id="auras" class="section active"></div>
- <div id="potions" class="section"></div>
- <div id="gloves" class="section"></div>
- <div id="biomes" class="section"></div>
- <div id="leaderboard" class="section"></div>
+<div id="auras" class="section active"></div>
+<div id="potions" class="section"></div>
+<div id="gloves" class="section"></div>
+<div id="biomes" class="section"></div>
+<div id="leaderboard" class="section"></div>
 </div>
 </div>
 
 <script>
 /* =========================
-   AURA DATABASE - 75
+   80 AURAS
 ========================= */
 
-const auraNames=[
+const names=[
 "Spark","Pebble","Leaf","Breeze","Drop","Dew","Dust","Glow","Ember","Frost",
 "Flame","Mist","Stone","Bloom","Cloud","Wave","Shadow","Thunder","Crystal","Venom",
 "Solar","Lunar","Comet","Void","Inferno","Glacier","Tempest","Abyss","Eclipse","Phantom",
 "Prism","Nebula","Gravity","Starlight","Bloodmoon","Aurora","Overdrive","Celestial","Oblivion","Divine",
 "Galaxy","Singularity","Eternal","Rift","Chronos","Seraph","Omega","Genesis","Infinity","Mythic",
 "Cosmic","Astral","Heavenly","Doom","Worldbreaker","Reality","Ancient","Forbidden","Immortal","Transcendent",
-"Absolute","Unbound","Infinite","Paradox","Omniversal","Finality","Godly","???","The Chosen","The First",
-"Beyond","Limitless","Eternal Flame","Origin","The End"
+"Absolute","Unbound","Limitless","Paradox","Omniversal","Finality","Godly","The Chosen","The First","Beyond",
+"Limitless X","Eternal Flame","Origin","The End","Null","Impossible","Infinite Void","Creator","Absolute Zero","1/0"
 ];
 
-const auraOdds=[
+/* Display rarity. The final aura is intentionally displayed as 1/0,
+   but internally uses an extremely tiny roll weight because 1/0
+   is mathematically undefined. */
+
+const odds=[
 5,12,20,35,50,70,90,120,160,210,
 275,350,450,575,725,900,1100,1350,1650,2000,
 2400,2900,3500,4200,5000,6000,7200,8600,10000,12000,
@@ -170,12 +125,12 @@ const auraOdds=[
 82000,95000,110000,130000,150000,175000,200000,230000,260000,300000,
 350000,400000,460000,525000,600000,700000,800000,950000,1100000,1300000,
 1500000,1800000,2100000,2500000,3000000,3500000,4200000,5000000,6000000,7500000,
-9000000,11000000,14000000,18000000,25000000
+9000000,11000000,14000000,18000000,25000000,50000000,100000000,1000000000,10000000000,0
 ];
 
-const auras=auraNames.map((name,i)=>({
- id:i,name,
- odds:auraOdds[i],
+const auras=names.map((name,i)=>({
+ name,
+ odds:odds[i],
  owned:0,
  total:0
 }));
@@ -184,43 +139,43 @@ const auras=auraNames.map((name,i)=>({
    BIOMES
 ========================= */
 
-const biomeList=[
- {name:"Plains",rare:1,duration:120,luck:1,bg:"#fff"},
- {name:"Forest",rare:2,duration:100,luck:1.05,bg:"#dff5df"},
- {name:"Desert",rare:4,duration:90,luck:1.1,bg:"#f8e8b0"},
- {name:"Rain",rare:6,duration:80,luck:1.25,bg:"#cbdcf0"},
- {name:"Water",rare:8,duration:75,luck:1.3,bg:"#b8e8ff"},
- {name:"Ocean",rare:12,duration:70,luck:1.45,bg:"#87cfff"},
- {name:"Tsunami",rare:20,duration:60,luck:1.7,bg:"#4ca5d8"},
- {name:"Storm",rare:30,duration:55,luck:1.9,bg:"#8c91aa"},
- {name:"Volcano",rare:45,duration:50,luck:2.1,bg:"#e39b80"},
- {name:"Aurora",rare:60,duration:45,luck:2.5,bg:"#b7c8e8"},
- {name:"Void",rare:100,duration:40,luck:3,bg:"#352b50"},
- {name:"Galaxy",rare:200,duration:35,luck:4,bg:"#25204b"},
- {name:"Heaven",rare:400,duration:30,luck:5,bg:"#eee"},
- {name:"Reality",rare:800,duration:25,luck:7,bg:"#d4d4d4"},
- {name:"The End",rare:1500,duration:20,luck:10,bg:"#222"}
+const biomes=[
+{name:"Plains",rare:1,time:120,luck:1,bg:"#fff"},
+{name:"Forest",rare:2,time:100,luck:1.05,bg:"#dff5df"},
+{name:"Desert",rare:4,time:90,luck:1.1,bg:"#f8e8b0"},
+{name:"Rain",rare:6,time:80,luck:1.25,bg:"#cbdcf0"},
+{name:"Water",rare:8,time:75,luck:1.3,bg:"#b8e8ff"},
+{name:"Ocean",rare:12,time:70,luck:1.45,bg:"#87cfff"},
+{name:"Tsunami",rare:20,time:60,luck:1.7,bg:"#65a9d1"},
+{name:"Storm",rare:30,time:55,luck:1.9,bg:"#888da5"},
+{name:"Volcano",rare:45,time:50,luck:2.1,bg:"#e39b80"},
+{name:"Aurora",rare:60,time:45,luck:2.5,bg:"#c0c7ee"},
+{name:"Void",rare:100,time:40,luck:3,bg:"#393050"},
+{name:"Galaxy",rare:200,time:35,luck:4,bg:"#292052"},
+{name:"Heaven",rare:400,time:30,luck:5,bg:"#eee"},
+{name:"Reality",rare:800,time:25,luck:7,bg:"#d5d5d5"},
+{name:"The End",rare:1500,time:20,luck:10,bg:"#222"}
 ];
 
-let currentBiome=biomeList[0];
-let biomeSeconds=currentBiome.duration;
-let biomeCounts={};
+let currentBiome=biomes[0];
+let biomeTime=currentBiome.time;
+let biomeVisits={};
 
 /* =========================
    POTIONS
 ========================= */
 
 const potions=[
- {name:"Lucky Brew",luck:5,recipe:[0,1,2]},
- {name:"Fortune Tonic",luck:12,recipe:[3,4,5]},
- {name:"Golden Elixir",luck:25,recipe:[7,8,9]},
- {name:"Mystic Potion",luck:50,recipe:[10,12,14]},
- {name:"Void Serum",luck:100,recipe:[18,20,22]},
- {name:"Celestial Drink",luck:200,recipe:[25,27,30]},
- {name:"Reality Elixir",luck:400,recipe:[35,38,40]},
- {name:"Infinity Potion",luck:800,recipe:[45,47,50]},
- {name:"Godly Brew",luck:1500,recipe:[55,58,60]},
- {name:"Origin Elixir",luck:3000,recipe:[65,70,74]}
+{name:"Lucky Brew",luck:5,recipe:[0,1,2]},
+{name:"Fortune Tonic",luck:15,recipe:[3,5,7]},
+{name:"Golden Elixir",luck:35,recipe:[8,10,12]},
+{name:"Mystic Potion",luck:75,recipe:[15,17,20]},
+{name:"Void Serum",luck:150,recipe:[22,25,28]},
+{name:"Celestial Potion",luck:300,recipe:[32,35,38]},
+{name:"Infinity Elixir",luck:600,recipe:[42,45,48]},
+{name:"Godly Potion",luck:1200,recipe:[52,55,58]},
+{name:"Reality Potion",luck:3000,recipe:[62,65,68]},
+{name:"10K LUCK ELIXIR",luck:10000,recipe:[72,73,74,75,76,77,78,79]}
 ];
 
 /* =========================
@@ -228,16 +183,16 @@ const potions=[
 ========================= */
 
 const gloves=[
- {name:"Cloth Glove",luck:2,recipe:[0,2,4]},
- {name:"Iron Glove",luck:5,recipe:[5,7,9]},
- {name:"Golden Glove",luck:10,recipe:[10,12,15]},
- {name:"Crystal Glove",luck:20,recipe:[17,19,21]},
- {name:"Shadow Glove",luck:40,recipe:[25,27,29]},
- {name:"Void Glove",luck:75,recipe:[32,34,36]},
- {name:"Galaxy Glove",luck:150,recipe:[40,42,44]},
- {name:"Divine Glove",luck:300,recipe:[50,52,54]},
- {name:"Reality Glove",luck:700,recipe:[60,62,64]},
- {name:"Infinite Glove",luck:1500,recipe:[68,70,73]}
+{name:"Cloth Glove",luck:2,recipe:[0,2,4]},
+{name:"Iron Glove",luck:5,recipe:[5,7,9]},
+{name:"Golden Glove",luck:10,recipe:[10,12,15]},
+{name:"Crystal Glove",luck:20,recipe:[17,19,21]},
+{name:"Shadow Glove",luck:40,recipe:[25,27,29]},
+{name:"Void Glove",luck:80,recipe:[32,34,36]},
+{name:"Galaxy Glove",luck:160,recipe:[40,42,44]},
+{name:"Divine Glove",luck:350,recipe:[50,52,54]},
+{name:"Reality Glove",luck:800,recipe:[60,62,64]},
+{name:"Infinite Glove",luck:2000,recipe:[68,70,73]}
 ];
 
 /* =========================
@@ -245,143 +200,147 @@ const gloves=[
 ========================= */
 
 const randomizers=[
- {name:"Basic Biome Randomizer",luck:1.2,recipe:[8,9,10]},
- {name:"Rare Biome Randomizer",luck:1.5,recipe:[15,17,19]},
- {name:"Epic Biome Randomizer",luck:2,recipe:[25,28,30]},
- {name:"Legendary Biome Randomizer",luck:3,recipe:[38,40,43]},
- {name:"Mythic Biome Randomizer",luck:5,recipe:[50,53,55]},
- {name:"Divine Biome Randomizer",luck:8,recipe:[60,63,66]},
- {name:"Reality Randomizer",luck:12,recipe:[68,70,72]}
+{name:"Basic Biome Randomizer",luck:1.2,recipe:[8,9,10]},
+{name:"Rare Biome Randomizer",luck:1.5,recipe:[15,17,19]},
+{name:"Epic Biome Randomizer",luck:2,recipe:[25,28,30]},
+{name:"Legendary Biome Randomizer",luck:3,recipe:[38,40,43]},
+{name:"Mythic Biome Randomizer",luck:5,recipe:[50,53,55]},
+{name:"Divine Biome Randomizer",luck:8,recipe:[60,63,66]},
+{name:"Reality Randomizer",luck:15,recipe:[69,71,73]}
 ];
 
 let inventory={
- potions:Array(10).fill(0),
- gloves:Array(10).fill(0),
- randomizers:Array(7).fill(0)
+potions:Array(10).fill(0),
+gloves:Array(10).fill(0),
+randomizers:Array(7).fill(0)
 };
 
 let autoCraft={
- potion:null,
- glove:null,
- randomizer:null
+potion:null,
+glove:null,
+randomizer:null
 };
 
+let rolls=0;
 let equippedAura=null;
 let equippedGlove=null;
-
-let rolls=0;
-let luck=1;
 let potionLuck=0;
 let auto=false;
-let rolling=false;
-let lastRarest=-1;
+let busy=false;
+let rarest=-1;
+let milestones={};
 
 /* =========================
-   SAVE / LOAD
+   SAVE
 ========================= */
 
 function save(){
- localStorage.setItem("auraRollSave",JSON.stringify({
-  auras,inventory,autoCraft,equippedAura,equippedGlove,
-  rolls,luck,potionLuck,biomeCounts,currentBiome:currentBiome.name,
-  biomeSeconds,lastRarest
- }));
+localStorage.setItem("auraRoll",JSON.stringify({
+auras,inventory,autoCraft,rolls,equippedAura,equippedGlove,
+potionLuck,biomeVisits,currentBiome:currentBiome.name,
+biomeTime,rarest,milestones
+}));
 }
 
 function load(){
- let s=localStorage.getItem("auraRollSave");
- if(!s)return;
- try{
-  let d=JSON.parse(s);
-  if(d.auras) d.auras.forEach((a,i)=>Object.assign(auras[i],a));
-  if(d.inventory) inventory=d.inventory;
-  if(d.autoCraft)autoCraft=d.autoCraft;
-  equippedAura=d.equippedAura;
-  equippedGlove=d.equippedGlove;
-  rolls=d.rolls||0;
-  luck=d.luck||1;
-  potionLuck=d.potionLuck||0;
-  biomeCounts=d.biomeCounts||{};
-  biomeSeconds=d.biomeSeconds||120;
-  lastRarest=d.lastRarest??-1;
-  let found=biomeList.find(x=>x.name===d.currentBiome);
-  if(found)currentBiome=found;
- }catch(e){}
+let s=localStorage.getItem("auraRoll");
+if(!s)return;
+try{
+let d=JSON.parse(s);
+
+if(d.auras)d.auras.forEach((a,i)=>Object.assign(auras[i],a));
+if(d.inventory)inventory=d.inventory;
+if(d.autoCraft)autoCraft=d.autoCraft;
+rolls=d.rolls||0;
+equippedAura=d.equippedAura;
+equippedGlove=d.equippedGlove;
+potionLuck=d.potionLuck||0;
+biomeVisits=d.biomeVisits||{};
+biomeTime=d.biomeTime||120;
+rarest=d.rarest??-1;
+milestones=d.milestones||{};
+
+let b=biomes.find(x=>x.name===d.currentBiome);
+if(b)currentBiome=b;
+}catch(e){}
 }
 
 /* =========================
-   ROLL SYSTEM
+   LUCK
 ========================= */
 
-function getLuck(){
- let gloveBonus=equippedGlove!==null?gloves[equippedGlove].luck:0;
- let auraBonus=equippedAura!==null?(equippedAura+1)*.015:0;
- let biomeBonus=currentBiome.luck;
- return (1+gloveBonus+auraBonus)*biomeBonus*(1+potionLuck);
+function totalLuck(){
+let glove=equippedGlove===null?0:gloves[equippedGlove].luck;
+let aura=equippedAura===null?0:(equippedAura+1)*0.02;
+return (1+glove+aura+potionLuck)*currentBiome.luck;
 }
 
-function weightedAura(){
- let total=0;
- let weights=auras.map((a,i)=>{
-  let base=1/a.odds;
-  let rarityFactor=Math.pow(getLuck(),.55);
-  return base*rarityFactor;
- });
- weights.forEach(w=>total+=w);
+/* =========================
+   ROLLING
+========================= */
 
- let r=Math.random()*total;
- for(let i=0;i<weights.length;i++){
-  r-=weights[i];
-  if(r<=0)return i;
- }
- return 0;
+function chooseAura(){
+let weights=auras.map((a,i)=>{
+if(i===79)return 0.000000000000000000000000001;
+
+let base=1/a.odds;
+return base*Math.pow(totalLuck(),0.55);
+});
+
+let total=weights.reduce((a,b)=>a+b,0);
+let r=Math.random()*total;
+
+for(let i=0;i<weights.length;i++){
+r-=weights[i];
+if(r<=0)return i;
 }
 
-function roll(){
- if(rolling)return;
- rolling=true;
+return 0;
+}
 
- setTimeout(()=>{
-  doRoll();
-  rolling=false;
- },3000);
+function normalRoll(){
+if(busy)return;
+busy=true;
+setTimeout(()=>{
+doRoll();
+busy=false;
+},1500);
 }
 
 function fastRoll(){
- if(rolls<250){
-  toast("Fast Roll unlocks at 250 rolls");
-  return;
- }
- if(rolling)return;
- rolling=true;
-
- setTimeout(()=>{
-  doRoll();
-  rolling=false;
- },500);
+if(rolls<150){
+toast("Fast Roll unlocks at 150 rolls");
+return;
+}
+if(busy)return;
+busy=true;
+setTimeout(()=>{
+doRoll();
+busy=false;
+},500);
 }
 
 function doRoll(){
- rolls++;
+rolls++;
 
- let id=weightedAura();
- auras[id].owned++;
- auras[id].total++;
+let id=chooseAura();
+auras[id].owned++;
+auras[id].total++;
 
- if(id>lastRarest)lastRarest=id;
+if(id>rarest)rarest=id;
 
- /* potion gives bonus luck for the next roll */
- if(potionLuck>0)potionLuck=0;
+potionLuck=0;
 
- document.getElementById("rollText").textContent=
-   "✨ "+auras[id].name+" ✨";
- document.getElementById("rollText").classList.add("show");
- setTimeout(()=>document.getElementById("rollText").classList.remove("show"),900);
+let rarity=auras[id].odds===0
+?"1/0"
+:"1/"+auras[id].odds.toLocaleString();
 
- checkMilestones();
- autoCraftCheck();
- update();
- save();
+showResult("✨ "+auras[id].name+" ✨",rarity);
+
+checkMilestones();
+autoCraftCheck();
+update();
+save();
 }
 
 /* =========================
@@ -389,214 +348,219 @@ function doRoll(){
 ========================= */
 
 function toggleAuto(){
- if(rolls<50){
-  toast("Auto Roll unlocks at 50 rolls");
-  return;
- }
- auto=!auto;
- if(auto)autoLoop();
- update();
+if(rolls<50){
+toast("Auto Roll unlocks at 50 rolls");
+return;
+}
+
+auto=!auto;
+update();
+
+if(auto)autoLoop();
 }
 
 function autoLoop(){
- if(!auto)return;
- if(rolls<250){
-  setTimeout(()=>{
-   doRoll();
-   autoLoop();
-  },3000);
- }else{
-  setTimeout(()=>{
-   doRoll();
-   autoLoop();
-  },500);
- }
+if(!auto)return;
+
+let delay=rolls>=150?500:1500;
+
+setTimeout(()=>{
+if(!auto)return;
+doRoll();
+autoLoop();
+},delay);
 }
 
 /* =========================
    CRAFTING
 ========================= */
 
-function canCraft(recipe){
- return recipe.every(id=>auras[id].owned>0);
+function hasRecipe(recipe){
+return recipe.every(i=>auras[i].owned>0);
 }
 
-function craftAuraItems(recipe){
- recipe.forEach(id=>auras[id].owned--);
+function consume(recipe){
+recipe.forEach(i=>auras[i].owned--);
 }
 
 function craftPotion(i){
- let p=potions[i];
- if(!canCraft(p.recipe)){
-  toast("You don't have the required auras");
-  return;
- }
- craftAuraItems(p.recipe);
- inventory.potions[i]++;
- toast("Crafted "+p.name);
- update();save();
+let p=potions[i];
+
+if(!hasRecipe(p.recipe)){
+toast("Missing required auras");
+return;
+}
+
+consume(p.recipe);
+inventory.potions[i]++;
+toast("Crafted "+p.name);
+update();
+save();
 }
 
 function craftGlove(i){
- let g=gloves[i];
- if(!canCraft(g.recipe)){
-  toast("You don't have the required auras");
-  return;
- }
- craftAuraItems(g.recipe);
- inventory.gloves[i]++;
- toast("Crafted "+g.name);
- update();save();
+let g=gloves[i];
+
+if(!hasRecipe(g.recipe)){
+toast("Missing required auras");
+return;
+}
+
+consume(g.recipe);
+inventory.gloves[i]++;
+toast("Crafted "+g.name);
+update();
+save();
 }
 
 function craftRandomizer(i){
- let r=randomizers[i];
- if(!canCraft(r.recipe)){
-  toast("You don't have the required auras");
-  return;
- }
- craftAuraItems(r.recipe);
- inventory.randomizers[i]++;
- toast("Crafted "+r.name);
- update();save();
+let r=randomizers[i];
+
+if(!hasRecipe(r.recipe)){
+toast("Missing required auras");
+return;
+}
+
+consume(r.recipe);
+inventory.randomizers[i]++;
+toast("Crafted "+r.name);
+update();
+save();
 }
 
 function usePotion(i){
- if(inventory.potions[i]<=0)return;
- inventory.potions[i]--;
- potionLuck=potions[i].luck/100;
- toast(potions[i].name+" activated");
- update();save();
+if(inventory.potions[i]<=0)return;
+
+inventory.potions[i]--;
+potionLuck=potions[i].luck/100;
+toast(potions[i].name+" activated");
+update();
+save();
 }
 
 function equipGlove(i){
- if(inventory.gloves[i]<=0){
-  toast("You don't own this glove");
-  return;
- }
- equippedGlove=i;
- toast("Equipped "+gloves[i].name);
- update();save();
+if(inventory.gloves[i]<=0){
+toast("You don't own this glove");
+return;
+}
+
+equippedGlove=i;
+toast("Equipped "+gloves[i].name);
+update();
+save();
 }
 
 function equipAura(i){
- if(auras[i].owned<=0){
-  toast("You don't own this aura");
-  return;
- }
- equippedAura=i;
- applyAura();
- update();save();
+if(auras[i].owned<=0){
+toast("You don't own this aura");
+return;
 }
 
-function applyAura(){
- let glow=document.getElementById("auraGlow");
- if(equippedAura===null){
-  glow.style.background="transparent";
-  return;
- }
- let hue=(equippedAura*47)%360;
- glow.style.background=`hsl(${hue},90%,60%)`;
+equippedAura=i;
+applyAura();
+toast("Equipped "+auras[i].name);
+update();
+save();
 }
 
-/* =========================
-   AUTO CRAFT
-========================= */
-
-function setAutoCraft(type,i){
- if(autoCraft[type]===i){
-  autoCraft[type]=null;
-  toast("Auto craft disabled");
- }else{
-  autoCraft[type]=i;
-  toast("Auto crafting "+getItemName(type,i));
- }
- update();save();
-}
-
-function getItemName(type,i){
- if(type==="potion")return potions[i].name;
- if(type==="glove")return gloves[i].name;
- return randomizers[i].name;
+function autoCraftSet(type,i){
+autoCraft[type]=autoCraft[type]===i?null:i;
+update();
+save();
 }
 
 function autoCraftCheck(){
- if(autoCraft.potion!==null){
-  let i=autoCraft.potion;
-  if(canCraft(potions[i].recipe))craftPotion(i);
- }
- if(autoCraft.glove!==null){
-  let i=autoCraft.glove;
-  if(canCraft(gloves[i].recipe))craftGlove(i);
- }
- if(autoCraft.randomizer!==null){
-  let i=autoCraft.randomizer;
-  if(canCraft(randomizers[i].recipe))craftRandomizer(i);
- }
+if(autoCraft.potion!==null){
+let i=autoCraft.potion;
+if(hasRecipe(potions[i].recipe)){
+consume(potions[i].recipe);
+inventory.potions[i]++;
+}
+}
+
+if(autoCraft.glove!==null){
+let i=autoCraft.glove;
+if(hasRecipe(gloves[i].recipe)){
+consume(gloves[i].recipe);
+inventory.gloves[i]++;
+}
+}
+
+if(autoCraft.randomizer!==null){
+let i=autoCraft.randomizer;
+if(hasRecipe(randomizers[i].recipe)){
+consume(randomizers[i].recipe);
+inventory.randomizers[i]++;
+}
+}
 }
 
 /* =========================
    BIOMES
 ========================= */
 
-function chooseNaturalBiome(){
- let weights=biomeList.map((b,i)=>{
-  if(i===0)return 25;
-  return 1/(b.rare/100+1);
- });
+function naturalBiome(){
+let weights=biomes.map((b,i)=>{
+if(i===0)return 30;
+return 1/(b.rare/100+1);
+});
 
- let total=weights.reduce((a,b)=>a+b,0);
- let r=Math.random()*total;
+let total=weights.reduce((a,b)=>a+b,0);
+let r=Math.random()*total;
 
- for(let i=0;i<weights.length;i++){
-  r-=weights[i];
-  if(r<=0)return biomeList[i];
- }
- return biomeList[0];
+for(let i=0;i<weights.length;i++){
+r-=weights[i];
+if(r<=0)return biomes[i];
+}
+
+return biomes[0];
 }
 
 function spawnBiome(b){
- currentBiome=b;
- biomeSeconds=b.duration;
- biomeCounts[b.name]=(biomeCounts[b.name]||0)+1;
- document.body.style.background=b.bg;
- toast("🌎 "+b.name+" biome spawned!");
- update();save();
+currentBiome=b;
+biomeTime=b.time;
+biomeVisits[b.name]=(biomeVisits[b.name]||0)+1;
+document.body.style.background=b.bg;
+toast("🌎 "+b.name+" biome!");
+update();
+save();
 }
 
 function useRandomizer(i){
- if(inventory.randomizers[i]<=0)return;
- inventory.randomizers[i]--;
+if(inventory.randomizers[i]<=0)return;
 
- let possible=biomeList.slice(1);
- let b=possible[Math.floor(Math.random()*possible.length)];
+inventory.randomizers[i]--;
 
- spawnBiome(b);
- update();save();
+let possible=biomes.slice(1);
+let b=possible[Math.floor(Math.random()*possible.length)];
+
+spawnBiome(b);
+update();
+save();
 }
 
 /* =========================
    MILESTONES
 ========================= */
 
-let milestoneClaimed={};
-
 function checkMilestones(){
- if(rolls>=10000&&!milestoneClaimed[10000]){
-  milestoneClaimed[10000]=true;
-  inventory.potions[0]++;
-  toast("🏆 10,000 ROLLS — FREE POTION!");
- }
- if(rolls>=50000){
-  let count=Math.floor(rolls/50000);
-  for(let i=1;i<=count;i++){
-   if(!milestoneClaimed[i*50000]){
-    milestoneClaimed[i*50000]=true;
-    inventory.potions[0]++;
-    toast("🏆 MILESTONE — FREE POTION!");
-   }
-  }
- }
+if(rolls>=10000&&!milestones[10000]){
+milestones[10000]=true;
+inventory.potions[0]++;
+toast("🏆 10K ROLLS — FREE POTION!");
+}
+
+let amount=Math.floor(rolls/50000);
+
+for(let i=1;i<=amount;i++){
+let mark=i*50000;
+
+if(!milestones[mark]){
+milestones[mark]=true;
+inventory.potions[0]++;
+toast("🏆 "+mark.toLocaleString()+" ROLLS — FREE POTION!");
+}
+}
 }
 
 /* =========================
@@ -604,185 +568,206 @@ function checkMilestones(){
 ========================= */
 
 function toggleMenu(){
- document.getElementById("panel").classList.toggle("open");
+document.getElementById("panel").classList.toggle("open");
 }
 
-function tab(id,button){
- document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));
- document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
- document.getElementById(id).classList.add("active");
- button.classList.add("active");
-}
-
-function renderAuras(){
- let html="<h3>AURAS</h3>";
- auras.forEach((a,i)=>{
-  if(a.total===0){
-   html+=`
-   <div class="card">
-    <b>#${i+1} ???</b>
-    <div class="small">Chance: 1 in ${a.odds.toLocaleString()}</div>
-   </div>`;
-  }else{
-   html+=`
-   <div class="card">
-    <b>#${i+1} ${a.name}</b>
-    <div>Owned: ${a.owned}</div>
-    <div>Ever Rolled: ${a.total}</div>
-    <div class="small">1 in ${a.odds.toLocaleString()}</div>
-    <button class="equip" onclick="equipAura(${i})">
-      ${equippedAura===i?"EQUIPPED":"EQUIP"}
-    </button>
-   </div>`;
-  }
- });
- document.getElementById("auras").innerHTML=html;
+function showTab(id,btn){
+document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));
+document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+btn.classList.add("active");
 }
 
 function recipeText(recipe){
- return recipe.map(i=>auras[i].total?auras[i].name:"???").join(" + ");
+return recipe.map(i=>{
+let a=auras[i];
+let rarity=a.odds===0?"1/0":"1/"+a.odds.toLocaleString();
+return a.name+" ("+rarity+")";
+}).join(" + ");
+}
+
+function renderAuras(){
+let html="<h3>AURAS — 80</h3>";
+
+auras.forEach((a,i)=>{
+if(a.total===0){
+html+=`
+<div class="card">
+<b>#${i+1} ???</b>
+<div class="small">Rarity: ${a.odds===0?"1/0":"1/"+a.odds.toLocaleString()}</div>
+</div>`;
+}else{
+html+=`
+<div class="card">
+<b>#${i+1} ${a.name}</b>
+<div>Owned: ${a.owned}</div>
+<div>Ever Rolled: ${a.total}</div>
+<div class="small">Rarity: ${a.odds===0?"1/0":"1/"+a.odds.toLocaleString()}</div>
+<button class="action" onclick="equipAura(${i})">
+${equippedAura===i?"EQUIPPED":"EQUIP"}
+</button>
+</div>`;
+}
+});
+
+document.getElementById("auras").innerHTML=html;
 }
 
 function renderPotions(){
- let html="<h3>POTIONS</h3><p class='small'>Potions give a huge luck boost to your next roll.</p>";
+let html="<h3>POTIONS</h3>";
 
- potions.forEach((p,i)=>{
-  html+=`
-  <div class="card">
-   <b>${p.name}</b>
-   <div>Owned: ${inventory.potions[i]}</div>
-   <div>Next-roll luck: +${p.luck}%</div>
-   <div class="small">Recipe: ${recipeText(p.recipe)}</div>
-   <button class="craft" onclick="craftPotion(${i})">CRAFT</button>
-   <button class="equip" onclick="usePotion(${i})">USE</button>
-   <button class="equip" onclick="setAutoCraft('potion',${i})">
-    ${autoCraft.potion===i?"AUTO CRAFTING":"AUTO CRAFT"}
-   </button>
-  </div>`;
- });
+potions.forEach((p,i)=>{
+html+=`
+<div class="card">
+<b>${p.name}</b>
+<div>Owned: ${inventory.potions[i]}</div>
+<div>Luck: +${p.luck.toLocaleString()}%</div>
+<div class="small"><b>Recipe:</b><br>${recipeText(p.recipe)}</div>
+<button class="action craft" onclick="craftPotion(${i})">CRAFT</button>
+<button class="action" onclick="usePotion(${i})">USE</button>
+<button class="action" onclick="autoCraftSet('potion',${i})">
+${autoCraft.potion===i?"AUTO CRAFTING":"AUTO CRAFT"}
+</button>
+</div>`;
+});
 
- document.getElementById("potions").innerHTML=html;
+document.getElementById("potions").innerHTML=html;
 }
 
 function renderGloves(){
- let html="<h3>GLOVES</h3><p class='small'>Gloves permanently increase your base luck.</p>";
+let html="<h3>GLOVES</h3>";
 
- gloves.forEach((g,i)=>{
-  html+=`
-  <div class="card">
-   <b>${g.name}</b>
-   <div>Owned: ${inventory.gloves[i]}</div>
-   <div>Base Luck: +${g.luck}</div>
-   <div class="small">Recipe: ${recipeText(g.recipe)}</div>
-   <button class="craft" onclick="craftGlove(${i})">CRAFT</button>
-   <button class="equip" onclick="equipGlove(${i})">
-    ${equippedGlove===i?"EQUIPPED":"EQUIP"}
-   </button>
-   <button class="equip" onclick="setAutoCraft('glove',${i})">
-    ${autoCraft.glove===i?"AUTO CRAFTING":"AUTO CRAFT"}
-   </button>
-  </div>`;
- });
+gloves.forEach((g,i)=>{
+html+=`
+<div class="card">
+<b>${g.name}</b>
+<div>Owned: ${inventory.gloves[i]}</div>
+<div>Permanent Luck: +${g.luck}</div>
+<div class="small"><b>Recipe:</b><br>${recipeText(g.recipe)}</div>
+<button class="action craft" onclick="craftGlove(${i})">CRAFT</button>
+<button class="action" onclick="equipGlove(${i})">
+${equippedGlove===i?"EQUIPPED":"EQUIP"}
+</button>
+<button class="action" onclick="autoCraftSet('glove',${i})">
+${autoCraft.glove===i?"AUTO CRAFTING":"AUTO CRAFT"}
+</button>
+</div>`;
+});
 
- document.getElementById("gloves").innerHTML=html;
+document.getElementById("gloves").innerHTML=html;
 }
 
 function renderBiomes(){
- let html="<h3>BIOMES</h3>";
+let html="<h3>BIOMES</h3>";
 
- html+=`
- <div class="card">
-  <b>Current: ${currentBiome.name}</b>
-  <div>Luck multiplier: x${currentBiome.luck}</div>
-  <div>Time remaining: ${biomeSeconds}s</div>
- </div>`;
+html+=`
+<div class="card">
+<b>Current: ${currentBiome.name}</b>
+<div>Luck: x${currentBiome.luck}</div>
+<div>${biomeTime}s remaining</div>
+</div>`;
 
- randomizers.forEach((r,i)=>{
-  html+=`
-  <div class="card">
-   <b>${r.name}</b>
-   <div>Owned: ${inventory.randomizers[i]}</div>
-   <div>Biome luck: x${r.luck}</div>
-   <div class="small">Recipe: ${recipeText(r.recipe)}</div>
-   <button class="craft" onclick="craftRandomizer(${i})">CRAFT</button>
-   <button class="equip" onclick="useRandomizer(${i})">USE</button>
-   <button class="equip" onclick="setAutoCraft('randomizer',${i})">
-    ${autoCraft.randomizer===i?"AUTO CRAFTING":"AUTO CRAFT"}
-   </button>
-  </div>`;
- });
+randomizers.forEach((r,i)=>{
+html+=`
+<div class="card">
+<b>${r.name}</b>
+<div>Owned: ${inventory.randomizers[i]}</div>
+<div>Luck Effect: x${r.luck}</div>
+<div class="small"><b>Recipe:</b><br>${recipeText(r.recipe)}</div>
+<button class="action craft" onclick="craftRandomizer(${i})">CRAFT</button>
+<button class="action" onclick="useRandomizer(${i})">USE</button>
+<button class="action" onclick="autoCraftSet('randomizer',${i})">
+${autoCraft.randomizer===i?"AUTO CRAFTING":"AUTO CRAFT"}
+</button>
+</div>`;
+});
 
- html+="<h3>BIOMES DISCOVERED</h3>";
+html+="<h3>BIOME INDEX</h3>";
 
- biomeList.forEach(b=>{
-  let count=biomeCounts[b.name]||0;
-  html+=`
-  <div class="card">
-   <b>${count?b.name:"???"}</b>
-   <div>Times visited: ${count}</div>
-   ${count?`
-   <div>Duration: ${b.duration}s</div>
-   <div>Rarity: 1 in ${b.rare}</div>
-   <div>Luck: x${b.luck}</div>`:"<div class='small'>Undiscovered</div>"}
-  </div>`;
- });
+biomes.forEach(b=>{
+let count=biomeVisits[b.name]||0;
 
- document.getElementById("biomes").innerHTML=html;
+html+=`
+<div class="card">
+<b>${count?b.name:"???"}</b>
+<div>Times Visited: ${count}</div>
+${count?`
+<div>Duration: ${b.time}s</div>
+<div>Rarity: 1/${b.rare}</div>
+<div>Luck: x${b.luck}</div>`:
+`<div class="small">Undiscovered</div>`}
+</div>`;
+});
+
+document.getElementById("biomes").innerHTML=html;
 }
 
 function renderLeaderboard(){
- let html=`
- <h3>LEADERBOARD</h3>
- <div class="card"><b>#1 You</b><br>${rolls.toLocaleString()} rolls</div>
- <div class="card"><b>Rarest Aura</b><br>${lastRarest>=0?auras[lastRarest].name:"None"}</div>
- <div class="card"><b>Best Luck</b><br>x${getLuck().toFixed(2)}</div>
- <p class="small">This version uses a local leaderboard until an online server is connected.</p>`;
- document.getElementById("leaderboard").innerHTML=html;
+document.getElementById("leaderboard").innerHTML=`
+<h3>LEADERBOARD</h3>
+<div class="card">
+<b>#1 You</b>
+<div>${rolls.toLocaleString()} rolls</div>
+</div>
+<div class="card">
+<b>Rarest Rolled</b>
+<div>${rarest>=0?auras[rarest].name:"None"}</div>
+</div>
+<div class="card">
+<b>Total Luck</b>
+<div>x${totalLuck().toFixed(2)}</div>
+</div>
+`;
 }
 
 function update(){
- document.getElementById("rollCount").textContent=rolls.toLocaleString();
- document.getElementById("rarest").textContent=
-  lastRarest>=0?auras[lastRarest].name:"None";
- document.getElementById("currentBiome").textContent=currentBiome.name;
- document.getElementById("biomeTimer").textContent=biomeSeconds+"s remaining";
+document.getElementById("rolls").textContent=rolls.toLocaleString();
+document.getElementById("rarest").textContent=rarest>=0?auras[rarest].name:"None";
+document.getElementById("biome").textContent=currentBiome.name;
+document.getElementById("timer").textContent=biomeTime+"s remaining";
 
- document.getElementById("autoBtn").style.opacity=rolls>=50?1:.45;
- document.getElementById("fastBtn").style.opacity=rolls>=250?1:.45;
- document.getElementById("autoBtn").innerHTML=
-  (auto?"STOP AUTO":"AUTO ROLL")+"<br><small>"+(rolls>=50?"Unlocked":"50 rolls")+"</small>";
+document.getElementById("auto").innerHTML=
+(auto?"STOP AUTO":"AUTO ROLL")+"<br><small>"+(rolls>=50?"Unlocked":"50 rolls")+"</small>";
 
- renderAuras();
- renderPotions();
- renderGloves();
- renderBiomes();
- renderLeaderboard();
- applyAura();
+document.getElementById("fast").innerHTML=
+"FAST ROLL<br><small>"+(rolls>=150?"Unlocked":"150 rolls")+"</small>";
+
+renderAuras();
+renderPotions();
+renderGloves();
+renderBiomes();
+renderLeaderboard();
+applyAura();
+}
+
+function showResult(name,rarity){
+let r=document.getElementById("result");
+
+r.innerHTML=name+"<div style='font-size:15px;margin-top:5px'>"+rarity+"</div>";
+r.classList.add("show");
+
+setTimeout(()=>r.classList.remove("show"),1000);
 }
 
 function toast(text){
- let t=document.getElementById("toast");
- t.textContent=text;
- t.style.opacity=1;
- clearTimeout(window.toastTimer);
- window.toastTimer=setTimeout(()=>t.style.opacity=0,1800);
+let t=document.getElementById("toast");
+t.textContent=text;
+t.style.opacity=1;
+
+clearTimeout(window.tt);
+window.tt=setTimeout(()=>t.style.opacity=0,1800);
 }
 
-/* =========================
-   SETTINGS
-========================= */
+function applyAura(){
+let g=document.getElementById("glow");
 
-function openSettings(){
- let dark=document.body.classList.contains("dark");
+if(equippedAura===null){
+g.style.background="transparent";
+return;
+}
 
- let choice=confirm(
-  "Settings\n\n"+
-  "Press OK for Dark Mode.\n"+
-  "Press Cancel for Light Mode."
- );
-
- document.body.classList.toggle("dark",choice);
- localStorage.setItem("darkMode",choice);
+let hue=(equippedAura*47)%360;
+g.style.background="hsl("+hue+",90%,60%)";
 }
 
 /* =========================
@@ -790,14 +775,14 @@ function openSettings(){
 ========================= */
 
 setInterval(()=>{
- biomeSeconds--;
+biomeTime--;
 
- if(biomeSeconds<=0){
-  spawnBiome(chooseNaturalBiome());
- }
+if(biomeTime<=0){
+spawnBiome(naturalBiome());
+}
 
- update();
- save();
+update();
+save();
 },1000);
 
 /* =========================
@@ -805,13 +790,9 @@ setInterval(()=>{
 ========================= */
 
 load();
-
-if(localStorage.getItem("darkMode")==="true"){
- document.body.classList.add("dark");
-}
-
 document.body.style.background=currentBiome.bg;
 update();
 </script>
 </body>
 </html>
+```
