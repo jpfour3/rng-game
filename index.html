@@ -1,309 +1,313 @@
-<!-- =========================
-     REPLACE YOUR #stick CSS
-     ========================= -->
-
 <style>
-#stick {
-  width: 110px;
-  height: 210px;
-  position: relative;
-  z-index: 8;
-  transition: transform .25s ease, filter .25s ease;
-}
+/* ===== AURA VFX ENGINE ===== */
 
-/* EQUIPPED INFO ABOVE PLAYER */
-#equippedInfo {
-  position: absolute;
-  left: 50%;
-  top: calc(50% - 175px);
-  transform: translateX(-50%);
-  text-align: center;
-  z-index: 15;
-  pointer-events: none;
-  min-width: 180px;
-}
-
-#equippedName {
-  font-size: 22px;
-  font-weight: 900;
-  text-shadow: 0 0 12px currentColor;
-}
-
-#equippedRarity {
-  font-size: 13px;
-  font-weight: bold;
-  opacity: .85;
-  margin-top: 3px;
-}
-
-/* Stronger base aura */
-.aura-active {
-  animation: auraBreath 1.15s infinite alternate ease-in-out;
-}
-
-@keyframes auraBreath {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.045);
-  }
-}
-
-/* VFX container */
-#vfx {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 2;
-  overflow: hidden;
-}
-
-/* =========================
-   UNIQUE AURA VFX
-   ========================= */
-
-.vfx-orb {
-  position:absolute;
-  width:18px;
-  height:18px;
-  border-radius:50%;
-  background:var(--c);
-  box-shadow:
-    0 0 8px var(--c),
-    0 0 22px var(--c),
-    0 0 45px var(--c);
-  animation:orbFloat 2s ease-in-out infinite alternate;
-}
-
-@keyframes orbFloat {
-  from { transform:translateY(25px) scale(.7); opacity:.35; }
-  to { transform:translateY(-25px) scale(1.4); opacity:1; }
-}
-
-.vfx-ring {
+#equippedInfo{
   position:absolute;
   left:50%;
-  top:50%;
+  top:calc(50% - 170px);
+  transform:translateX(-50%);
+  text-align:center;
+  z-index:20;
+  pointer-events:none;
+  font-weight:900;
+  text-shadow:0 0 12px currentColor;
+}
+
+#equippedName{font-size:23px}
+#equippedRarity{font-size:13px;margin-top:4px;opacity:.8}
+
+.fx{
+  position:absolute;
+  pointer-events:none;
+  transform-origin:center;
+}
+
+/* PARTICLES */
+.particle{
+  position:absolute;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--c);
+  box-shadow:0 0 12px var(--c);
+  animation:float 2s infinite ease-in-out;
+}
+
+@keyframes float{
+  0%{transform:translateY(60px) scale(.4);opacity:0}
+  30%{opacity:1}
+  100%{transform:translateY(-130px) scale(1.2);opacity:0}
+}
+
+/* BLOSSOM */
+.blossom-tree{
+  position:absolute;
+  bottom:10%;
+  width:130px;
+  height:190px;
+}
+.blossom-tree:before{
+  content:"";
+  position:absolute;
+  bottom:0;
+  left:60px;
+  width:15px;
+  height:130px;
+  background:#54372b;
+}
+.blossom-tree:after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:5px;
+  width:125px;
+  height:95px;
+  border-radius:50%;
+  background:#ff9acb;
+  box-shadow:
+    30px -15px #ffb6d9,
+    65px 5px #ff8fc5,
+    90px -20px #ffc4e0;
+}
+
+.petal{
+  position:absolute;
+  width:9px;
+  height:6px;
+  background:#ff9acb;
+  border-radius:100% 0;
+  animation:petalFall 3s linear infinite;
+}
+
+@keyframes petalFall{
+  from{transform:translateY(-100px) rotate(0)}
+  to{transform:translateY(300px) rotate(360deg);opacity:0}
+}
+
+/* CRYSTALS */
+.crystal{
+  width:25px;
+  height:60px;
+  background:linear-gradient(135deg,#fff,#8beaff,#8d7cff);
+  clip-path:polygon(50% 0,100% 35%,70% 100%,30% 100%,0 35%);
+  filter:drop-shadow(0 0 15px #8beaff);
+  animation:crystalFloat 2s infinite alternate;
+}
+
+@keyframes crystalFloat{
+  from{transform:translateY(20px) rotate(-10deg)}
+  to{transform:translateY(-25px) rotate(10deg)}
+}
+
+/* FIRE */
+.fire{
+  width:100px;
+  height:150px;
+  background:linear-gradient(#fff,#ffcc00,#ff5a00,#d90000);
+  clip-path:polygon(
+    50% 0,65% 28%,90% 12%,78% 55%,
+    100% 70%,65% 100%,50% 75%,
+    35% 100%,0 70%,22% 52%,10% 20%,38% 35%
+  );
+  filter:drop-shadow(0 0 25px #ff4500);
+  animation:fire .25s infinite alternate;
+}
+
+@keyframes fire{
+  from{transform:scaleY(.9)}
+  to{transform:scaleY(1.12) skewX(4deg)}
+}
+
+/* WATER */
+.water{
+  width:250px;
+  height:120px;
+  border-radius:50%;
+  border:12px solid #00bfff;
+  box-shadow:0 0 25px #00bfff,inset 0 0 25px #00bfff;
+  animation:water 1s infinite alternate;
+}
+
+@keyframes water{
+  from{transform:scaleX(.8)}
+  to{transform:scaleX(1.15) rotate(4deg)}
+}
+
+/* TORNADO */
+.tornado{
+  width:170px;
+  height:250px;
+  border-left:10px solid #aaa;
+  border-right:10px solid #aaa;
+  border-radius:50%;
+  animation:tornado 1s linear infinite;
+}
+
+@keyframes tornado{
+  to{transform:rotate(360deg)}
+}
+
+/* BLACK HOLE */
+.blackhole{
   width:220px;
   height:220px;
-  margin:-110px;
-  border:4px solid var(--c);
   border-radius:50%;
-  box-shadow:0 0 20px var(--c), inset 0 0 20px var(--c);
-  animation:ringSpin 4s linear infinite;
+  background:#000;
+  box-shadow:
+    0 0 20px #8b00ff,
+    0 0 60px #6a00ff,
+    0 0 100px #300060;
+  animation:blackhole 2s infinite alternate;
 }
 
-.vfx-ring2 {
-  width:150px;
-  height:150px;
-  margin:-75px;
-  border-style:dashed;
-  animation:ringSpin 2.5s linear infinite reverse;
+@keyframes blackhole{
+  from{transform:scale(.85)}
+  to{transform:scale(1.15)}
 }
 
-@keyframes ringSpin {
-  to { transform:rotate(360deg); }
-}
-
-.vfx-particle {
-  position:absolute;
-  width:5px;
-  height:5px;
-  background:var(--c);
-  box-shadow:0 0 10px var(--c);
-  animation:particleRise 2s linear infinite;
-}
-
-@keyframes particleRise {
-  from {
-    transform:translateY(100px) scale(.2);
-    opacity:0;
-  }
-  30% { opacity:1; }
-  to {
-    transform:translateY(-160px) scale(1.3);
-    opacity:0;
-  }
-}
-
-.vfx-beam {
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:7px;
-  height:360px;
-  transform:translate(-50%,-50%);
-  background:linear-gradient(transparent,var(--c),transparent);
-  filter:blur(2px);
-  box-shadow:0 0 25px var(--c);
-  animation:beamPulse .25s infinite alternate;
-}
-
-@keyframes beamPulse {
-  from { opacity:.3; }
-  to { opacity:1; }
-}
-
-/* FLAME */
-.vfx-flame {
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:170px;
-  height:170px;
-  transform:translate(-50%,-50%);
+/* RINGS */
+.ring{
+  width:230px;
+  height:230px;
+  border:5px solid var(--c);
   border-radius:50%;
-  background:radial-gradient(circle,
-    #fff 0%,
-    var(--c) 25%,
-    transparent 70%);
-  filter:blur(8px);
-  animation:flamePulse .45s infinite alternate;
+  box-shadow:0 0 20px var(--c);
+  animation:spin 3s linear infinite;
 }
 
-@keyframes flamePulse {
-  from { transform:translate(-50%,-50%) scale(.8); }
-  to { transform:translate(-50%,-50%) scale(1.18); }
+@keyframes spin{
+  to{transform:rotate(360deg)}
 }
 
 /* LIGHTNING */
-.vfx-lightning {
-  position:absolute;
-  width:3px;
-  height:90px;
+.bolt{
+  width:8px;
+  height:150px;
   background:#fff;
-  box-shadow:0 0 10px var(--c),0 0 25px var(--c);
-  transform:rotate(var(--r));
-  animation:lightningFlash .12s infinite;
+  clip-path:polygon(
+    45% 0,100% 0,62% 42%,90% 42%,
+    30% 100%,42% 55%,10% 55%
+  );
+  box-shadow:0 0 20px var(--c);
+  animation:flash .12s infinite;
 }
 
-@keyframes lightningFlash {
-  0%,100% { opacity:.1; }
-  50% { opacity:1; }
+@keyframes flash{
+  50%{opacity:0}
 }
 
-/* VOID */
-.vfx-void {
-  position:absolute;
-  left:50%;
-  top:50%;
+/* COMET */
+.comet{
+  width:25px;
+  height:25px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 0 25px #fff,0 0 50px var(--c);
+  animation:comet 1s linear infinite;
+}
+
+@keyframes comet{
+  from{transform:translate(-180px,-80px)}
+  to{transform:translate(180px,80px)}
+}
+
+/* SHADOW */
+.shadow{
+  width:220px;
+  height:260px;
+  background:#050505;
+  clip-path:polygon(50% 0,85% 25%,100% 100%,0 100%,15% 25%);
+  filter:drop-shadow(0 0 25px #000);
+  animation:shadow 2s infinite alternate;
+}
+
+@keyframes shadow{
+  from{transform:scale(.9)}
+  to{transform:scale(1.05)}
+}
+
+/* GALAXY */
+.galaxy{
   width:300px;
   height:300px;
-  margin:-150px;
   border-radius:50%;
-  background:radial-gradient(circle,#000 0%,#050505 35%,transparent 70%);
-  box-shadow:0 0 80px #000, inset 0 0 60px #000;
-  animation:voidPulse 2s infinite alternate;
+  background:
+    radial-gradient(circle,#fff 1px,transparent 2px) 0 0/30px 30px,
+    radial-gradient(circle,#b78cff 1px,transparent 2px) 15px 15px/40px 40px,
+    #090014;
+  box-shadow:0 0 50px #8b00ff;
+  animation:galaxy 8s linear infinite;
 }
 
-@keyframes voidPulse {
-  from { transform:scale(.8); }
-  to { transform:scale(1.15); }
+@keyframes galaxy{
+  to{transform:rotate(360deg)}
 }
 
-/* GLITCH 1/1B */
-.glitch-aura {
-  position:absolute;
-  left:50%;
-  top:50%;
+/* GLITCH */
+.glitch{
   width:280px;
   height:280px;
-  margin:-140px;
-  border:2px solid #00ffff;
+  border:3px solid #00ffff;
   box-shadow:
     12px 0 #ff0055,
-    -12px 0 #00ffff,
-    0 0 30px #fff;
-  animation:glitchAura .08s infinite steps(2);
+    -12px 0 #fff,
+    0 0 40px #00ffff;
+  animation:glitch .07s infinite steps(2);
 }
 
-.glitch-aura::before,
-.glitch-aura::after {
-  content:"";
-  position:absolute;
-  inset:20px;
-  border:2px dashed #fff;
+@keyframes glitch{
+  0%{transform:translate(0)}
+  25%{transform:translate(8px,-5px) skewX(10deg)}
+  50%{transform:translate(-7px,4px)}
+  75%{transform:translate(5px,3px) skewX(-8deg)}
 }
 
-.glitch-aura::after {
-  inset:55px;
-  border-color:#ff0055;
+/* STAR */
+.star{
+  width:180px;
+  height:180px;
+  background:#fff;
+  clip-path:polygon(
+    50% 0,61% 36%,100% 50%,61% 64%,
+    50% 100%,39% 64%,0 50%,39% 36%
+  );
+  filter:drop-shadow(0 0 25px #fff);
+  animation:star 2s infinite alternate;
 }
 
-@keyframes glitchAura {
-  0% {
-    transform:translate(0,0) skew(0);
-    filter:hue-rotate(0deg);
-  }
-  25% {
-    transform:translate(8px,-4px) skew(8deg);
-    filter:hue-rotate(90deg);
-  }
-  50% {
-    transform:translate(-7px,5px) skew(-10deg);
-    filter:hue-rotate(180deg);
-  }
-  75% {
-    transform:translate(5px,2px) skew(5deg);
-    filter:hue-rotate(270deg);
-  }
-  100% {
-    transform:translate(0,0);
-    filter:hue-rotate(360deg);
-  }
+@keyframes star{
+  to{transform:rotate(45deg) scale(1.15)}
 }
 
-/* Anime-specific but still original VFX */
-.vfx-eye {
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:100px;
-  height:100px;
-  margin:-50px;
-  border-radius:50%;
-  border:6px solid #ff0000;
-  box-shadow:0 0 35px #ff0000;
-  animation:eyeSpin 3s linear infinite;
+/* DOOM */
+.doom{
+  width:280px;
+  height:280px;
+  border:15px solid #600;
+  box-shadow:0 0 50px #900,inset 0 0 50px #300;
+  animation:doom 1s infinite alternate;
 }
 
-@keyframes eyeSpin {
-  to { transform:rotate(360deg); }
+@keyframes doom{
+  to{transform:rotate(45deg) scale(1.1)}
 }
 
-.vfx-cloud {
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:260px;
-  height:100px;
-  margin:-50px -130px;
-  border-radius:50%;
-  border:10px solid #fff;
-  box-shadow:0 0 25px #fff;
-  animation:cloudFloat 2s infinite alternate;
+/* 1/1B */
+.absolute-glitch{
+  width:340px;
+  height:340px;
+  border:3px dashed #fff;
+  box-shadow:
+    15px 0 #00ffff,
+    -15px 0 #ff0055,
+    0 0 60px #fff;
+  animation:ag .05s infinite steps(2);
 }
 
-@keyframes cloudFloat {
-  from { transform:scale(.9) rotate(-3deg); }
-  to { transform:scale(1.1) rotate(3deg); }
-}
-
-.vfx-sword {
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:260px;
-  height:5px;
-  background:linear-gradient(90deg,transparent,#fff,var(--c),#fff,transparent);
-  box-shadow:0 0 20px var(--c);
-  transform:translate(-50%,-50%) rotate(-25deg);
-  animation:swordSlash .8s infinite alternate;
-}
-
-@keyframes swordSlash {
-  from { transform:translate(-50%,-50%) rotate(-35deg) scaleX(.7); }
-  to { transform:translate(-50%,-50%) rotate(25deg) scaleX(1.1); }
+@keyframes ag{
+  0%{transform:translate(0) skew(0)}
+  25%{transform:translate(15px,-8px) skew(12deg)}
+  50%{transform:translate(-12px,9px) skew(-15deg)}
+  75%{transform:translate(8px,4px)}
 }
 </style>
