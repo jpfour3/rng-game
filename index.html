@@ -4,721 +4,507 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Aura Roll</title>
-
 <style>
 *{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#fff;color:#111;overflow:hidden;transition:background .6s}
+#game{height:100vh;position:relative;overflow:hidden}
+#stage{height:100%;display:flex;align-items:center;justify-content:center;position:relative}
+#stick{width:110px;height:210px;position:relative;z-index:8}
+.head{position:absolute;left:28px;top:0;width:55px;height:55px;border:6px solid #111;border-radius:50%;background:#fff}
+.body{position:absolute;left:53px;top:52px;width:6px;height:90px;background:#111}
+.arm,.leg{position:absolute;left:56px;width:65px;height:6px;background:#111;transform-origin:left}
+.a1{top:70px;transform:rotate(145deg)}
+.a2{top:70px;transform:rotate(35deg)}
+.l1{top:138px;transform:rotate(115deg)}
+.l2{top:138px;transform:rotate(65deg)}
 
-body{
- margin:0;
- font-family:Arial,sans-serif;
- background:#fff;
- color:#111;
- overflow:hidden;
- transition:.5s;
-}
-
-#game{
- width:100vw;
- height:100vh;
- position:relative;
- overflow:hidden;
-}
-
-/* =========================
-   BACKGROUND FX
-========================= */
-
-#fx{
- position:absolute;
- inset:0;
- pointer-events:none;
- overflow:hidden;
- z-index:1;
-}
-
-.particle{
- position:absolute;
- pointer-events:none;
- animation:float 2s linear infinite;
-}
-
-@keyframes float{
- 0%{transform:translateY(20px) scale(.3);opacity:0}
- 30%{opacity:1}
- 100%{transform:translateY(-180px) scale(1.2);opacity:0}
-}
-
-.spin{
- animation:spin 4s linear infinite;
-}
-
-@keyframes spin{
- to{transform:rotate(360deg)}
-}
-
-/* =========================
-   STAGE
-========================= */
-
-#stage{
- height:100%;
- display:flex;
- align-items:center;
- justify-content:center;
- position:relative;
- z-index:3;
-}
-
-#stick{
- width:120px;
- height:230px;
- position:relative;
-}
-
-.head{
- position:absolute;
- left:32px;
- top:0;
- width:56px;
- height:56px;
- border:6px solid #111;
- border-radius:50%;
- z-index:10;
- background:white;
-}
-
-.body{
- position:absolute;
- left:57px;
- top:52px;
- width:6px;
- height:95px;
- background:#111;
- z-index:10;
-}
-
-.arm,.leg{
- position:absolute;
- left:60px;
- width:70px;
- height:6px;
- background:#111;
- transform-origin:left;
- z-index:10;
-}
-
-.a1{top:72px;transform:rotate(145deg)}
-.a2{top:72px;transform:rotate(35deg)}
-.l1{top:143px;transform:rotate(115deg)}
-.l2{top:143px;transform:rotate(65deg)}
-
-/* =========================
-   AURA VFX
-========================= */
-
-#auraFX{
- position:absolute;
- left:-190px;
- top:-170px;
- width:500px;
- height:500px;
- pointer-events:none;
- z-index:2;
-}
-
-/* basic aura */
-.aura-ring{
- position:absolute;
- inset:80px;
- border:3px solid currentColor;
- border-radius:50%;
- animation:orbit 3s linear infinite;
-}
-
-.aura-ring.r2{
- inset:45px;
- border-style:dashed;
- animation-duration:5s;
-}
-
-.aura-ring.r3{
- inset:115px;
- animation-duration:2s;
-}
-
-@keyframes orbit{
- to{transform:rotate(360deg)}
-}
-
-/* =========================
-   SPECIAL SHAPES
-========================= */
-
-.shard{
- position:absolute;
- width:18px;
- height:65px;
- background:currentColor;
- clip-path:polygon(50% 0,100% 75%,50% 100%,0 75%);
- animation:shardSpin 3s linear infinite;
-}
-
-@keyframes shardSpin{
- 0%{transform:rotate(0deg) translateY(-170px)}
- 100%{transform:rotate(360deg) translateY(-170px)}
-}
-
-.star{
- position:absolute;
- width:55px;
- height:55px;
- background:currentColor;
- clip-path:polygon(
- 50% 0,61% 37%,100% 50%,61% 63%,
- 50% 100%,39% 63%,0 50%,39% 37%
- );
- animation:pulse 1.5s infinite alternate;
-}
-
-@keyframes pulse{
- from{transform:scale(.7) rotate(0)}
- to{transform:scale(1.3) rotate(180deg)}
-}
-
-.orb{
- position:absolute;
- width:25px;
- height:25px;
- border-radius:50%;
- background:currentColor;
- box-shadow:0 0 25px currentColor;
- animation:orb 2s linear infinite;
-}
-
-@keyframes orb{
- 0%{transform:rotate(0deg) translateX(150px)}
- 100%{transform:rotate(360deg) translateX(150px)}
-}
-
-/* =========================
-   80 UNIQUE AURA THEMES
-========================= */
-
-.v1{color:#aaa}
-.v2{color:#78aaff}
-.v3{color:#65c878}
-.v4{color:#ddd}
-.v5{color:#45dfff}
-.v6{color:#b7e8ff}
-.v7{color:#c49a6c}
-.v8{color:#fff06a}
-.v9{color:#ff914d}
-.v10{color:#9ce7ff}
-
-.v11{color:#ff5722}
-.v12{color:#aeeeff}
-.v13{color:#777}
-.v14{color:#ff7de9}
-.v15{color:#b8dfff}
-.v16{color:#80dfff}
-.v17{color:#777}
-.v18{color:#75cfff}
-.v19{color:#72e5ff}
-.v20{color:#9c45ff}
-
-.v21{color:#ffcc33}
-.v22{color:#b46cff}
-.v23{color:#ff7aff}
-.v24{color:#9a5cff}
-.v25{color:#ff402f}
-.v26{color:#9eefff}
-.v27{color:#63d9ff}
-.v28{color:#582aff}
-.v29{color:#e83dff}
-.v30{color:#eee}
-
-.v31{color:#ff4cff}
-.v32{color:#5edfff}
-.v33{color:#a05cff}
-.v34{color:#fff}
-.v35{color:#ff3344}
-.v36{color:#8bffff}
-.v37{color:#ff77aa}
-.v38{color:#6affff}
-.v39{color:#777}
-.v40{color:#fff}
-
-.v41{color:#ffcc55}
-.v42{color:#b875ff}
-.v43{color:#6aff88}
-.v44{color:#ffdd66}
-.v45{color:#54ddff}
-.v46{color:#ff55ff}
-.v47{color:#ffff55}
-.v48{color:#ff6688}
-.v49{color:#aa66ff}
-.v50{color:#55ffff}
-
-.v51{color:#ff7744}
-.v52{color:#77bbff}
-.v53{color:#ffee77}
-.v54{color:#ff5577}
-.v55{color:#55ddff}
-.v56{color:#cc77ff}
-.v57{color:#77ff99}
-.v58{color:#ffcc55}
-.v59{color:#ff55bb}
-.v60{color:#6666ff}
-
-.v61{color:#ff3333}
-.v62{color:#33ddff}
-.v63{color:#ffcc33}
-.v64{color:#dd55ff}
-.v65{color:#33ff88}
-.v66{color:#ff55aa}
-.v67{color:#55aaff}
-.v68{color:#ffffff}
-.v69{color:#ff0055}
-.v70{color:#00ffff}
-
-.v71{color:#ff6600}
-.v72{color:#00ffcc}
-.v73{color:#ffff00}
-.v74{color:#ff0066}
-.v75{color:#00aaff}
-.v76{color:#bb00ff}
-.v77{color:#00ff44}
-.v78{color:#ffffff}
-.v79{color:#000}
-.v80{color:#fff}
-
-/* =========================
-   TOP UI
-========================= */
-
-#top{
- position:absolute;
- left:18px;
- top:15px;
- z-index:20;
- font-size:14px;
-}
+#vfx{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden}
+.v{position:absolute;pointer-events:none}
+#top{position:absolute;left:18px;top:15px;z-index:20;font-size:14px}
+#bottomInfo{position:absolute;left:18px;bottom:95px;z-index:20;font-size:14px}
 
 #admin{
- position:absolute;
- right:18px;
- top:15px;
- z-index:30;
- display:flex;
- gap:5px;
+position:absolute;
+right:18px;
+top:15px;
+z-index:25;
+display:flex;
+gap:5px
 }
-
-#adminInput{
- width:105px;
- padding:7px;
- border:1px solid #bbb;
- border-radius:7px;
+#admin input{
+width:90px;
+padding:7px;
+border:1px solid #aaa;
+border-radius:7px
 }
-
-#adminBtn{
- border:0;
- border-radius:7px;
- background:#111;
- color:white;
- padding:7px 10px;
+#admin button{
+padding:7px 9px;
+border:0;
+border-radius:7px;
+background:#111;
+color:#fff
 }
-
-#adminStatus{
- position:absolute;
- right:18px;
- top:55px;
- z-index:30;
- font-size:12px;
- font-weight:bold;
-}
-
-#bottomInfo{
- position:absolute;
- left:18px;
- bottom:95px;
- z-index:20;
- font-size:14px;
-}
-
-/* =========================
-   MENU
-========================= */
 
 #menu{
- position:absolute;
- right:18px;
- top:50%;
- transform:translateY(-50%);
- width:48px;
- height:75px;
- border:0;
- border-radius:12px;
- background:#111;
- color:white;
- font-size:25px;
- z-index:30;
+position:absolute;
+right:18px;
+top:50%;
+transform:translateY(-50%);
+width:48px;
+height:75px;
+border:0;
+border-radius:12px;
+background:#111;
+color:#fff;
+font-size:25px;
+z-index:25
 }
 
 #panel{
- position:absolute;
- right:-430px;
- top:0;
- width:430px;
- height:100%;
- background:#f4f4f4;
- padding:18px;
- overflow:auto;
- transition:.3s;
- z-index:50;
- box-shadow:-5px 0 20px #0002;
+position:absolute;
+right:-440px;
+top:0;
+width:440px;
+height:100%;
+background:#f4f4f4;
+padding:18px;
+overflow:auto;
+transition:.3s;
+z-index:30;
+box-shadow:-5px 0 20px #0002
 }
-
 #panel.open{right:0}
 
 .close{
- float:right;
- border:0;
- background:none;
- font-size:28px;
+float:right;
+border:0;
+background:none;
+font-size:28px
 }
 
 .tabs{
- display:flex;
- gap:5px;
- flex-wrap:wrap;
- margin:35px 0 15px;
+display:flex;
+gap:5px;
+flex-wrap:wrap;
+margin:35px 0 15px
 }
-
 .tab{
- border:0;
- padding:8px;
- border-radius:7px;
+border:0;
+padding:8px;
+border-radius:7px
 }
-
 .tab.active{
- background:#111;
- color:#fff;
+background:#111;
+color:#fff
 }
 
 .section{display:none}
 .section.active{display:block}
 
 .card{
- background:#fff;
- border:1px solid #ccc;
- border-radius:9px;
- padding:10px;
- margin:8px 0;
+background:#fff;
+border:1px solid #ccc;
+border-radius:9px;
+padding:10px;
+margin:8px 0
 }
 
 button{cursor:pointer}
 
 .action{
- border:0;
- border-radius:6px;
- padding:7px;
- margin-top:5px;
+border:0;
+border-radius:6px;
+padding:7px;
+margin-top:5px
 }
 
 .craft{
- background:#111;
- color:#fff;
- width:100%;
+background:#111;
+color:#fff;
+width:100%
 }
-
-/* =========================
-   DROPDOWN CRAFTING
-========================= */
-
-.craftBox{
- margin-top:7px;
-}
-
-.craftBox summary{
- cursor:pointer;
- padding:8px;
- background:#eee;
- border-radius:6px;
- font-weight:bold;
-}
-
-.craftInside{
- padding-top:8px;
-}
-
-/* =========================
-   ROLL BUTTONS
-========================= */
 
 #buttons{
- position:absolute;
- bottom:18px;
- left:50%;
- transform:translateX(-50%);
- display:flex;
- gap:10px;
- z-index:30;
+position:absolute;
+bottom:18px;
+left:50%;
+transform:translateX(-50%);
+display:flex;
+gap:10px;
+z-index:20
 }
 
 .roll{
- width:125px;
- height:55px;
- background:#111;
- color:#fff;
- border:0;
- border-radius:12px;
- font-weight:bold;
+width:125px;
+height:55px;
+background:#111;
+color:#fff;
+border:0;
+border-radius:12px;
+font-weight:bold
 }
 
-.roll:disabled{
- opacity:.4;
-}
+.roll:disabled{opacity:.4}
 
 #result{
- position:absolute;
- top:57%;
- left:50%;
- transform:translate(-50%,-50%);
- text-align:center;
- font-size:30px;
- font-weight:bold;
- opacity:0;
- transition:.2s;
- pointer-events:none;
- z-index:40;
+position:absolute;
+top:57%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+font-size:28px;
+font-weight:bold;
+opacity:0;
+transition:.2s;
+pointer-events:none;
+z-index:22;
+text-shadow:0 2px 12px #fff
 }
 
-#result.show{
- opacity:1;
-}
-
-#result .rarity{
- font-size:15px;
- margin-top:8px;
-}
+#result.show{opacity:1}
 
 .small{
- font-size:12px;
- opacity:.7;
+font-size:12px;
+opacity:.7
 }
 
 #toast{
- position:absolute;
- top:18px;
- left:50%;
- transform:translateX(-50%);
- background:#111;
- color:#fff;
- padding:9px 14px;
- border-radius:9px;
- opacity:0;
- z-index:100;
-}
-
-.voidMode{
- animation:voidScreen .7s infinite alternate;
-}
-
-@keyframes voidScreen{
- from{filter:brightness(.5)}
- to{filter:brightness(1.2)}
+position:absolute;
+top:18px;
+left:50%;
+transform:translateX(-50%);
+background:#111;
+color:#fff;
+padding:9px 14px;
+border-radius:9px;
+opacity:0;
+z-index:50
 }
 
 /* =========================
-   ADMIN MODE
+   GENERAL VFX
 ========================= */
 
-body.adminMode #stage{
- filter:drop-shadow(0 0 25px #000);
+.vfxParticle{
+position:absolute;
+pointer-events:none
 }
 
-body.adminMode #adminStatus{
- color:#ff2222;
+.spark{
+width:5px;
+height:5px;
+background:#fff;
+box-shadow:0 0 10px #fff;
+border-radius:50%;
+animation:sparkFly 1s linear forwards
 }
 
-body.adminMode #top{
- text-decoration:line-through;
+@keyframes sparkFly{
+0%{transform:translate(0,0) scale(1);opacity:1}
+100%{transform:translate(var(--x),var(--y)) scale(0);opacity:0}
 }
 
-/* =========================
-   AURA-SPECIFIC VFX
-========================= */
-
-.vfx-spark .star{animation-duration:.4s}
-.vfx-pebble .orb{animation-duration:5s}
-.vfx-leaf .star{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
-.vfx-breeze .aura-ring{border-style:dotted}
-.vfx-drop .orb{border-radius:50% 50% 60% 60%}
-.vfx-dust .particle{width:4px;height:4px}
-.vfx-glow .star{filter:blur(3px)}
-.vfx-ember .particle{box-shadow:0 0 15px currentColor}
-.vfx-frost .shard{width:12px;height:80px}
-.vfx-thunder .aura-ring{border-width:6px}
-.vfx-flame .star{clip-path:polygon(50% 0,75% 35%,100% 45%,65% 60%,50% 100%,35% 60%,0 45%,25% 35%)}
-.vfx-wave .aura-ring{border-radius:45%}
-.vfx-shadow{filter:drop-shadow(0 0 15px #000)}
-.vfx-crystal .shard{width:25px;height:90px}
-.vfx-venom .orb{filter:blur(2px)}
-.vfx-solar .star{transform:scale(1.5)}
-.vfx-lunar .star{border-radius:50%}
-.vfx-comet .particle{width:7px;height:35px}
-.vfx-void .aura-ring{border-width:8px}
-.vfx-inferno .particle{animation-duration:.5s}
-.vfx-glacier .shard{width:20px;height:110px}
-.vfx-tempest .aura-ring{animation-duration:.5s}
-.vfx-abyss .aura-ring{border-style:dashed}
-.vfx-eclipse .star{box-shadow:0 0 40px currentColor}
-.vfx-phantom{opacity:.75}
-.vfx-prism .aura-ring{border-width:5px}
-.vfx-nebula .orb{width:45px;height:45px;filter:blur(8px)}
-.vfx-gravity .particle{animation-duration:4s}
-.vfx-starlight .star{width:90px;height:90px}
-.vfx-bloodmoon .star{border-radius:50%}
-.vfx-aurora .aura-ring{border-style:dotted}
-.vfx-overdrive .aura-ring{animation-duration:.3s}
-.vfx-celestial .star{width:100px;height:100px}
-.vfx-oblivion .aura-ring{border-width:10px}
-.vfx-divine .star{filter:drop-shadow(0 0 30px currentColor)}
-.vfx-galaxy .orb{width:60px;height:60px;filter:blur(10px)}
-.vfx-singularity .aura-ring{transform:scale(.5)}
-.vfx-eternal .aura-ring{border-width:7px}
-.vfx-rift .aura-ring{border-style:dashed}
-.vfx-chronos .aura-ring{animation-duration:10s}
-.vfx-seraph .star{width:120px;height:120px}
-.vfx-omega .aura-ring{border-width:12px}
-.vfx-genesis .star{width:130px;height:130px}
-.vfx-infinity .aura-ring{border-radius:40%}
-.vfx-mythic .particle{width:10px;height:10px}
-.vfx-cosmic .orb{width:80px;height:80px}
-.vfx-astral .star{width:110px;height:110px}
-.vfx-heavenly .star{filter:blur(2px)}
-.vfx-doom .aura-ring{border-width:14px}
-.vfx-worldbreaker .shard{width:30px;height:130px}
-.vfx-reality .aura-ring{border-radius:10%}
-.vfx-ancient .shard{animation-duration:8s}
-.vfx-forbidden .aura-ring{border-style:dashed}
-.vfx-immortal .star{width:150px;height:150px}
-.vfx-transcendent .aura-ring{border-width:16px}
-.vfx-absolute .star{width:160px;height:160px}
-.vfx-unbound .orb{width:90px;height:90px}
-.vfx-limitless .aura-ring{inset:10px}
-.vfx-paradox .aura-ring{animation-direction:reverse}
-.vfx-omniversal .star{width:180px;height:180px}
-.vfx-finality .aura-ring{border-width:20px}
-.vfx-godly .star{width:190px;height:190px}
-.vfx-chosen .particle{width:15px;height:15px}
-.vfx-first .aura-ring{border-width:25px}
-.vfx-beyond .orb{width:100px;height:100px}
-.vfx-limitlessx .aura-ring{inset:-20px}
-.vfx-eternalflame .particle{box-shadow:0 0 30px currentColor}
-.vfx-origin .star{width:220px;height:220px}
-.vfx-end .aura-ring{border-width:30px}
-.vfx-null .aura-ring{border-color:#000}
-.vfx-impossible{filter:invert(1)}
-.vfx-infinitevoid .aura-ring{inset:-50px}
-.vfx-creator .star{
- width:210px;
- height:210px;
-}
-.vfx-creator:after{
- content:"01";
- position:absolute;
- font-size:80px;
- font-weight:bold;
- color:#111;
- text-shadow:20px 30px #777;
- left:160px;
- top:170px;
-}
-.vfx-absolutezero .shard{
- width:28px;
- height:150px;
-}
-.vfx-absolutezero .aura-ring{
- border-color:#9eefff;
- box-shadow:0 0 30px #9eefff;
+.shard{
+width:18px;
+height:70px;
+background:linear-gradient(90deg,#fff,#8ff,#bdf);
+clip-path:polygon(50% 0,100% 100%,50% 82%,0 100%);
+filter:drop-shadow(0 0 12px #9df)
 }
 
-/* 1/0 */
-.vfx-impossibleone{
- background:
- repeating-linear-gradient(
- 90deg,
- #000 0,
- #000 20px,
- #111 21px,
- #000 40px
- );
- border-radius:50%;
+@keyframes shardFloat{
+0%{transform:translateY(20px) rotate(0deg)}
+100%{transform:translateY(-25px) rotate(15deg)}
 }
 
-.vfx-impossibleone .aura-ring{
- border:4px solid white;
- box-shadow:
- 0 0 25px white,
- 0 0 60px #fff;
+.binary{
+font:bold 22px monospace;
+color:#63ff63;
+text-shadow:0 0 8px #0f0;
+animation:binaryFall 2s linear infinite
 }
 
-.vfx-impossibleone:after{
- content:"1/0";
- position:absolute;
- color:white;
- font-size:55px;
- font-weight:bold;
- left:170px;
- top:210px;
+@keyframes binaryFall{
+from{transform:translateY(-50px)}
+to{transform:translateY(110vh)}
 }
 
-/* =========================
-   RARITY FLASH
-========================= */
-
-.rarityFlash{
- position:absolute;
- inset:0;
- pointer-events:none;
- z-index:35;
- animation:flash .7s forwards;
+.crow{
+font-size:30px;
+animation:crowFly 2.5s linear infinite
 }
 
-@keyframes flash{
- 0%{background:white;opacity:.8}
- 100%{background:transparent;opacity:0}
+@keyframes crowFly{
+0%{transform:translate(-120px,50px) rotate(-15deg);opacity:0}
+20%{opacity:1}
+100%{transform:translate(600px,-150px) rotate(15deg);opacity:0}
+}
+
+.flame{
+width:25px;
+height:65px;
+background:#ff6b00;
+clip-path:polygon(
+50% 0,
+75% 35%,
+100% 55%,
+72% 55%,
+100% 100%,
+0 100%,
+28% 55%,
+0 60%,
+35% 30%
+);
+filter:drop-shadow(0 0 15px #ff5a00);
+animation:flameMove .25s infinite alternate
+}
+
+@keyframes flameMove{
+from{transform:scaleY(.9)}
+to{transform:scaleY(1.1)}
+}
+
+.water{
+width:80px;
+height:25px;
+border-radius:50%;
+background:#45c8ff;
+box-shadow:0 0 20px #09f;
+animation:waterMove 1s infinite alternate
+}
+
+@keyframes waterMove{
+from{transform:scaleX(.8)}
+to{transform:scaleX(1.2)}
+}
+
+.frog{
+font-size:34px;
+animation:frogBounce .8s infinite alternate
+}
+
+@keyframes frogBounce{
+to{transform:translateY(-20px)}
+}
+
+.sword{
+font-size:50px;
+animation:swordSlash .7s infinite alternate
+}
+
+@keyframes swordSlash{
+from{transform:rotate(-25deg)}
+to{transform:rotate(25deg)}
+}
+
+.cloud{
+font-size:65px;
+filter:drop-shadow(0 0 15px white);
+animation:cloudFloat 2s infinite alternate
+}
+
+@keyframes cloudFloat{
+to{transform:translateY(-18px)}
+}
+
+.bigText{
+font-size:80px;
+font-weight:900;
+text-shadow:0 0 20px currentColor
+}
+
+.ring{
+position:absolute;
+border:4px solid;
+border-radius:50%;
+animation:ringPulse 1.2s infinite alternate
+}
+
+@keyframes ringPulse{
+from{transform:scale(.8);opacity:.4}
+to{transform:scale(1.15);opacity:1}
+}
+
+.eye{
+width:120px;
+height:120px;
+border:8px solid #b00000;
+border-radius:50%;
+background:#160000;
+box-shadow:0 0 30px #f00;
+position:absolute
+}
+
+.eye:after{
+content:"";
+position:absolute;
+width:35px;
+height:35px;
+background:#111;
+border-radius:50%;
+left:35px;
+top:35px;
+box-shadow:
+-45px -20px 0 -10px #111,
+45px -20px 0 -10px #111
+}
+
+.chakra{
+position:absolute;
+width:180px;
+height:180px;
+border-radius:50%;
+border:12px solid #ff8a00;
+box-shadow:
+0 0 20px #f60,
+0 0 50px #f90,
+inset 0 0 30px #f00;
+animation:chakra 1s infinite alternate
+}
+
+@keyframeschakra{
+from{transform:scale(.8)}
+to{transform:scale(1.1)}
+}
+
+.lightning{
+width:12px;
+height:100px;
+background:#8ef;
+clip-path:polygon(
+50% 0,
+100% 0,
+65% 38%,
+100% 38%,
+35% 100%,
+45% 55%,
+0 55%
+);
+filter:drop-shadow(0 0 15px #0ff);
+animation:lightning .15s infinite alternate
+}
+
+@keyframeslightning{
+to{opacity:.2}
+}
+
+.blood{
+width:14px;
+height:14px;
+border-radius:50%;
+background:#900;
+box-shadow:0 0 12px #f00;
+animation:bloodDrop 1.3s linear forwards
+}
+
+@keyframesbloodDrop{
+to{transform:translateY(500px);opacity:0}
+}
+
+.wave{
+position:absolute;
+width:250px;
+height:100px;
+border:12px solid #29bfff;
+border-top-color:transparent;
+border-radius:50%;
+box-shadow:0 0 25px #08f;
+animation:waveMove 1s infinite alternate
+}
+
+@keyframeswaveMove{
+to{transform:translateX(60px) rotate(8deg)}
+}
+
+.sukuna{
+font-size:100px;
+font-weight:900;
+color:#b00000;
+text-shadow:
+0 0 10px #f00,
+0 0 35px #700
+}
+
+.domain{
+position:absolute;
+inset:10%;
+border:5px solid #8b0000;
+background:
+repeating-linear-gradient(
+45deg,
+transparent 0 18px,
+#330000 19px 21px
+);
+box-shadow:
+inset 0 0 80px #500,
+0 0 40px #f00;
+animation:domainPulse 1s infinite alternate
+}
+
+@keyframesdomainPulse{
+to{transform:scale(1.03)}
+}
+
+.magma{
+width:45px;
+height:100px;
+background:#ff4d00;
+clip-path:polygon(50% 0,100% 100%,0 100%);
+filter:drop-shadow(0 0 15px #f30);
+animation:magma .7s infinite alternate
+}
+
+@keyframesmagma{
+to{transform:translateY(-15px)}
+}
+
+.aurora{
+position:absolute;
+width:350px;
+height:250px;
+background:linear-gradient(
+90deg,
+transparent,
+#00ffff55,
+#ff00ff55,
+transparent
+);
+filter:blur(15px);
+transform:skewX(-20deg);
+animation:aurora 3s infinite alternate
+}
+
+@keyframesaurora{
+to{transform:skewX(20deg) translateX(100px)}
 }
 </style>
 </head>
 
 <body>
-
 <div id="game">
 
-<div id="fx"></div>
-
 <div id="top">
-<b>Rarest Rolled:</b> <span id="rarest">None</span><br>
-<b>Total Rolls:</b> <span id="rolls">0</span>
+<b>Rarest Rolled:</b>
+<span id="rarest">None</span>
+<br>
+<b>Total Rolls:</b>
+<span id="rolls">0</span>
 </div>
 
 <div id="admin">
 <input id="adminInput" placeholder="admin">
-<button id="adminBtn" onclick="toggleAdmin()">ENTER</button>
+<button onclick="adminToggle()">OK</button>
 </div>
 
-<div id="adminStatus"></div>
-
 <div id="bottomInfo">
-<b>Biome:</b> <span id="biome">Plains</span><br>
+<b>Biome:</b>
+<span id="biome">Plains</span>
+<br>
 <span id="timer" class="small"></span>
 </div>
 
 <div id="stage">
-
-<div id="auraFX"></div>
+<div id="vfx"></div>
 
 <div id="stick">
 <div class="head"></div>
@@ -728,23 +514,38 @@ body.adminMode #top{
 <div class="leg l1"></div>
 <div class="leg l2"></div>
 </div>
-
 </div>
 
 <button id="menu" onclick="toggleMenu()">➜</button>
 
 <div id="buttons">
-<button class="roll" onclick="toggleAuto()" id="auto">
-AUTO ROLL<br><small>50 rolls</small>
+
+<button
+class="roll"
+onclick="toggleAuto()"
+id="auto">
+AUTO ROLL
+<br>
+<small>50 rolls</small>
 </button>
 
-<button class="roll" onclick="normalRoll()">
-ROLL<br><small>1 sec</small>
+<button
+class="roll"
+onclick="normalRoll()">
+ROLL
+<br>
+<small>1 sec</small>
 </button>
 
-<button class="roll" onclick="fastRoll()" id="fast">
-FAST ROLL<br><small>150 rolls</small>
+<button
+class="roll"
+onclick="fastRoll()"
+id="fast">
+FAST ROLL
+<br>
+<small>150 rolls</small>
 </button>
+
 </div>
 
 <div id="result"></div>
@@ -753,14 +554,41 @@ FAST ROLL<br><small>150 rolls</small>
 <div id="panel">
 
 <button class="close" onclick="toggleMenu()">×</button>
+
 <h2>INDEX</h2>
 
 <div class="tabs">
-<button class="tab active" onclick="showTab('auras',this)">Auras</button>
-<button class="tab" onclick="showTab('potions',this)">Potions</button>
-<button class="tab" onclick="showTab('gloves',this)">Gloves</button>
-<button class="tab" onclick="showTab('biomes',this)">Biomes</button>
-<button class="tab" onclick="showTab('leaderboard',this)">Leaderboard</button>
+
+<button
+class="tab active"
+onclick="showTab('auras',this)">
+Auras
+</button>
+
+<button
+class="tab"
+onclick="showTab('potions',this)">
+Potions
+</button>
+
+<button
+class="tab"
+onclick="showTab('gloves',this)">
+Gloves
+</button>
+
+<button
+class="tab"
+onclick="showTab('biomes',this)">
+Biomes
+</button>
+
+<button
+class="tab"
+onclick="showTab('leaderboard',this)">
+Leaderboard
+</button>
+
 </div>
 
 <div id="auras" class="section active"></div>
@@ -774,19 +602,26 @@ FAST ROLL<br><small>150 rolls</small>
 
 <script>
 
-/* =========================================================
+/* =========================
    AURAS
-========================================================= */
+========================= */
 
 const names=[
-"Spark","Pebble","Leaf","Breeze","Drop","Dew","Dust","Glow","Ember","Frost",
-"Flame","Mist","Stone","Bloom","Cloud","Wave","Shadow","Thunder","Crystal","Venom",
-"Solar","Lunar","Comet","Void","Inferno","Glacier","Tempest","Abyss","Eclipse","Phantom",
-"Prism","Nebula","Gravity","Starlight","Bloodmoon","Aurora","Overdrive","Celestial","Oblivion","Divine",
-"Galaxy","Singularity","Eternal","Rift","Chronos","Seraph","Omega","Genesis","Infinity","Mythic",
-"Cosmic","Astral","Heavenly","Doom","Worldbreaker","Reality","Ancient","Forbidden","Immortal","Transcendent",
-"Absolute","Unbound","Limitless","Paradox","Omniversal","Finality","Godly","The Chosen","The First","Beyond",
-"Limitless X","Eternal Flame","Origin","The End","Null","Impossible","Infinite Void","Creator","Absolute Zero","1/0"
+"Spark","Pebble","Leaf","Breeze","Drop","Dew","Dust","Glow",
+"Ember","Frost","Flame","Mist","Stone","Bloom","Cloud","Wave",
+"Shadow","Thunder","Crystal","Venom","Solar","Lunar","Comet",
+"Void","Inferno","Glacier","Tempest","Abyss","Eclipse","Phantom",
+"Prism","Nebula","Gravity","Starlight","Bloodmoon","Aurora",
+"Overdrive","Celestial","Oblivion","Divine","Galaxy","Singularity",
+"Eternal","Rift","Chronos","Seraph","Omega","Genesis","Infinity",
+"Mythic","Cosmic","Astral","Heavenly","Doom","Worldbreaker",
+"Reality","Ancient","Forbidden","Immortal","Transcendent","Absolute",
+"Unbound","Limitless","Paradox","Omniversal","Finality","Godly",
+"The Chosen","The First","Beyond","Limitless X","Eternal Flame",
+"Origin","The End","Null","Impossible","Infinite Void","Creator",
+"Absolute Zero","1/0",
+"Gojo","Itachi","Naruto","Jiraiya","Luffy","Gear 5","Zoro",
+"Jinbei","Sanji","Kakashi","Sasuke","Itadori","Mahoraga","Yuta"
 ];
 
 const odds=[
@@ -794,114 +629,199 @@ const odds=[
 275,350,450,575,725,900,1100,1350,1650,2000,
 2400,2900,3500,4200,5000,6000,7200,8600,10000,12000,
 14500,17500,21000,25000,30000,36000,43000,51000,60000,70000,
-82000,95000,110000,130000,150000,175000,200000,230000,260000,300000,
-350000,400000,460000,525000,600000,700000,800000,950000,1100000,1300000,
-1500000,1800000,2100000,2500000,3000000,3500000,4200000,5000000,6000000,7500000,
-9000000,11000000,14000000,18000000,25000000,50000000,100000000,1000000000,10000000000,0
-];
-
-const auraClasses=[
-"spark","pebble","leaf","breeze","drop","dew","dust","glow","ember","frost",
-"flame","mist","stone","bloom","cloud","wave","shadow","thunder","crystal","venom",
-"solar","lunar","comet","void","inferno","glacier","tempest","abyss","eclipse","phantom",
-"prism","nebula","gravity","starlight","bloodmoon","aurora","overdrive","celestial","oblivion","divine",
-"galaxy","singularity","eternal","rift","chronos","seraph","omega","genesis","infinity","mythic",
-"cosmic","astral","heavenly","doom","worldbreaker","reality","ancient","forbidden","immortal","transcendent",
-"absolute","unbound","limitless","paradox","omniversal","finality","godly","chosen","first","beyond",
-"limitlessx","eternalflame","origin","end","null","impossible","infinitevoid","creator","absolutezero","impossibleone"
+82000,95000,110000,130000,150000,175000,200000,230000,
+260000,300000,350000,400000,460000,525000,600000,700000,
+800000,950000,1100000,1300000,1500000,1800000,2100000,
+2500000,3000000,3500000,4200000,5000000,6000000,7500000,
+9000000,11000000,14000000,18000000,25000000,50000000,
+100000000,1000000000,10000000000,0,
+25000000000,50000000000,100000000000,250000000000,
+500000000000,1000000000000,2500000000000,5000000000000,
+10000000000000,25000000000000,50000000000000,100000000000000,
+250000000000000,1000000000000000
 ];
 
 const auras=names.map((name,i)=>({
- name,
- odds:odds[i],
- owned:0,
- total:0
+name,
+odds:odds[i]||1000000000000000,
+owned:0,
+total:0
 }));
 
-/* =========================================================
+/* =========================
    BIOMES
-========================================================= */
+========================= */
 
 const biomes=[
-{name:"Plains",rare:1,time:120,luck:1,bg:"#fff"},
-{name:"Forest",rare:2,time:100,luck:1.05,bg:"#dff5df"},
-{name:"Desert",rare:4,time:90,luck:1.1,bg:"#f8e8b0"},
-{name:"Rain",rare:6,time:80,luck:1.25,bg:"#cbdcf0"},
-{name:"Water",rare:8,time:75,luck:1.3,bg:"#b8e8ff"},
-{name:"Ocean",rare:12,time:70,luck:1.45,bg:"#87cfff"},
-{name:"Tsunami",rare:20,time:60,luck:1.7,bg:"#65a9d1"},
-{name:"Storm",rare:30,time:55,luck:1.9,bg:"#888da5"},
-{name:"Volcano",rare:45,time:50,luck:2.1,bg:"#e39b80"},
-{name:"Aurora",rare:60,time:45,luck:2.5,bg:"#c0c7ee"},
-{name:"Void",rare:100,time:40,luck:3,bg:"#393050"},
-{name:"Galaxy",rare:200,time:35,luck:4,bg:"#292052"},
-{name:"Heaven",rare:400,time:30,luck:5,bg:"#eee"},
-{name:"Reality",rare:800,time:25,luck:7,bg:"#d5d5d5"},
-{name:"The End",rare:1500,time:20,luck:10,bg:"#222"}
+{
+name:"Plains",
+rare:1,
+time:120,
+luck:1,
+bg:"#fff"
+},
+{
+name:"Forest",
+rare:2,
+time:100,
+luck:3,
+bg:"#dff5df"
+},
+{
+name:"Desert",
+rare:4,
+time:90,
+luck:5,
+bg:"#f8e8b0"
+},
+{
+name:"Rain",
+rare:6,
+time:80,
+luck:10,
+bg:"#cbdcf0"
+},
+{
+name:"Water",
+rare:8,
+time:70,
+luck:20,
+bg:"#b8e8ff"
+},
+{
+name:"Ocean",
+rare:12,
+time:60,
+luck:35,
+bg:"#55bfff"
+},
+{
+name:"Tsunami",
+rare:20,
+time:50,
+luck:60,
+bg:"#3a91cf"
+},
+{
+name:"Storm",
+rare:30,
+time:45,
+luck:90,
+bg:"#555b79"
+},
+{
+name:"Volcano",
+rare:45,
+time:40,
+luck:130,
+bg:"#e0714f"
+},
+{
+name:"Aurora",
+rare:60,
+time:35,
+luck:200,
+bg:"#7d86df"
+},
+{
+name:"Void",
+rare:100,
+time:30,
+luck:350,
+bg:"#181225"
+},
+{
+name:"Galaxy",
+rare:200,
+time:25,
+luck:600,
+bg:"#15102f"
+},
+{
+name:"Heaven",
+rare:400,
+time:22,
+luck:1000,
+bg:"#e8e8ff"
+},
+{
+name:"Reality",
+rare:800,
+time:20,
+luck:2500,
+bg:"#bbb"
+},
+{
+name:"The End",
+rare:1500,
+time:20,
+luck:10000,
+bg:"#080808"
+}
 ];
 
-let currentBiome=biomes[0];
-let biomeTime=currentBiome.time;
-let biomeVisits={};
-
-/* =========================================================
-   POTIONS
-========================================================= */
+/* =========================
+   CRAFTING
+========================= */
 
 const potions=[
-{name:"Lucky Brew",luck:5,recipe:[0,1,2]},
-{name:"Fortune Tonic",luck:15,recipe:[3,5,7]},
-{name:"Golden Elixir",luck:35,recipe:[8,10,12]},
-{name:"Mystic Potion",luck:75,recipe:[15,17,20]},
-{name:"Void Serum",luck:150,recipe:[22,25,28]},
-{name:"Celestial Potion",luck:300,recipe:[32,35,38]},
-{name:"Infinity Elixir",luck:600,recipe:[42,45,48]},
-{name:"Godly Potion",luck:1200,recipe:[52,55,58]},
-{name:"Reality Potion",luck:3000,recipe:[62,65,68]},
-{name:"10K LUCK ELIXIR",luck:10000,recipe:[72,73,74,75,76,77,78,79]}
-];
-
-/* =========================================================
-   GLOVES
-========================================================= */
+["Lucky Brew",5,[0,1,2]],
+["Fortune Tonic",15,[3,5,7]],
+["Golden Elixir",35,[8,10,12]],
+["Mystic Potion",75,[15,17,20]],
+["Void Serum",150,[22,25,28]],
+["Celestial Potion",300,[32,35,38]],
+["Infinity Elixir",600,[42,45,48]],
+["Godly Potion",1200,[52,55,58]],
+["Reality Potion",3000,[62,65,68]],
+["10K LUCK ELIXIR",10000,[72,73,74,75,76,77,78,79]]
+].map(x=>({
+name:x[0],
+luck:x[1],
+recipe:x[2]
+}));
 
 const gloves=[
-{name:"Cloth Glove",luck:2,recipe:[0,2,4]},
-{name:"Iron Glove",luck:5,recipe:[5,7,9]},
-{name:"Golden Glove",luck:10,recipe:[10,12,15]},
-{name:"Crystal Glove",luck:20,recipe:[17,19,21]},
-{name:"Shadow Glove",luck:40,recipe:[25,27,29]},
-{name:"Void Glove",luck:80,recipe:[32,34,36]},
-{name:"Galaxy Glove",luck:160,recipe:[40,42,44]},
-{name:"Divine Glove",luck:350,recipe:[50,52,54]},
-{name:"Reality Glove",luck:800,recipe:[60,62,64]},
-{name:"Infinite Glove",luck:2000,recipe:[68,70,73]}
-];
-
-/* =========================================================
-   RANDOMIZERS
-========================================================= */
+["Cloth Glove",2,[0,2,4]],
+["Iron Glove",5,[5,7,9]],
+["Golden Glove",10,[10,12,15]],
+["Crystal Glove",20,[17,19,21]],
+["Shadow Glove",40,[25,27,29]],
+["Void Glove",80,[32,34,36]],
+["Galaxy Glove",160,[40,42,44]],
+["Divine Glove",350,[50,52,54]],
+["Reality Glove",800,[60,62,64]],
+["Infinite Glove",2000,[68,70,73]]
+].map(x=>({
+name:x[0],
+luck:x[1],
+recipe:x[2]
+}));
 
 const randomizers=[
-{name:"Basic Biome Randomizer",luck:1.2,recipe:[8,9,10]},
-{name:"Rare Biome Randomizer",luck:1.5,recipe:[15,17,19]},
-{name:"Epic Biome Randomizer",luck:2,recipe:[25,28,30]},
-{name:"Legendary Biome Randomizer",luck:3,recipe:[38,40,43]},
-{name:"Mythic Biome Randomizer",luck:5,recipe:[50,53,55]},
-{name:"Divine Biome Randomizer",luck:8,recipe:[60,63,66]},
-{name:"Reality Randomizer",luck:15,recipe:[69,71,73]}
-];
+["Basic Biome Randomizer",10,[8,9,10]],
+["Rare Biome Randomizer",35,[15,17,19]],
+["Epic Biome Randomizer",100,[25,28,30]],
+["Legendary Biome Randomizer",300,[38,40,43]],
+["Mythic Biome Randomizer",1000,[50,53,55]],
+["Divine Biome Randomizer",3000,[60,63,66]],
+["Reality Randomizer",10000,[69,71,73]]
+].map(x=>({
+name:x[0],
+luck:x[1],
+recipe:x[2]
+}));
 
 let inventory={
- potions:Array(10).fill(0),
- gloves:Array(10).fill(0),
- randomizers:Array(7).fill(0)
+potions:Array(10).fill(0),
+gloves:Array(10).fill(0),
+randomizers:Array(7).fill(0)
 };
 
 let autoCraft={
- potion:null,
- glove:null,
- randomizer:null
+potion:null,
+glove:null,
+randomizer:null
 };
 
 let rolls=0;
@@ -911,1343 +831,2730 @@ let potionLuck=0;
 let auto=false;
 let busy=false;
 let rarest=-1;
-let milestones={};
 let admin=false;
+let currentBiome=biomes[0];
+let biomeTime=currentBiome.time;
+let biomeVisits={};
+let milestones={};
 
-/* =========================================================
-   SAVE
-========================================================= */
+/* =========================
+   SAVE / LOAD
+========================= */
 
 function save(){
 
- if(admin)return;
+if(admin)return;
 
- localStorage.setItem("auraRoll",JSON.stringify({
-  auras,
-  inventory,
-  autoCraft,
-  rolls,
-  equippedAura,
-  equippedGlove,
-  potionLuck,
-  biomeVisits,
-  currentBiome:currentBiome.name,
-  biomeTime,
-  rarest,
-  milestones
- }));
+localStorage.setItem(
+"auraRoll",
+JSON.stringify({
+auras,
+inventory,
+autoCraft,
+rolls,
+equippedAura,
+equippedGlove,
+potionLuck,
+biomeVisits,
+currentBiome:currentBiome.name,
+biomeTime,
+rarest,
+milestones
+})
+);
 
 }
-
-/* =========================================================
-   LOAD
-========================================================= */
 
 function load(){
 
- let s=localStorage.getItem("auraRoll");
+let s=localStorage.getItem("auraRoll");
 
- if(!s)return;
+if(!s)return;
 
- try{
+try{
 
-  let d=JSON.parse(s);
+let d=JSON.parse(s);
 
-  if(d.auras)
-   d.auras.forEach((a,i)=>Object.assign(auras[i],a));
+if(d.auras){
 
-  if(d.inventory)
-   inventory=d.inventory;
+d.auras.forEach((a,i)=>{
 
-  if(d.autoCraft)
-   autoCraft=d.autoCraft;
+if(auras[i]){
+Object.assign(auras[i],a);
+}
 
-  rolls=d.rolls||0;
-  equippedAura=d.equippedAura;
-  equippedGlove=d.equippedGlove;
-  potionLuck=d.potionLuck||0;
-  biomeVisits=d.biomeVisits||{};
-  biomeTime=d.biomeTime||120;
-  rarest=d.rarest??-1;
-  milestones=d.milestones||{};
-
-  let b=biomes.find(x=>x.name===d.currentBiome);
-
-  if(b)currentBiome=b;
-
- }catch(e){}
+});
 
 }
 
-/* =========================================================
+inventory=d.inventory||inventory;
+autoCraft=d.autoCraft||autoCraft;
+rolls=d.rolls||0;
+equippedAura=d.equippedAura??null;
+equippedGlove=d.equippedGlove??null;
+potionLuck=d.potionLuck||0;
+biomeVisits=d.biomeVisits||{};
+rarest=d.rarest??-1;
+milestones=d.milestones||{};
+
+currentBiome=
+biomes.find(
+b=>b.name===d.currentBiome
+)||biomes[0];
+
+biomeTime=
+d.biomeTime||
+currentBiome.time;
+
+}catch(e){}
+
+}
+
+/* =========================
    ADMIN
-========================================================= */
+========================= */
 
-function toggleAdmin(){
+function adminToggle(){
 
- let input=document.getElementById("adminInput").value.trim().toLowerCase();
+let input=
+document.getElementById("adminInput");
 
- if(input!=="rocky"){
-  toast("Wrong admin code");
-  return;
- }
+if(input.value.toLowerCase()==="rocky"){
 
- admin=!admin;
+admin=!admin;
 
- document.body.classList.toggle("adminMode",admin);
+if(admin){
 
- document.getElementById("adminStatus").textContent=
- admin?"ADMIN MODE ACTIVE":"";
+auras.forEach(a=>{
+a.owned=999999;
+a.total=999999;
+});
 
- if(admin){
-  giveEverything();
-  toast("ADMIN MODE ON — ROLLS VOIDED");
- }else{
-  toast("ADMIN MODE OFF");
- }
+inventory.potions.fill(999);
+inventory.gloves.fill(999);
+inventory.randomizers.fill(999);
 
- update();
+equippedAura=0;
+equippedGlove=9;
 
-}
+toast(
+"ADMIN MODE ON — NOTHING SAVES"
+);
 
-/* ADMIN DOES NOT SAVE ANYTHING */
+}else{
 
-function giveEverything(){
+load();
 
- auras.forEach(a=>{
-  a.owned=999999;
-  a.total=999999;
- });
-
- inventory.potions.fill(999999);
- inventory.gloves.fill(999999);
- inventory.randomizers.fill(999999);
-
- equippedAura=79;
- equippedGlove=9;
-
- applyAura();
+toast(
+"ADMIN MODE OFF — SAVING RESTORED"
+);
 
 }
 
-/* =========================================================
+update();
+
+}
+
+}
+
+/* =========================
    LUCK
-========================================================= */
+========================= */
 
 function totalLuck(){
 
- let glove=
- equippedGlove===null
- ?0
- :gloves[equippedGlove].luck;
+let glove=
+equippedGlove===null
+?0
+:gloves[equippedGlove].luck;
 
- let aura=
- equippedAura===null
- ?0
- :(equippedAura+1)*.02;
+let aura=
+equippedAura===null
+?0
+:(equippedAura+1)*.02;
 
- return (1+glove+aura+potionLuck)*currentBiome.luck;
+return(
+1+
+glove+
+aura+
+potionLuck
+)*
+currentBiome.luck;
 
 }
 
-/* =========================================================
-   ROLL
-========================================================= */
+/* =========================
+   ROLL SYSTEM
+========================= */
 
 function chooseAura(){
 
- let luck=totalLuck();
+let weights=
+auras.map((a,i)=>{
 
- let weights=auras.map((a,i)=>{
+if(i===79){
+return 1e-30;
+}
 
-  if(i===79)
-   return 0.000000000000000000000000001;
+return(
+Math.pow(1/a.odds,.92)*
+Math.pow(totalLuck(),.7)
+);
 
-  return (1/a.odds)*Math.pow(luck,.55);
+});
 
- });
+let total=
+weights.reduce(
+(a,b)=>a+b,
+0
+);
 
- let total=weights.reduce((a,b)=>a+b,0);
+let r=
+Math.random()*total;
 
- let r=Math.random()*total;
+for(let i=0;i<weights.length;i++){
 
- for(let i=0;i<weights.length;i++){
+r-=weights[i];
 
-  r-=weights[i];
+if(r<=0){
+return i;
+}
 
-  if(r<=0)return i;
+}
 
- }
-
- return 0;
+return 0;
 
 }
 
 function normalRoll(){
 
- if(busy)return;
+if(busy)return;
 
- busy=true;
+busy=true;
 
- setTimeout(()=>{
+setTimeout(()=>{
 
-  doRoll();
+doRoll();
 
-  busy=false;
+busy=false;
 
- },1000);
+},1000);
 
 }
 
 function fastRoll(){
 
- if(rolls<150 && !admin){
+if(rolls<150){
 
-  toast("Fast Roll unlocks at 150 rolls");
+toast(
+"Fast Roll unlocks at 150 rolls"
+);
 
-  return;
+return;
 
- }
+}
 
- if(busy)return;
+if(busy)return;
 
- busy=true;
+busy=true;
 
- setTimeout(()=>{
+setTimeout(()=>{
 
-  doRoll();
+doRoll();
 
-  busy=false;
+busy=false;
 
- },200);
+},200);
 
 }
 
 function doRoll(){
 
- let id=chooseAura();
+rolls++;
 
- /* ADMIN ROLLS ARE COMPLETELY VOID */
+let id=
+chooseAura();
 
- if(admin){
+auras[id].owned++;
+auras[id].total++;
 
-  showResult(
-   "ADMIN ROLL VOID",
-   "Nothing saved"
-  );
+if(id>rarest){
+rarest=id;
+}
 
-  return;
- }
+potionLuck=0;
 
- rolls++;
+showResult(
+"✨ "+auras[id].name+" ✨",
+auras[id].odds
+?"1/"+auras[id].odds.toLocaleString()
+:"1/0"
+);
 
- auras[id].owned++;
- auras[id].total++;
+vfx(id);
 
- if(id>rarest)
-  rarest=id;
+checkMilestones();
+autoCraftCheck();
 
- potionLuck=0;
-
- let rarity=
-  auras[id].odds===0
-  ?"1/0"
-  :"1/"+auras[id].odds.toLocaleString();
-
- showAuraVFX(id);
-
- showResult(
-  "✨ "+auras[id].name+" ✨",
-  rarity
- );
-
- checkMilestones();
- autoCraftCheck();
-
- update();
- save();
+update();
+save();
 
 }
 
-/* =========================================================
+/* =========================
    AUTO ROLL
-========================================================= */
+========================= */
 
 function toggleAuto(){
 
- if(rolls<50 && !admin){
+if(rolls<50){
 
-  toast("Auto Roll unlocks at 50 rolls");
+toast(
+"Auto Roll unlocks at 50 rolls"
+);
 
-  return;
+return;
 
- }
+}
 
- auto=!auto;
+auto=!auto;
 
- update();
+update();
 
- if(auto)
-  autoLoop();
+if(auto){
+autoLoop();
+}
 
 }
 
 function autoLoop(){
 
- if(!auto)return;
+if(!auto)return;
 
- let delay=
-  rolls>=150
-  ?200
-  :1000;
+setTimeout(()=>{
 
- setTimeout(()=>{
+if(auto){
 
-  if(!auto)return;
+doRoll();
 
-  doRoll();
-  autoLoop();
-
- },delay);
+autoLoop();
 
 }
 
-/* =========================================================
+},rolls>=150?200:1000);
+
+}
+
+/* =========================
    CRAFTING
-========================================================= */
+========================= */
 
 function hasRecipe(recipe){
 
- return recipe.every(i=>auras[i].owned>0);
+return recipe.every(
+i=>auras[i]&&auras[i].owned>0
+);
 
 }
 
 function consume(recipe){
 
- recipe.forEach(i=>{
-  auras[i].owned--;
- });
+recipe.forEach(i=>{
+auras[i].owned--;
+});
 
 }
 
-function craftPotion(i){
+function craft(type,i){
 
- let p=potions[i];
+let item;
 
- if(!hasRecipe(p.recipe)){
+if(type==="potion"){
+item=potions[i];
+}
 
-  toast("Missing required auras");
-  return;
+if(type==="glove"){
+item=gloves[i];
+}
 
- }
+if(type==="randomizer"){
+item=randomizers[i];
+}
 
- consume(p.recipe);
+if(!hasRecipe(item.recipe)){
 
- inventory.potions[i]++;
+toast(
+"Missing required auras"
+);
 
- toast("Crafted "+p.name);
-
- update();
- save();
+return;
 
 }
 
-function craftGlove(i){
+consume(item.recipe);
 
- let g=gloves[i];
+let key=
+type==="potion"
+?"potions":
+type==="glove"
+?"gloves":
+"randomizers";
 
- if(!hasRecipe(g.recipe)){
+inventory[key][i]++;
 
-  toast("Missing required auras");
-  return;
+toast(
+"Crafted "+item.name
+);
 
- }
-
- consume(g.recipe);
-
- inventory.gloves[i]++;
-
- toast("Crafted "+g.name);
-
- update();
- save();
-
-}
-
-function craftRandomizer(i){
-
- let r=randomizers[i];
-
- if(!hasRecipe(r.recipe)){
-
-  toast("Missing required auras");
-  return;
-
- }
-
- consume(r.recipe);
-
- inventory.randomizers[i]++;
-
- toast("Crafted "+r.name);
-
- update();
- save();
+update();
+save();
 
 }
 
 function usePotion(i){
 
- if(inventory.potions[i]<=0)return;
+if(inventory.potions[i]<=0)return;
 
- inventory.potions[i]--;
+inventory.potions[i]--;
 
- potionLuck=potions[i].luck/100;
+potionLuck=
+potions[i].luck/100;
 
- toast(potions[i].name+" activated");
+toast(
+potions[i].name+
+" activated"
+);
 
- update();
- save();
+update();
+save();
 
 }
 
 function equipGlove(i){
 
- if(inventory.gloves[i]<=0){
+if(inventory.gloves[i]<=0){
 
-  toast("You don't own this glove");
-  return;
+toast(
+"You don't own this glove"
+);
 
- }
+return;
 
- equippedGlove=i;
+}
 
- toast("Equipped "+gloves[i].name);
+equippedGlove=i;
 
- update();
- save();
+toast(
+"Equipped "+gloves[i].name
+);
+
+update();
+save();
 
 }
 
 function equipAura(i){
 
- if(auras[i].owned<=0){
+if(auras[i].owned<=0){
 
-  toast("You don't own this aura");
-  return;
+toast(
+"You don't own this aura"
+);
 
- }
+return;
 
- equippedAura=i;
+}
 
- applyAura();
+equippedAura=i;
 
- toast("Equipped "+auras[i].name);
+vfx(i);
 
- update();
- save();
+toast(
+"Equipped "+auras[i].name
+);
+
+update();
+save();
 
 }
 
 function autoCraftSet(type,i){
 
- autoCraft[type]=
-  autoCraft[type]===i
-  ?null
-  :i;
+autoCraft[type]=
+autoCraft[type]===i
+?null
+:i;
 
- update();
- save();
+update();
+save();
 
 }
 
 function autoCraftCheck(){
 
- if(autoCraft.potion!==null){
+let sets=[
+["potion",potions,"potions"],
+["glove",gloves,"gloves"],
+["randomizer",randomizers,"randomizers"]
+];
 
-  let i=autoCraft.potion;
+sets.forEach(
+([type,list,key])=>{
 
-  if(hasRecipe(potions[i].recipe)){
+let i=autoCraft[type];
 
-   consume(potions[i].recipe);
-   inventory.potions[i]++;
+if(
+i!==null &&
+i!==undefined &&
+hasRecipe(list[i].recipe)
+){
 
-  }
+consume(list[i].recipe);
 
- }
-
- if(autoCraft.glove!==null){
-
-  let i=autoCraft.glove;
-
-  if(hasRecipe(gloves[i].recipe)){
-
-   consume(gloves[i].recipe);
-   inventory.gloves[i]++;
-
-  }
-
- }
-
- if(autoCraft.randomizer!==null){
-
-  let i=autoCraft.randomizer;
-
-  if(hasRecipe(randomizers[i].recipe)){
-
-   consume(randomizers[i].recipe);
-   inventory.randomizers[i]++;
-
-  }
-
- }
+inventory[key][i]++;
 
 }
 
-/* =========================================================
+});
+
+}
+
+/* =========================
    BIOMES
-========================================================= */
+========================= */
 
 function naturalBiome(){
 
- let weights=biomes.map((b,i)=>{
+let roll=
+Math.random();
 
-  if(i===0)return 30;
+if(roll<.35){
+return biomes[0];
+}
 
-  return 1/(b.rare/100+1);
+let index=
+1+
+Math.floor(
+Math.random()*(biomes.length-1)
+);
 
- });
-
- let total=weights.reduce((a,b)=>a+b,0);
-
- let r=Math.random()*total;
-
- for(let i=0;i<weights.length;i++){
-
-  r-=weights[i];
-
-  if(r<=0)return biomes[i];
-
- }
-
- return biomes[0];
+return biomes[index];
 
 }
 
 function spawnBiome(b){
 
- currentBiome=b;
- biomeTime=b.time;
+currentBiome=b;
+biomeTime=b.time;
 
- biomeVisits[b.name]=(biomeVisits[b.name]||0)+1;
+biomeVisits[b.name]=
+(biomeVisits[b.name]||0)+1;
 
- document.body.style.background=b.bg;
+document.body.style.background=
+b.bg;
 
- toast("🌎 "+b.name+" biome!");
+toast(
+"🌎 "+b.name+
+" — x"+b.luck+
+" LUCK"
+);
 
- update();
- save();
+update();
+save();
 
 }
 
 function useRandomizer(i){
 
- if(inventory.randomizers[i]<=0)return;
+if(
+inventory.randomizers[i]<=0
+)return;
 
- inventory.randomizers[i]--;
+inventory.randomizers[i]--;
 
- let possible=biomes.slice(1);
+let b=
+biomes[
+1+
+Math.floor(
+Math.random()*(biomes.length-1)
+)
+];
 
- let b=
-  possible[
-   Math.floor(Math.random()*possible.length)
-  ];
+spawnBiome(b);
 
- spawnBiome(b);
-
- update();
- save();
+update();
+save();
 
 }
 
-/* =========================================================
+/* =========================
    MILESTONES
-========================================================= */
+========================= */
 
 function checkMilestones(){
 
- if(rolls>=10000&&!milestones[10000]){
+if(
+rolls>=10000 &&
+!milestones[10000]
+){
 
-  milestones[10000]=true;
+milestones[10000]=1;
 
-  inventory.potions[0]++;
+inventory.potions[0]++;
 
-  toast("🏆 10K ROLLS — FREE POTION!");
-
- }
-
- let amount=Math.floor(rolls/50000);
-
- for(let i=1;i<=amount;i++){
-
-  let mark=i*50000;
-
-  if(!milestones[mark]){
-
-   milestones[mark]=true;
-   inventory.potions[0]++;
-
-   toast(
-    "🏆 "+
-    mark.toLocaleString()+
-    " ROLLS — FREE POTION!"
-   );
-
-  }
-
- }
+toast(
+"🏆 10K ROLLS — FREE POTION"
+);
 
 }
 
-/* =========================================================
+for(
+let m=50000;
+m<=rolls;
+m+=50000
+){
+
+if(!milestones[m]){
+
+milestones[m]=1;
+
+inventory.potions[0]++;
+
+toast(
+"🏆 "+
+m.toLocaleString()+
+" ROLLS — FREE POTION"
+);
+
+}
+
+}
+
+}
+
+/* =========================
    UI
-========================================================= */
+========================= */
 
 function toggleMenu(){
 
- document
-  .getElementById("panel")
-  .classList.toggle("open");
+document
+.getElementById("panel")
+.classList.toggle("open");
 
 }
 
-function showTab(id,btn){
+function showTab(id,button){
 
- document
-  .querySelectorAll(".section")
-  .forEach(x=>x.classList.remove("active"));
+document
+.querySelectorAll(".section")
+.forEach(
+x=>x.classList.remove("active")
+);
 
- document
-  .querySelectorAll(".tab")
-  .forEach(x=>x.classList.remove("active"));
+document
+.querySelectorAll(".tab")
+.forEach(
+x=>x.classList.remove("active")
+);
 
- document
-  .getElementById(id)
-  .classList.add("active");
+document
+.getElementById(id)
+.classList.add("active");
 
- btn.classList.add("active");
-
-}
-
-function rarityText(a){
-
- return a.odds===0
-  ?"1/0"
-  :"1/"+a.odds.toLocaleString();
+button.classList.add("active");
 
 }
 
 function recipeText(recipe){
 
- return recipe.map(i=>{
+return recipe.map(i=>{
 
-  let a=auras[i];
+let a=auras[i];
 
-  return `
-   <div>
-   ${a.name}
-   — ${rarityText(a)}
-   — ${a.owned||0}/1
-   </div>
-  `;
+if(!a)return "?";
 
- }).join("");
+let rarity=
+a.odds
+?"1/"+a.odds.toLocaleString()
+:"1/0";
+
+return(
+a.name+
+" ("+
+rarity+
+") — "+
+a.owned+
+" owned"
+);
+
+}).join("<br> + ");
 
 }
 
-/* =========================================================
-   AURA INDEX
-========================================================= */
+/* =========================
+   AURA UI
+========================= */
 
 function renderAuras(){
 
- let html="<h3>AURAS — 80</h3>";
+let html=
+"<h3>AURAS — "+
+auras.length+
+"</h3>";
 
- auras.forEach((a,i)=>{
+auras.forEach(
+(a,i)=>{
 
-  let owned=a.owned||0;
+html+=`
 
-  if(a.total===0 && !admin){
+<div class="card ${a.total?"":"locked"}">
 
-   html+=`
-   <div class="card">
-   <b>#${i+1} ???</b>
-   <div class="small">
-   Rarity: ${rarityText(a)}
-   </div>
-   </div>
-   `;
+<b>
+#${i+1}
+${a.total?a.name:"???"}
+</b>
 
-  }else{
+<div class="small">
+Rarity:
+${a.odds
+?"1/"+a.odds.toLocaleString()
+:"1/0"}
+</div>
 
-   html+=`
-   <div class="card">
-   <b>#${i+1} ${a.name}</b>
+${
+a.total
+?`
+<div>Owned: ${a.owned}</div>
+<div>Ever Rolled: ${a.total}</div>
 
-   <div>Owned: ${owned}</div>
+<button
+class="action"
+onclick="equipAura(${i})">
+${equippedAura===i
+?"EQUIPPED"
+:"EQUIP"}
+</button>
+`
+:`
+<div>Owned: 0</div>
+`
+}
 
-   <div>Ever Rolled:
-   ${a.total.toLocaleString()}</div>
+</div>
 
-   <div class="small">
-   Rarity: ${rarityText(a)}
-   </div>
+`;
 
-   <button
-    class="action"
-    onclick="equipAura(${i})">
-    ${equippedAura===i?"EQUIPPED":"EQUIP"}
-   </button>
+});
 
-   </div>
-   `;
-
-  }
-
- });
-
- document.getElementById("auras").innerHTML=html;
+document.getElementById("auras").innerHTML=
+html;
 
 }
 
-/* =========================================================
-   POTIONS
-========================================================= */
+/* =========================
+   POTIONS UI
+========================= */
 
 function renderPotions(){
 
- let html="<h3>POTIONS</h3>";
+let html=
+"<h3>POTIONS</h3>";
 
- potions.forEach((p,i)=>{
+potions.forEach(
+(p,i)=>{
 
-  html+=`
+html+=`
 
-  <div class="card">
+<div class="card">
 
-   <b>${p.name}</b>
+<b>${p.name}</b>
 
-   <div>
-   Owned: ${inventory.potions[i]}
-   </div>
+<div>
+Owned:
+${inventory.potions[i]}
+</div>
 
-   <div>
-   Luck: +${p.luck.toLocaleString()}%
-   </div>
+<div>
+Luck:
++${p.luck.toLocaleString()}%
+</div>
 
-   <details class="craftBox">
+<div class="small">
+<b>Needs:</b>
+<br>
+${recipeText(p.recipe)}
+</div>
 
-    <summary>
-    CRAFTING REQUIREMENTS
-    </summary>
+<button
+class="action craft"
+onclick="craft('potion',${i})">
+CRAFT / ADD
+</button>
 
-    <div class="craftInside">
+<button
+class="action"
+onclick="usePotion(${i})">
+USE
+</button>
 
-     <b>Needs:</b>
+<button
+class="action"
+onclick="autoCraftSet('potion',${i})">
+${
+autoCraft.potion===i
+?"AUTO CRAFTING"
+:"AUTO CRAFT"
+}
+</button>
 
-     ${recipeText(p.recipe)}
+</div>
 
-     <button
-      class="action craft"
-      onclick="craftPotion(${i})">
-      CRAFT
-     </button>
+`;
 
-    </div>
+});
 
-   </details>
-
-   <button
-    class="action"
-    onclick="usePotion(${i})">
-    USE
-   </button>
-
-   <button
-    class="action"
-    onclick="autoCraftSet('potion',${i})">
-    ${autoCraft.potion===i
-      ?"AUTO CRAFTING"
-      :"AUTO CRAFT"}
-   </button>
-
-  </div>
-
-  `;
-
- });
-
- document.getElementById("potions").innerHTML=html;
+document.getElementById("potions").innerHTML=
+html;
 
 }
 
-/* =========================================================
-   GLOVES
-========================================================= */
+/* =========================
+   GLOVE UI
+========================= */
 
 function renderGloves(){
 
- let html="<h3>GLOVES</h3>";
+let html=
+"<h3>GLOVES</h3>";
 
- gloves.forEach((g,i)=>{
+gloves.forEach(
+(g,i)=>{
 
-  html+=`
+html+=`
 
-  <div class="card">
+<div class="card">
 
-   <b>${g.name}</b>
+<b>${g.name}</b>
 
-   <div>
-   Owned: ${inventory.gloves[i]}
-   </div>
+<div>
+Owned:
+${inventory.gloves[i]}
+</div>
 
-   <div>
-   Permanent Luck: +${g.luck}
-   </div>
+<div>
+Permanent Luck:
++${g.luck}
+</div>
 
-   <details class="craftBox">
+<div class="small">
+<b>Needs:</b>
+<br>
+${recipeText(g.recipe)}
+</div>
 
-    <summary>
-    CRAFTING REQUIREMENTS
-    </summary>
+<button
+class="action craft"
+onclick="craft('glove',${i})">
+CRAFT / ADD
+</button>
 
-    <div class="craftInside">
+<button
+class="action"
+onclick="equipGlove(${i})">
+${equippedGlove===i
+?"EQUIPPED"
+:"EQUIP"}
+</button>
 
-     <b>Needs:</b>
+<button
+class="action"
+onclick="autoCraftSet('glove',${i})">
+${
+autoCraft.glove===i
+?"AUTO CRAFTING"
+:"AUTO CRAFT"
+}
+</button>
 
-     ${recipeText(g.recipe)}
+</div>
 
-     <button
-      class="action craft"
-      onclick="craftGlove(${i})">
-      CRAFT
-     </button>
+`;
 
-    </div>
+});
 
-   </details>
-
-   <button
-    class="action"
-    onclick="equipGlove(${i})">
-    ${equippedGlove===i
-      ?"EQUIPPED"
-      :"EQUIP"}
-   </button>
-
-   <button
-    class="action"
-    onclick="autoCraftSet('glove',${i})">
-    ${autoCraft.glove===i
-      ?"AUTO CRAFTING"
-      :"AUTO CRAFT"}
-   </button>
-
-  </div>
-
-  `;
-
- });
-
- document.getElementById("gloves").innerHTML=html;
+document.getElementById("gloves").innerHTML=
+html;
 
 }
 
-/* =========================================================
-   BIOMES
-========================================================= */
+/* =========================
+   BIOME UI
+========================= */
 
 function renderBiomes(){
 
- let html="<h3>BIOMES</h3>";
+let html=`
 
- html+=`
+<h3>BIOMES</h3>
 
- <div class="card">
+<div class="card">
 
-  <b>Current: ${currentBiome.name}</b>
+<b>
+Current:
+${currentBiome.name}
+</b>
 
-  <div>
-  Luck: x${currentBiome.luck}
-  </div>
+<div>
+Luck:
+x${currentBiome.luck}
+</div>
 
-  <div>
-  ${biomeTime}s remaining
-  </div>
+<div>
+${biomeTime}s remaining
+</div>
 
- </div>
+</div>
 
- `;
+<h3>BIOME RANDOMIZERS</h3>
 
- randomizers.forEach((r,i)=>{
+`;
 
-  html+=`
+randomizers.forEach(
+(r,i)=>{
 
-  <div class="card">
+html+=`
 
-   <b>${r.name}</b>
+<div class="card">
 
-   <div>
-   Owned: ${inventory.randomizers[i]}
-   </div>
+<b>${r.name}</b>
 
-   <div>
-   Luck Effect: x${r.luck}
-   </div>
+<div>
+Owned:
+${inventory.randomizers[i]}
+</div>
 
-   <details class="craftBox">
+<div>
+Power:
+x${r.luck}
+</div>
 
-    <summary>
-    CRAFTING REQUIREMENTS
-    </summary>
+<div class="small">
+<b>Needs:</b>
+<br>
+${recipeText(r.recipe)}
+</div>
 
-    <div class="craftInside">
+<button
+class="action craft"
+onclick="craft('randomizer',${i})">
+CRAFT / ADD
+</button>
 
-     <b>Needs:</b>
+<button
+class="action"
+onclick="useRandomizer(${i})">
+USE
+</button>
 
-     ${recipeText(r.recipe)}
+<button
+class="action"
+onclick="autoCraftSet('randomizer',${i})">
+${
+autoCraft.randomizer===i
+?"AUTO CRAFTING"
+:"AUTO CRAFT"
+}
+</button>
 
-     <button
-      class="action craft"
-      onclick="craftRandomizer(${i})">
-      CRAFT
-     </button>
+</div>
 
-    </div>
+`;
 
-   </details>
+});
 
-   <button
-    class="action"
-    onclick="useRandomizer(${i})">
-    USE
-   </button>
+html+=
+"<h3>BIOME INDEX</h3>";
 
-   <button
-    class="action"
-    onclick="autoCraftSet('randomizer',${i})">
-    ${autoCraft.randomizer===i
-      ?"AUTO CRAFTING"
-      :"AUTO CRAFT"}
-   </button>
+biomes.forEach(
+b=>{
 
-  </div>
+let count=
+biomeVisits[b.name]||0;
 
-  `;
+html+=`
 
- });
+<div class="card">
 
- html+="<h3>BIOME INDEX</h3>";
+<b>
+${count?b.name:"???"}
+</b>
 
- biomes.forEach(b=>{
+<div>
+Times:
+${count}
+</div>
 
-  let count=biomeVisits[b.name]||0;
+${
+count
+?`
+<div>
+Duration:
+${b.time}s
+</div>
 
-  html+=`
+<div>
+Rarity:
+1/${b.rare}
+</div>
 
-  <div class="card">
+<div>
+Luck:
+x${b.luck}
+</div>
+`
+:`
+<div class="small">
+Undiscovered
+</div>
+`
+}
 
-   <b>${count?b.name:"???"}</b>
+</div>
 
-   <div>
-   Times Visited: ${count}
-   </div>
+`;
 
-   ${
-    count
-    ?
-    `
-    <div>Duration: ${b.time}s</div>
-    <div>Rarity: 1/${b.rare}</div>
-    <div>Luck: x${b.luck}</div>
-    `
-    :
-    `<div class="small">Undiscovered</div>`
-   }
+});
 
-  </div>
-
-  `;
-
- });
-
- document.getElementById("biomes").innerHTML=html;
+document.getElementById("biomes").innerHTML=
+html;
 
 }
 
-/* =========================================================
+/* =========================
    LEADERBOARD
-========================================================= */
+========================= */
 
 function renderLeaderboard(){
 
- document.getElementById("leaderboard").innerHTML=`
+document.getElementById("leaderboard").innerHTML=`
 
- <h3>LEADERBOARD</h3>
+<h3>LEADERBOARD</h3>
 
- <div class="card">
- <b>#1 You</b>
- <div>${rolls.toLocaleString()} rolls</div>
- </div>
+<div class="card">
 
- <div class="card">
- <b>Rarest Rolled</b>
- <div>
- ${
-  rarest>=0
-  ?auras[rarest].name
-  :"None"
- }
- </div>
- </div>
+<b>#1 You</b>
 
- <div class="card">
- <b>Total Luck</b>
- <div>
- x${totalLuck().toFixed(2)}
- </div>
- </div>
+<div>
+${rolls.toLocaleString()}
+rolls
+</div>
 
- `;
+</div>
+
+<div class="card">
+
+<b>Rarest Rolled</b>
+
+<div>
+${
+rarest>=0
+?auras[rarest].name
+:"None"
+}
+</div>
+
+</div>
+
+<div class="card">
+
+<b>Total Luck</b>
+
+<div>
+x${totalLuck().toFixed(2)}
+</div>
+
+</div>
+
+`;
 
 }
-
-/* =========================================================
-   UPDATE
-========================================================= */
 
 function update(){
 
- document.getElementById("rolls").textContent=
-  rolls.toLocaleString();
+document.getElementById("rolls")
+.textContent=
+rolls.toLocaleString();
 
- document.getElementById("rarest").textContent=
-  rarest>=0
-  ?auras[rarest].name
-  :"None";
+document.getElementById("rarest")
+.textContent=
+rarest>=0
+?auras[rarest].name
+:"None";
 
- document.getElementById("biome").textContent=
-  currentBiome.name;
+document.getElementById("biome")
+.textContent=
+currentBiome.name;
 
- document.getElementById("timer").textContent=
-  biomeTime+"s remaining";
+document.getElementById("timer")
+.textContent=
+biomeTime+
+"s remaining";
 
- document.getElementById("auto").innerHTML=
-  (auto?"STOP AUTO":"AUTO ROLL")+
-  "<br><small>"+
-  (rolls>=50||admin?"Unlocked":"50 rolls")+
-  "</small>";
+document.getElementById("auto")
+.innerHTML=
+(auto
+?"STOP AUTO"
+:"AUTO ROLL")+
+"<br><small>"+
+(rolls>=50
+?"Unlocked"
+:"50 rolls")+
+"</small>";
 
- document.getElementById("fast").innerHTML=
-  "FAST ROLL<br><small>"+
-  (rolls>=150||admin?"Unlocked":"150 rolls")+
-  "</small>";
+document.getElementById("fast")
+.innerHTML=
+"FAST ROLL<br><small>"+
+(rolls>=150
+?"Unlocked"
+:"150 rolls")+
+"</small>";
 
- renderAuras();
- renderPotions();
- renderGloves();
- renderBiomes();
- renderLeaderboard();
-
- applyAura();
+renderAuras();
+renderPotions();
+renderGloves();
+renderBiomes();
+renderLeaderboard();
 
 }
-
-/* =========================================================
-   RESULT
-========================================================= */
 
 function showResult(name,rarity){
 
- let r=document.getElementById("result");
+let r=
+document.getElementById("result");
 
- r.innerHTML=
-  name+
-  "<div class='rarity'>"+
-  rarity+
-  "</div>";
+r.innerHTML=
+name+
+"<div style='font-size:15px;margin-top:5px'>"+
+rarity+
+"</div>";
 
- r.classList.add("show");
+r.classList.add("show");
 
- setTimeout(()=>{
-  r.classList.remove("show");
- },1000);
+setTimeout(
+()=>r.classList.remove("show"),
+1000
+);
 
 }
-
-/* =========================================================
-   TOAST
-========================================================= */
 
 function toast(text){
 
- let t=document.getElementById("toast");
+let t=
+document.getElementById("toast");
 
- t.textContent=text;
- t.style.opacity=1;
+t.textContent=text;
+t.style.opacity=1;
 
- clearTimeout(window.tt);
+clearTimeout(window.tt);
 
- window.tt=setTimeout(()=>{
-  t.style.opacity=0;
- },1800);
+window.tt=
+setTimeout(
+()=>t.style.opacity=0,
+1800
+);
 
 }
-
-/* =========================================================
-   BIG AURA VFX ENGINE
-========================================================= */
+'''
+path="/mnt/data/aura_roll_part1.html"
+open(path,"w").write(html)
+ /* =========================
+   VFX ENGINE
+========================= */
 
 function clearVFX(){
+    document.getElementById("vfx").innerHTML="";
+}
 
- document.getElementById("auraFX").innerHTML="";
- document.getElementById("fx").innerHTML="";
+function makeV(className,styles={},text=""){
+    const el=document.createElement("div");
+    el.className="v "+className;
+    Object.assign(el.style,styles);
+    el.textContent=text;
+    document.getElementById("vfx").appendChild(el);
+    return el;
+}
+
+function particles(count=25){
+    for(let i=0;i<count;i++){
+        const p=makeV("spark",{
+            left:"50%",
+            top:"50%",
+            "--x":((Math.random()-.5)*700)+"px",
+            "--y":((Math.random()-.5)*500)+"px",
+            animationDelay:(Math.random()*.5)+"s"
+        });
+        setTimeout(()=>p.remove(),1600);
+    }
+}
+
+/*
+    Every special aura gets its own scene.
+    These are intentionally different instead of
+    simply changing colors.
+*/
+
+function vfx(id){
+
+    clearVFX();
+
+    const name=auras[id].name;
+
+    if(name==="Spark"){
+        particles(12);
+    }
+
+    else if(name==="Pebble"){
+        for(let i=0;i<7;i++)
+            makeV("v",{
+                left:(40+Math.random()*20)+"%",
+                top:(45+Math.random()*20)+"%",
+                width:"22px",
+                height:"22px",
+                borderRadius:"50%",
+                background:"#777",
+                boxShadow:"0 0 8px #555",
+                animation:"sparkFly 1s forwards",
+                "--x":((Math.random()-.5)*180)+"px",
+                "--y":(-Math.random()*150)+"px"
+            });
+    }
+
+    else if(name==="Leaf"){
+        for(let i=0;i<12;i++)
+            makeV("v",{
+                left:(35+Math.random()*30)+"%",
+                top:(25+Math.random()*50)+"%",
+                fontSize:"25px",
+                animation:"crowFly 2s linear infinite",
+                animationDelay:(i*.1)+"s"
+            },"🍃");
+    }
+
+    else if(name==="Breeze"){
+        for(let i=0;i<5;i++)
+            makeV("wave",{
+                left:"calc(50% - 125px)",
+                top:(40+i*8)+"%",
+                animationDelay:(i*.15)+"s"
+            });
+    }
+
+    else if(name==="Drop"){
+        for(let i=0;i<15;i++)
+            makeV("v",{
+                left:(40+Math.random()*20)+"%",
+                top:"35%",
+                width:"8px",
+                height:"18px",
+                borderRadius:"50%",
+                background:"#55cfff",
+                boxShadow:"0 0 10px #0af",
+                animation:"binaryFall 1.3s linear infinite",
+                animationDelay:(Math.random())+"s"
+            });
+    }
+
+    else if(name==="Dew"){
+        for(let i=0;i<8;i++)
+            makeV("v",{
+                left:(35+Math.random()*30)+"%",
+                top:(35+Math.random()*30)+"%",
+                width:"12px",
+                height:"12px",
+                borderRadius:"50%",
+                background:"#aef",
+                boxShadow:"0 0 15px #8ff"
+            });
+    }
+
+    else if(name==="Dust"){
+        particles(30);
+    }
+
+    else if(name==="Glow"){
+        makeV("ring",{
+            left:"calc(50% - 100px)",
+            top:"calc(50% - 100px)",
+            width:"200px",
+            height:"200px",
+            borderColor:"#fff"
+        });
+    }
+
+    else if(name==="Ember"){
+        for(let i=0;i<18;i++)
+            makeV("v",{
+                left:(35+Math.random()*30)+"%",
+                top:(45+Math.random()*20)+"%",
+                width:"7px",
+                height:"7px",
+                borderRadius:"50%",
+                background:"#ff6a00",
+                boxShadow:"0 0 12px #f30",
+                animation:"sparkFly 1.5s forwards",
+                "--x":((Math.random()-.5)*250)+"px",
+                "--y":(-Math.random()*300)+"px"
+            });
+    }
+
+    else if(name==="Frost"){
+        for(let i=0;i<8;i++)
+            makeV("shard",{
+                left:(30+i*5)+"%",
+                top:(30+Math.random()*35)+"%",
+                transform:"rotate("+(Math.random()*360)+"deg)"
+            });
+    }
+
+    else if(name==="Flame"){
+        for(let i=0;i<5;i++)
+            makeV("flame",{
+                left:(40+i*5)+"%",
+                top:(45+Math.random()*15)+"%",
+                animationDelay:(i*.1)+"s"
+            });
+    }
+
+    else if(name==="Mist"){
+        for(let i=0;i<5;i++)
+            makeV("cloud",{
+                left:(35+i*6)+"%",
+                top:(35+Math.random()*20)+"%"
+            },"☁");
+    }
+
+    else if(name==="Stone"){
+        for(let i=0;i<9;i++)
+            makeV("v",{
+                left:(35+Math.random()*30)+"%",
+                top:(35+Math.random()*30)+"%",
+                width:"30px",
+                height:"30px",
+                background:"#555",
+                transform:"rotate("+Math.random()*90+"deg)",
+                boxShadow:"0 0 8px #222"
+            });
+    }
+
+    else if(name==="Bloom"){
+        for(let i=0;i<9;i++)
+            makeV("v",{
+                left:(35+Math.random()*30)+"%",
+                top:(30+Math.random()*35)+"%",
+                fontSize:"30px"
+            },"🌸");
+    }
+
+    else if(name==="Cloud"){
+        for(let i=0;i<4;i++)
+            makeV("cloud",{
+                left:(30+i*12)+"%",
+                top:(30+Math.random()*30)+"%"
+            },"☁");
+    }
+
+    else if(name==="Wave"){
+        for(let i=0;i<3;i++)
+            makeV("wave",{
+                left:"calc(50% - 125px)",
+                top:(40+i*8)+"%",
+                animationDelay:(i*.2)+"s"
+            });
+    }
+
+    else if(name==="Shadow"){
+        makeV("v",{
+            left:"calc(50% - 100px)",
+            top:"calc(50% - 120px)",
+            width:"200px",
+            height:"240px",
+            background:"#111",
+            clipPath:"polygon(50% 0,100% 25%,75% 100%,25% 100%,0 25%)",
+            boxShadow:"0 0 30px #000"
+        });
+    }
+
+    else if(name==="Thunder"){
+        for(let i=0;i<6;i++)
+            makeV("lightning",{
+                left:(35+i*6)+"%",
+                top:(20+Math.random()*40)+"%",
+                transform:"rotate("+(Math.random()*40-20)+"deg)"
+            });
+    }
+
+    else if(name==="Crystal"){
+        for(let i=0;i<12;i++)
+            makeV("shard",{
+                left:(25+Math.random()*50)+"%",
+                top:(20+Math.random()*55)+"%",
+                transform:"rotate("+(Math.random()*360)+"deg) scale("+(0.5+Math.random())+")"
+            });
+    }
+
+    else if(name==="Venom"){
+        for(let i=0;i<15;i++)
+            makeV("blood",{
+                left:(35+Math.random()*30)+"%",
+                top:(35+Math.random()*30)+"%"
+            });
+    }
+
+    else if(name==="Solar"){
+        makeV("ring",{
+            left:"calc(50% - 130px)",
+            top:"calc(50% - 130px)",
+            width:"260px",
+            height:"260px",
+            borderColor:"#ffae00"
+        });
+        makeV("v",{
+            left:"calc(50% - 70px)",
+            top:"calc(50% - 70px)",
+            width:"140px",
+            height:"140px",
+            borderRadius:"50%",
+            background:"#ffb300",
+            boxShadow:"0 0 50px #ff9000"
+        });
+    }
+
+    else if(name==="Lunar"){
+        makeV("v",{
+            left:"calc(50% - 80px)",
+            top:"calc(50% - 80px)",
+            width:"160px",
+            height:"160px",
+            borderRadius:"50%",
+            background:"#eee",
+            boxShadow:"0 0 35px #fff"
+        });
+        makeV("v",{
+            left:"calc(50% - 45px)",
+            top:"calc(50% - 90px)",
+            width:"150px",
+            height:"150px",
+            borderRadius:"50%",
+            background:"#fff"
+        });
+    }
+
+    else if(name==="Comet"){
+        makeV("v",{
+            left:"-100px",
+            top:"35%",
+            width:"500px",
+            height:"15px",
+            background:"linear-gradient(90deg,transparent,#fff)",
+            transform:"rotate(-15deg)",
+            animation:"crowFly 1.5s linear infinite"
+        });
+    }
+
+    else if(name==="Void"){
+        makeV("v",{
+            left:"calc(50% - 180px)",
+            top:"calc(50% - 180px)",
+            width:"360px",
+            height:"360px",
+            borderRadius:"50%",
+            background:"#050505",
+            boxShadow:"0 0 80px #000"
+        });
+    }
+
+    else if(name==="Inferno"){
+        for(let i=0;i<15;i++)
+            makeV("flame",{
+                left:(25+Math.random()*50)+"%",
+                top:(35+Math.random()*30)+"%",
+                transform:"scale("+(0.5+Math.random())+")"
+            });
+    }
+
+    else if(name==="Glacier"){
+        for(let i=0;i<18;i++)
+            makeV("shard",{
+                left:(20+Math.random()*60)+"%",
+                top:(15+Math.random()*60)+"%",
+                transform:"rotate("+Math.random()*360+"deg) scale("+(.6+Math.random())+")"
+            });
+    }
+
+    else if(name==="Tempest"){
+        for(let i=0;i<12;i++){
+            makeV("lightning",{
+                left:(15+Math.random()*70)+"%",
+                top:(10+Math.random()*60)+"%",
+                transform:"rotate("+(Math.random()*90-45)+"deg)"
+            });
+        }
+        for(let i=0;i<4;i++)
+            makeV("wave",{
+                left:"calc(50% - 125px)",
+                top:(35+i*9)+"%"
+            });
+    }
+
+    else if(name==="Abyss"){
+        makeV("v",{
+            left:"calc(50% - 150px)",
+            top:"calc(50% - 150px)",
+            width:"300px",
+            height:"300px",
+            borderRadius:"50%",
+            border:"30px solid #050505",
+            boxShadow:"0 0 80px #000,inset 0 0 60px #000"
+        });
+    }
+
+    else if(name==="Eclipse"){
+        makeV("v",{
+            left:"calc(50% - 110px)",
+            top:"calc(50% - 110px)",
+            width:"220px",
+            height:"220px",
+            borderRadius:"50%",
+            background:"#050505",
+            boxShadow:"0 0 50px #fff"
+        });
+        makeV("ring",{
+            left:"calc(50% - 135px)",
+            top:"calc(50% - 135px)",
+            width:"270px",
+            height:"270px",
+            borderColor:"#fff"
+        });
+    }
+
+    else if(name==="Phantom"){
+        makeV("v",{
+            left:"calc(50% - 100px)",
+            top:"calc(50% - 130px)",
+            width:"200px",
+            height:"260px",
+            background:"linear-gradient(#fff8,transparent)",
+            clipPath:"polygon(50% 0,90% 30%,75% 100%,50% 80%,25% 100%,10% 30%)"
+        });
+    }
+
+    else if(name==="Prism"){
+        for(let i=0;i<7;i++)
+            makeV("shard",{
+                left:(30+i*6)+"%",
+                top:(20+Math.random()*50)+"%",
+                transform:"rotate("+(i*40)+"deg)"
+            });
+    }
+
+    else if(name==="Nebula"){
+        for(let i=0;i<20;i++)
+            makeV("v",{
+                left:(15+Math.random()*70)+"%",
+                top:(15+Math.random()*65)+"%",
+                width:(5+Math.random()*25)+"px",
+                height:(5+Math.random()*25)+"px",
+                borderRadius:"50%",
+                background:"#fff",
+                boxShadow:"0 0 15px #fff"
+            });
+    }
+
+    else if(name==="Gravity"){
+        for(let i=0;i<12;i++)
+            makeV("v",{
+                left:(35+Math.random()*30)+"%",
+                top:(35+Math.random()*30)+"%",
+                width:"10px",
+                height:"10px",
+                borderRadius:"50%",
+                background:"#111",
+                animation:"sparkFly 1s forwards",
+                "--x":((Math.random()-.5)*150)+"px",
+                "--y":((Math.random()-.5)*150)+"px"
+            });
+    }
+
+    else if(name==="Starlight"){
+        for(let i=0;i<25;i++)
+            makeV("v",{
+                left:(10+Math.random()*80)+"%",
+                top:(10+Math.random()*80)+"%",
+                fontSize:(8+Math.random()*20)+"px"
+            },"✦");
+    }
+
+    else if(name==="Bloodmoon"){
+        makeV("v",{
+            left:"calc(50% - 100px)",
+            top:"calc(50% - 100px)",
+            width:"200px",
+            height:"200px",
+            borderRadius:"50%",
+            background:"#700",
+            boxShadow:"0 0 60px #f00"
+        });
+    }
+
+    else if(name==="Aurora"){
+        makeV("aurora",{
+            left:"calc(50% - 175px)",
+            top:"20%"
+        });
+        makeV("aurora",{
+            left:"calc(50% - 175px)",
+            top:"40%",
+            animationDelay:"1s"
+        });
+    }
+
+    else if(name==="Overdrive"){
+        for(let i=0;i<20;i++)
+            makeV("lightning",{
+                left:(20+Math.random()*60)+"%",
+                top:(20+Math.random()*60)+"%",
+                transform:"rotate("+Math.random()*360+"deg) scale(.6)"
+            });
+    }
+
+    else if(name==="Celestial"){
+        for(let i=0;i<8;i++)
+            makeV("v",{
+                left:(25+Math.random()*50)+"%",
+                top:(15+Math.random()*65)+"%",
+                fontSize:"40px"
+            },"✦");
+        makeV("ring",{
+            left:"calc(50% - 140px)",
+            top:"calc(50% - 140px)",
+            width:"280px",
+            height:"280px",
+            borderColor:"#fff"
+        });
+    }
+
+    else if(name==="Oblivion"){
+        makeV("v",{
+            left:"0",
+            top:"0",
+            width:"100%",
+            height:"100%",
+            background:"#000"
+        });
+    }
+
+    else if(name==="Divine"){
+        for(let i=0;i<10;i++)
+            makeV("v",{
+                left:(30+i*4)+"%",
+                top:(15+Math.random()*30)+"%",
+                fontSize:"35px"
+            },"✦");
+        makeV("ring",{
+            left:"calc(50% - 130px)",
+            top:"calc(50% - 130px)",
+            width:"260px",
+            height:"260px",
+            borderColor:"#fff"
+        });
+    }
+
+    else if(name==="Galaxy"){
+        makeV("v",{
+            left:"calc(50% - 220px)",
+            top:"calc(50% - 220px)",
+            width:"440px",
+            height:"440px",
+            borderRadius:"50%",
+            background:"radial-gradient(circle,#fff 0 2%,transparent 3%),radial-gradient(ellipse,#446 0,transparent 65%)",
+            boxShadow:"0 0 50px #445"
+        });
+    }
+
+    else if(name==="Singularity"){
+        makeV("v",{
+            left:"calc(50% - 80px)",
+            top:"calc(50% - 80px)",
+            width:"160px",
+            height:"160px",
+            borderRadius:"50%",
+            background:"#000",
+            boxShadow:"0 0 80px #000,0 0 120px #fff"
+        });
+    }
+
+    else if(name==="Eternal"){
+        makeV("ring",{
+            left:"calc(50% - 160px)",
+            top:"calc(50% - 160px)",
+            width:"320px",
+            height:"320px",
+            borderColor:"#fff"
+        });
+        makeV("ring",{
+            left:"calc(50% - 115px)",
+            top:"calc(50% - 115px)",
+            width:"230px",
+            height:"230px",
+            borderColor:"#111"
+        });
+    }
+
+    else if(name==="Rift"){
+        makeV("v",{
+            left:"calc(50% - 5px)",
+            top:"10%",
+            width:"10px",
+            height:"80%",
+            background:"#111",
+            transform:"rotate(8deg)",
+            boxShadow:"0 0 30px #fff"
+        });
+    }
+
+    else if(name==="Chronos"){
+        makeV("ring",{
+            left:"calc(50% - 130px)",
+            top:"calc(50% - 130px)",
+            width:"260px",
+            height:"260px",
+            borderColor:"#111"
+        });
+        for(let i=0;i<12;i++)
+            makeV("v",{
+                left:"calc(50% - 5px)",
+                top:"calc(50% - 120px)",
+                width:"10px",
+                height:"25px",
+                background:"#111",
+                transform:"rotate("+(i*30)+"deg)",
+                transformOrigin:"5px 120px"
+            });
+    }
+
+    else if(name==="Seraph"){
+        for(let i=0;i<6;i++)
+            makeV("v",{
+                left:(30+i*7)+"%",
+                top:(20+i*4)+"%",
+                width:"55px",
+                height:"20px",
+                background:"#fff",
+                borderRadius:"100% 0",
+                transform:"rotate("+(i%2?25:-25)+"deg)",
+                boxShadow:"0 0 20px #fff"
+            });
+    }
+
+    else if(name==="Omega"){
+        makeV("bigText",{
+            left:"calc(50% - 45px)",
+            top:"calc(50% - 70px)"
+        },"Ω");
+    }
+
+    else if(name==="Genesis"){
+        makeV("v",{
+            left:"calc(50% - 110px)",
+            top:"calc(50% - 110px)",
+            width:"220px",
+            height:"220px",
+            borderRadius:"50%",
+            background:"#fff",
+            boxShadow:"0 0 70px #fff"
+        });
+        particles(50);
+    }
+
+    else if(name==="Infinity"){
+        makeV("bigText",{
+            left:"calc(50% - 60px)",
+            top:"calc(50% - 70px)"
+        },"∞");
+    }
+
+    else if(name==="Mythic"){
+        for(let i=0;i<3;i++)
+            makeV("ring",{
+                left:"calc(50% - "+(80+i*40)+"px)",
+                top:"calc(50% - "+(80+i*40)+"px)",
+                width:(160+i*80)+"px",
+                height:(160+i*80)+"px",
+                borderColor:"#111"
+            });
+    }
+
+    else if(name==="Cosmic"){
+        makeV("v",{
+            left:"0",
+            top:"0",
+            width:"100%",
+            height:"100%",
+            background:"radial-gradient(circle at 20% 30%,#fff 0 2px,transparent 3px),radial-gradient(circle at 70% 60%,#fff 0 2px,transparent 3px),#050505"
+        });
+    }
+
+    else if(name==="Astral"){
+        for(let i=0;i<6;i++)
+            makeV("v",{
+                left:(30+i*8)+"%",
+                top:(20+i*5)+"%",
+                fontSize:"45px"
+            },"✧");
+    }
+
+    else if(name==="Heavenly"){
+        makeV("v",{
+            left:"calc(50% - 150px)",
+            top:"calc(50% - 80px)",
+            width:"300px",
+            height:"160px",
+            background:"#fff",
+            clipPath:"polygon(0 100%,20% 30%,40% 70%,60% 20%,80% 60%,100% 0,80% 100%)",
+            filter:"drop-shadow(0 0 25px white)"
+        });
+    }
+
+    else if(name==="Doom"){
+        for(let i=0;i<12;i++)
+            makeV("magma",{
+                left:(25+Math.random()*50)+"%",
+                top:(25+Math.random()*50)+"%"
+            });
+    }
+
+    else if(name==="Worldbreaker"){
+        makeV("v",{
+            left:"calc(50% - 170px)",
+            top:"calc(50% - 170px)",
+            width:"340px",
+            height:"340px",
+            border:"8px solid #111",
+            transform:"rotate(45deg)",
+            boxShadow:"0 0 50px #111"
+        });
+        makeV("lightning",{
+            left:"50%",
+            top:"15%",
+            height:"300px"
+        });
+    }
+
+    else if(name==="Reality"){
+        makeV("v",{
+            left:"0",
+            top:"0",
+            width:"100%",
+            height:"100%",
+            background:"repeating-linear-gradient(45deg,transparent 0 30px,#1111 31px 33px)"
+        });
+    }
+
+    else if(name==="Ancient"){
+        makeV("v",{
+            left:"calc(50% - 140px)",
+            top:"calc(50% - 140px)",
+            width:"280px",
+            height:"280px",
+            border:"15px double #111",
+            borderRadius:"50%"
+        });
+    }
+
+    else if(name==="Forbidden"){
+        makeV("v",{
+            left:"calc(50% - 130px)",
+            top:"calc(50% - 130px)",
+            width:"260px",
+            height:"260px",
+            background:"#111",
+            clipPath:"polygon(50% 0,61% 38%,100% 38%,69% 62%,80% 100%,50% 75%,20% 100%,31% 62%,0 38%,39% 38%)",
+            boxShadow:"0 0 35px #000"
+        });
+    }
+
+    else if(name==="Immortal"){
+        for(let i=0;i<8;i++)
+            makeV("ring",{
+                left:"calc(50% - "+(60+i*12)+"px)",
+                top:"calc(50% - "+(60+i*12)+"px)",
+                width:(120+i*24)+"px",
+                height:(120+i*24)+"px",
+                borderColor:"#111"
+            });
+    }
+
+    else if(name==="Transcendent"){
+        particles(80);
+        makeV("ring",{
+            left:"calc(50% - 200px)",
+            top:"calc(50% - 200px)",
+            width:"400px",
+            height:"400px",
+            borderColor:"#111"
+        });
+    }
+
+    else if(name==="Absolute"){
+        makeV("bigText",{
+            left:"calc(50% - 150px)",
+            top:"calc(50% - 50px)"
+        },"ABSOLUTE");
+    }
+
+    else if(name==="Unbound"){
+        makeV("v",{
+            left:"20%",
+            top:"20%",
+            width:"60%",
+            height:"60%",
+            border:"3px dashed #111",
+            transform:"rotate(15deg)"
+        });
+    }
+
+    else if(name==="Limitless"){
+        for(let i=0;i<15;i++)
+            makeV("ring",{
+                left:"calc(50% - "+(30+i*10)+"px)",
+                top:"calc(50% - "+(30+i*10)+"px)",
+                width:(60+i*20)+"px",
+                height:(60+i*20)+"px",
+                borderColor:"#111"
+            });
+    }
+
+    else if(name==="Paradox"){
+        makeV("v",{
+            left:"calc(50% - 100px)",
+            top:"calc(50% - 100px)",
+            width:"200px",
+            height:"200px",
+            border:"8px solid #111",
+            transform:"rotate(45deg)"
+        });
+        makeV("v",{
+            left:"calc(50% - 100px)",
+            top:"calc(50% - 100px)",
+            width:"200px",
+            height:"200px",
+            border:"8px solid #111",
+            transform:"rotate(-45deg)"
+        });
+    }
+
+    else if(name==="Omniversal"){
+        makeV("v",{
+            left:"0",
+            top:"0",
+            width:"100%",
+            height:"100%",
+            background:"radial-gradient(circle,transparent 0 15%,#1111 16% 17%,transparent 18%)"
+        });
+        particles(100);
+    }
+
+    else if(name==="Finality"){
+        makeV("v",{
+            left:"0",
+            top:"50%",
+            width:"100%",
+            height:"6px",
+            background:"#111",
+            boxShadow:"0 0 30px #111"
+        });
+    }
+
+    else if(name==="Godly"){
+        makeV("ring",{
+            left:"calc(50% - 180px)",
+            top:"calc(50% - 180px)",
+            width:"360px",
+            height:"360px",
+            borderColor:"#111"
+        });
+        for(let i=0;i<12;i++)
+            makeV("v",{
+                left:"50%",
+                top:"50%",
+                width:"8px",
+                height:"150px",
+                background:"#111",
+                transform:"rotate("+(i*30)+"deg)",
+                transformOrigin:"4px 0"
+            });
+    }
+
+    else if(name==="The Chosen"){
+        makeV("v",{
+            left:"calc(50% - 90px)",
+            top:"calc(50% - 120px)",
+            width:"180px",
+            height:"240px",
+            border:"8px solid #111",
+            clipPath:"polygon(50% 0,100% 25%,80% 100%,20% 100%,0 25%)"
+        });
+    }
+
+    else if(name==="The First"){
+        makeV("bigText",{
+            left:"calc(50% - 100px)",
+            top:"calc(50% - 60px)"
+        },"I");
+    }
+
+    else if(name==="Beyond"){
+        makeV("v",{
+            left:"-10%",
+            top:"45%",
+            width:"120%",
+            height:"10px",
+            background:"#111",
+            boxShadow:"0 0 30px #111"
+        });
+    }
+
+    else if(name==="Limitless X"){
+        makeV("bigText",{
+            left:"calc(50% - 50px)",
+            top:"calc(50% - 60px)"
+        },"X");
+        particles(60);
+    }
+
+    else if(name==="Eternal Flame"){
+        for(let i=0;i<10;i++)
+            makeV("flame",{
+                left:(25+Math.random()*50)+"%",
+                top:(30+Math.random()*40)+"%",
+                transform:"scale("+(1+Math.random()*1.5)+")"
+            });
+    }
+
+    else if(name==="Origin"){
+        makeV("v",{
+            left:"calc(50% - 120px)",
+            top:"calc(50% - 120px)",
+            width:"240px",
+            height:"240px",
+            borderRadius:"50%",
+            border:"20px solid #111",
+            boxShadow:"0 0 80px #111"
+        });
+    }
+
+    else if(name==="The End"){
+        makeV("v",{
+            left:"0",
+            top:"0",
+            width:"100%",
+            height:"100%",
+            background:"#111"
+        });
+    }
+
+    else if(name==="Null"){
+        makeV("bigText",{
+            left:"calc(50% - 60px)",
+            top:"calc(50% - 60px)"
+        },"Ø");
+    }
+
+    else if(name==="Impossible"){
+        makeV("bigText",{
+            left:"calc(50% - 100px)",
+            top:"calc(50% - 60px)"
+        },"?");
+        particles(100);
+    }
+
+    else if(name==="Infinite Void"){
+        makeV("v",{
+            left:"0",
+            top:"0",
+            width:"100%",
+            height:"100%",
+            background:"#000"
+        });
+        makeV("ring",{
+            left:"calc(50% - 220px)",
+            top:"calc(50% - 220px)",
+            width:"440px",
+            height:"440px",
+            borderColor:"#fff"
+        });
+    }
+
+    else if(name==="Creator"){
+        creatorVFX();
+    }
+
+    else if(name==="Absolute Zero"){
+        absoluteZeroVFX();
+    }
+
+    else if(name==="1/0"){
+        makeV("v",{
+            left:"0",
+            top:"0",
+            width:"100%",
+            height:"100%",
+            background:"#050505"
+        });
+        for(let i=0;i<20;i++)
+            makeV("shard",{
+                left:(10+Math.random()*80)+"%",
+                top:(10+Math.random()*70)+"%",
+                transform:"rotate("+Math.random()*360+"deg) scale("+(1+Math.random()*2)+")"
+            });
+        makeV("bigText",{
+            left:"calc(50% - 50px)",
+            top:"calc(50% - 50px)",
+            color:"#fff"
+        },"1/0");
+    }
+
+    else if(name==="Gojo"){
+        gojoVFX();
+    }
+
+    else if(name==="Itachi"){
+        itachiVFX();
+    }
+
+    else if(name==="Naruto"){
+        narutoVFX();
+    }
+
+    else if(name==="Jiraiya"){
+        jiraiyaVFX();
+    }
+
+    else if(name==="Luffy"){
+        luffyVFX();
+    }
+
+    else if(name==="Gear 5"){
+        gear5VFX();
+    }
+
+    else if(name==="Zoro"){
+        zoroVFX();
+    }
+
+    else if(name==="Jinbei"){
+        jinbeiVFX();
+    }
+
+    else if(name==="Sanji"){
+        sanjiVFX();
+    }
+
+    else if(name==="Kakashi"){
+        kakashiVFX();
+    }
+
+    else if(name==="Sasuke"){
+        sasukeVFX();
+    }
+
+    else if(name==="Itadori"){
+        itadoriVFX();
+    }
+
+    else if(name==="Mahoraga"){
+        mahoragaVFX();
+    }
+
+    else if(name==="Yuta"){
+        yutaVFX();
+    }
 
 }
 
-function createParticle(x,y,size=6){
+/* =========================
+   SPECIAL VFX
+========================= */
 
- let p=document.createElement("div");
+function absoluteZeroVFX(){
 
- p.className="particle";
+    document.body.style.background="#dff7ff";
 
- p.style.left=x+"px";
- p.style.top=y+"px";
- p.style.width=size+"px";
- p.style.height=size+"px";
+    for(let i=0;i<14;i++){
+        makeV("shard",{
+            left:(15+Math.random()*70)+"%",
+            top:(10+Math.random()*70)+"%",
+            height:(60+Math.random()*90)+"px",
+            width:(20+Math.random()*25)+"px",
+            transform:
+                "rotate("+
+                (Math.random()*360)+
+                "deg)"
+        });
+    }
 
- document.getElementById("fx").appendChild(p);
+    makeV("ring",{
+        left:"calc(50% - 170px)",
+        top:"calc(50% - 170px)",
+        width:"340px",
+        height:"340px",
+        borderColor:"#8ee"
+    });
 
- setTimeout(()=>{
-  p.remove();
- },2500);
-
-}
-
-function showAuraVFX(id){
-
- clearVFX();
-
- let box=document.getElementById("auraFX");
-
- let cls=
-  auraClasses[id]||"spark";
-
- box.className="vfx-"+cls+" v"+(id+1);
-
- /* rings */
-
- for(let i=0;i<3;i++){
-
-  let ring=document.createElement("div");
-
-  ring.className="aura-ring r"+(i+1);
-
-  box.appendChild(ring);
-
- }
-
- /* shards */
-
- for(let i=0;i<8;i++){
-
-  let s=document.createElement("div");
-
-  s.className="shard";
-
-  s.style.left="240px";
-  s.style.top="230px";
-  s.style.transform=
-   "rotate("+(i*45)+"deg)";
-
-  box.appendChild(s);
-
- }
-
- /* stars */
-
- for(let i=0;i<3;i++){
-
-  let star=document.createElement("div");
-
-  star.className="star";
-
-  star.style.left=(150+i*70)+"px";
-  star.style.top=(130+i*45)+"px";
-
-  box.appendChild(star);
-
- }
-
- /* orbiting orbs */
-
- for(let i=0;i<5;i++){
-
-  let orb=document.createElement("div");
-
-  orb.className="orb";
-
-  orb.style.left="230px";
-  orb.style.top="220px";
-
-  orb.style.animationDelay=
-   (i*.2)+"s";
-
-  box.appendChild(orb);
-
- }
-
- /* particles */
-
- for(let i=0;i<35;i++){
-
-  setTimeout(()=>{
-
-   let p=document.createElement("div");
-
-   p.className="particle";
-
-   p.style.left=
-    (35+Math.random()*430)+"px";
-
-   p.style.top=
-    (250+Math.random()*250)+"px";
-
-   p.style.width=
-    (3+Math.random()*10)+"px";
-
-   p.style.height=
-    (3+Math.random()*10)+"px";
-
-   p.style.borderRadius="50%";
-
-   box.appendChild(p);
-
-  },i*20);
-
- }
-
- /* rare aura screen flash */
-
- if(id>=60){
-
-  let flash=document.createElement("div");
-
-  flash.className="rarityFlash";
-
-  document.getElementById("game")
-   .appendChild(flash);
-
-  setTimeout(()=>{
-   flash.remove();
-  },700);
-
- }
+    makeV("bigText",{
+        left:"calc(50% - 120px)",
+        top:"calc(50% - 45px)",
+        fontSize:"42px",
+        color:"#111"
+    },"ABSOLUTE ZERO");
 
 }
 
-/* =========================================================
-   EQUIPPED AURA
-========================================================= */
+function creatorVFX(){
 
-function applyAura(){
+    document.body.style.background="#050505";
 
- clearVFX();
+    for(let i=0;i<35;i++){
+        makeV("binary",{
+            left:(5+Math.random()*90)+"%",
+            top:(-20+Math.random()*80)+"%",
+            animationDelay:(Math.random()*2)+"s"
+        },Math.random()>.5?"0":"1");
+    }
 
- if(equippedAura===null)
-  return;
+    makeV("v",{
+        left:"calc(50% - 75px)",
+        top:"calc(50% - 95px)",
+        width:"150px",
+        height:"190px",
+        background:"#eee",
+        clipPath:
+        "polygon(20% 0,80% 0,100% 30%,85% 100%,15% 100%,0 30%)"
+    });
 
- let box=document.getElementById("auraFX");
+    makeV("v",{
+        left:"calc(50% - 35px)",
+        top:"calc(50% - 25px)",
+        width:"70px",
+        height:"50px",
+        borderRadius:"50%",
+        background:"#111"
+    });
 
- let id=equippedAura;
-
- box.className=
-  "vfx-"+auraClasses[id]+
-  " v"+(id+1);
-
- for(let i=0;i<3;i++){
-
-  let ring=document.createElement("div");
-
-  ring.className=
-   "aura-ring r"+(i+1);
-
-  box.appendChild(ring);
-
- }
-
- for(let i=0;i<8;i++){
-
-  let s=document.createElement("div");
-
-  s.className="shard";
-
-  s.style.left="240px";
-  s.style.top="230px";
-  s.style.transform=
-   "rotate("+(i*45)+"deg)";
-
-  box.appendChild(s);
-
- }
-
- for(let i=0;i<3;i++){
-
-  let star=document.createElement("div");
-
-  star.className="star";
-
-  star.style.left=(150+i*70)+"px";
-  star.style.top=(130+i*45)+"px";
-
-  box.appendChild(star);
-
- }
+    makeV("v",{
+        left:"calc(50% - 5px)",
+        top:"calc(50% + 20px)",
+        width:"10px",
+        height:"55px",
+        background:"#111",
+        transform:"rotate(-25deg)"
+    });
 
 }
 
-/* =========================================================
+function gojoVFX(){
+
+    makeV("ring",{
+        left:"calc(50% - 170px)",
+        top:"calc(50% - 170px)",
+        width:"340px",
+        height:"340px",
+        borderColor:"#4a7cff"
+    });
+
+    makeV("v",{
+        left:"calc(50% - 90px)",
+        top:"calc(50% - 110px)",
+        width:"180px",
+        height:"55px",
+        background:"#111",
+        borderRadius:"20px"
+    });
+
+    makeV("v",{
+        left:"calc(50% - 45px)",
+        top:"calc(50% - 35px)",
+        width:"90px",
+        height:"90px",
+        borderRadius:"50%",
+        background:"#fff",
+        border:"5px solid #111"
+    });
+
+    makeV("v",{
+        left:"calc(50% - 180px)",
+        top:"45%",
+        width:"120px",
+        height:"120px",
+        borderRadius:"50%",
+        background:"#ff3344",
+        boxShadow:"0 0 40px #f00"
+    });
+
+    makeV("v",{
+        left:"calc(50% + 60px)",
+        top:"45%",
+        width:"120px",
+        height:"120px",
+        borderRadius:"50%",
+        background:"#247cff",
+        boxShadow:"0 0 40px #07f"
+    });
+
+}
+
+function itachiVFX(){
+
+    makeV("eye",{
+        left:"calc(50% - 60px)",
+        top:"calc(50% - 160px)"
+    });
+
+    for(let i=0;i<10;i++){
+        makeV("crow",{
+            left:(15+Math.random()*70)+"%",
+            top:(20+Math.random()*60)+"%",
+            animationDelay:(Math.random()*2)+"s"
+        },"🐦‍⬛");
+    }
+
+}
+
+function narutoVFX(){
+
+    makeV("chakra",{
+        left:"calc(50% - 90px)",
+        top:"calc(50% - 110px)"
+    });
+
+    for(let i=0;i<8;i++){
+        makeV("v",{
+            left:(35+Math.random()*30)+"%",
+            top:(25+Math.random()*40)+"%",
+            width:"20px",
+            height:"70px",
+            background:"#ff8a00",
+            borderRadius:"50%",
+            transform:"rotate("+(Math.random()*90-45)+"deg)",
+            boxShadow:"0 0 20px #f60"
+        });
+    }
+
+}
+
+function jiraiyaVFX(){
+
+    for(let i=0;i<5;i++){
+        makeV("frog",{
+            left:(20+Math.random()*60)+"%",
+            top:(25+Math.random()*50)+"%"
+        },"🐸");
+    }
+
+    makeV("v",{
+        left:"calc(50% - 70px)",
+        top:"calc(50% - 100px)",
+        width:"140px",
+        height:"200px",
+        border:"8px solid #111",
+        borderRadius:"50%"
+    });
+
+}
+
+function luffyVFX(){
+
+    makeV("v",{
+        left:"50%",
+        top:"45%",
+        width:"280px",
+        height:"35px",
+        background:"#111",
+        borderRadius:"50%",
+        transform:"rotate(-18deg)",
+        transformOrigin:"left"
+    });
+
+    makeV("v",{
+        left:"calc(50% + 240px)",
+        top:"28%",
+        width:"55px",
+        height:"55px",
+        borderRadius:"50%",
+        background:"#fff",
+        border:"6px solid #111"
+    });
+
+}
+
+function gear5VFX(){
+
+    document.body.style.background="#fff";
+
+    makeV("cloud",{
+        left:"calc(50% - 180px)",
+        top:"20%"
+    },"☁");
+
+    makeV("cloud",{
+        left:"calc(50% + 70px)",
+        top:"30%"
+    },"☁");
+
+    for(let i=0;i<10;i++){
+        makeV("v",{
+            left:(20+Math.random()*60)+"%",
+            top:(15+Math.random()*70)+"%",
+            width:"12px",
+            height:"80px",
+            background:"#fff",
+            borderRadius:"50%",
+            boxShadow:"0 0 20px #aaa",
+            transform:"rotate("+(Math.random()*180)+"deg)"
+        });
+    }
+
+}
+
+function zoroVFX(){
+
+    for(let i=0;i<3;i++){
+
+        makeV("sword",{
+            left:"calc(50% - 80px)",
+            top:"calc(50% - 150px)",
+            transform:
+                "rotate("+
+                (-25+i*25)+
+                "deg)"
+        },"⚔");
+
+    }
+
+}
+
+function jinbeiVFX(){
+
+    for(let i=0;i<8;i++)
+        makeV("wave",{
+            left:"calc(50% - 125px)",
+            top:(25+i*8)+"%",
+            animationDelay:(i*.12)+"s"
+        });
+
+    makeV("v",{
+        left:"calc(50% - 80px)",
+        top:"calc(50% - 100px)",
+        width:"160px",
+        height:"190px",
+        border:"8px solid #111",
+        borderRadius:"35% 35% 20% 20%"
+    });
+
+}
+
+function sanjiVFX(){
+
+    for(let i=0;i<7;i++){
+        makeV("flame",{
+            left:(38+i*4)+"%",
+            top:(45+Math.random()*10)+"%",
+            height:"100px",
+            transform:"rotate("+(Math.random()*30-15)+"deg)"
+        });
+    }
+
+}
+
+function kakashiVFX(){
+
+    makeV("v",{
+        left:"calc(50% - 75px)",
+        top:"calc(50% - 120px)",
+        width:"150px",
+        height:"45px",
+        background:"#111",
+        transform:"rotate(-5deg)"
+    });
+
+    makeV("v",{
+        left:"calc(50% - 50px)",
+        top:"calc(50% - 65px)",
+        width:"100px",
+        height:"100px",
+        borderRadius:"50%",
+        background:"#eee",
+        border:"5px solid #111"
+    });
+
+    for(let i=0;i<8;i++)
+        makeV("lightning",{
+            left:(35+Math.random()*30)+"%",
+            top:(40+Math.random()*20)+"%",
+            transform:"rotate("+(Math.random()*90-45)+"deg)"
+        });
+
+}
+
+function sasukeVFX(){
+
+    for(let i=0;i<12;i++)
+        makeV("lightning",{
+            left:(30+Math.random()*40)+"%",
+            top:(25+Math.random()*50)+"%",
+            transform:"rotate("+Math.random()*360+"deg)"
+        });
+
+    makeV("eye",{
+        left:"calc(50% - 60px)",
+        top:"calc(50% - 145px)"
+    });
+
+}
+
+function itadoriVFX(){
+
+    makeV("domain",{
+        left:"5%",
+        top:"5%",
+        right:"5%",
+        bottom:"5%"
+    });
+
+    for(let i=0;i<20;i++)
+        makeV("blood",{
+            left:(20+Math.random()*60)+"%",
+            top:(20+Math.random()*50)+"%"
+        });
+
+}
+
+function mahoragaVFX(){
+
+    makeV("v",{
+        left:"calc(50% - 100px)",
+        top:"calc(50% - 120px)",
+        width:"200px",
+        height:"240px",
+        border:"12px solid #111",
+        borderRadius:"50% 50% 10% 10%",
+        boxShadow:"0 0 35px #111"
+    });
+
+    makeV("ring",{
+        left:"calc(50% - 150px)",
+        top:"calc(50% - 150px)",
+        width:"300px",
+        height:"300px",
+        borderColor:"#111"
+    });
+
+}
+
+function yutaVFX(){
+
+    makeV("v",{
+        left:"calc(50% - 110px)",
+        top:"calc(50% - 120px)",
+        width:"220px",
+        height:"250px",
+        border:"8px solid #111",
+        borderRadius:"50%"
+    });
+
+    makeV("v",{
+        left:"calc(50% + 35px)",
+        top:"calc(50% - 80px)",
+        width:"100px",
+        height:"180px",
+        border:"6px solid #111",
+        borderRadius:"50%"
+    });
+
+    makeV("ring",{
+        left:"calc(50% + 20px)",
+        top:"calc(50% - 100px)",
+        width:"130px",
+        height:"130px",
+        borderColor:"#111"
+    });
+
+}
+
+/* =========================
+   BIOME VFX
+========================= */
+
+function biomeVFX(){
+
+    clearVFX();
+
+    if(currentBiome.name==="Rain"){
+
+        for(let i=0;i<40;i++)
+            makeV("v",{
+                left:Math.random()*100+"%",
+                top:-20+"px",
+                width:"2px",
+                height:"25px",
+                background:"#178fff",
+                transform:"rotate(15deg)",
+                animation:"binaryFall 1s linear infinite",
+                animationDelay:Math.random()+"s"
+            });
+
+    }
+
+    else if(currentBiome.name==="Ocean"){
+
+        for(let i=0;i<5;i++)
+            makeV("wave",{
+                left:"calc(50% - 125px)",
+                top:(25+i*12)+"%"
+            });
+
+    }
+
+    else if(currentBiome.name==="Tsunami"){
+
+        makeV("wave",{
+            left:"-100px",
+            top:"25%",
+            width:"700px",
+            height:"300px",
+            borderWidth:"25px"
+        });
+
+    }
+
+    else if(currentBiome.name==="Storm"){
+
+        for(let i=0;i<10;i++)
+            makeV("lightning",{
+                left:Math.random()*100+"%",
+                top:Math.random()*70+"%"
+            });
+
+    }
+
+    else if(currentBiome.name==="Volcano"){
+
+        for(let i=0;i<12;i++)
+            makeV("magma",{
+                left:Math.random()*100+"%",
+                top:(40+Math.random()*50)+"%"
+            });
+
+    }
+
+    else if(currentBiome.name==="Aurora"){
+
+        makeV("aurora",{
+            left:"10%",
+            top:"10%"
+        });
+
+    }
+
+    else if(currentBiome.name==="Void"){
+
+        makeV("v",{
+            left:"0",
+            top:"0",
+            width:"100%",
+            height:"100%",
+            background:"#080511"
+        });
+
+    }
+
+    else if(currentBiome.name==="Galaxy"){
+
+        for(let i=0;i<50;i++)
+            makeV("v",{
+                left:Math.random()*100+"%",
+                top:Math.random()*100+"%",
+                width:"3px",
+                height:"3px",
+                borderRadius:"50%",
+                background:"#fff",
+                boxShadow:"0 0 8px #fff"
+            });
+
+    }
+
+    else if(currentBiome.name==="The End"){
+
+        makeV("v",{
+            left:"0",
+            top:"0",
+            width:"100%",
+            height:"100%",
+            background:"#050505"
+        });
+
+    }
+
+}
+
+/* =========================
+   OVERRIDE UPDATE
+========================= */
+
+const originalUpdate=update;
+
+function update(){
+
+    originalUpdate();
+
+    biomeVFX();
+
+    if(equippedAura!==null){
+        vfx(equippedAura);
+    }
+
+}
+
+/* =========================
    BIOME TIMER
-========================================================= */
+========================= */
 
 setInterval(()=>{
 
- biomeTime--;
+    biomeTime--;
 
- if(biomeTime<=0){
+    if(biomeTime<=0){
+        spawnBiome(naturalBiome());
+    }
 
-  spawnBiome(naturalBiome());
-
- }
-
- update();
-
- if(!admin)
-  save();
+    update();
+    save();
 
 },1000);
 
-/* =========================================================
+/* =========================
    START
-========================================================= */
+========================= */
 
 load();
 
 document.body.style.background=
- currentBiome.bg;
+currentBiome.bg;
 
 update();
 
 </script>
-
 </body>
 </html>
+print(path)
