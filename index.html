@@ -33,6 +33,7 @@
         height: 210px;
         position: relative;
         z-index: 8;
+        transition: filter 0.3s ease;
       }
       .head {
         position: absolute;
@@ -76,6 +77,22 @@
       .l2 {
         top: 138px;
         transform: rotate(65deg);
+      }
+
+      /* Continuous Aura Animation */
+      .aura-active {
+        animation: auraPulse 1.5s infinite alternate ease-in-out;
+      }
+
+      @keyframes auraPulse {
+        0% {
+          filter: drop-shadow(0 0 10px var(--aura-color, #00f3ff)) drop-shadow(0 0 20px var(--aura-color, #00f3ff));
+          transform: scale(1);
+        }
+        100% {
+          filter: drop-shadow(0 0 25px var(--aura-color, #00f3ff)) drop-shadow(0 0 40px var(--aura-color, #00f3ff));
+          transform: scale(1.04);
+        }
       }
 
       #vfx {
@@ -267,7 +284,7 @@
         transform: translateX(-50%);
         background: #111;
         color: #fff;
-        padding: 99px 14px;
+        padding: 10px 18px;
         border-radius: 9px;
         opacity: 0;
         z-index: 50;
@@ -275,15 +292,13 @@
         pointer-events: none;
       }
 
-      /* VFX Styles */
+      /* VFX Particle Styles */
       .spark {
-        width: 5px;
-        height: 5px;
-        background: #fff;
-        box-shadow: 0 0 10px #fff;
+        width: 6px;
+        height: 6px;
         border-radius: 50%;
         position: absolute;
-        animation: sparkFly 1s linear forwards;
+        animation: sparkFly 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
       }
 
       @keyframes sparkFly {
@@ -293,6 +308,25 @@
         }
         100% {
           transform: translate(var(--x), var(--y)) scale(0);
+          opacity: 0;
+        }
+      }
+
+      .ambient-particle {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        position: absolute;
+        animation: floatUp 2s linear forwards;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) scale(1);
+          opacity: 0.8;
+        }
+        100% {
+          transform: translateY(-120px) scale(0);
           opacity: 0;
         }
       }
@@ -408,9 +442,26 @@
         1000000000000000
       ];
 
+      // Dynamic color generation based on index/rarity
+      const auraColors = [
+        "#a0a0a0", "#7cfc00", "#3cb371", "#87ceeb", "#00bfff", "#e0ffff", "#d2b48c", "#ffd700",
+        "#ff4500", "#00ffff", "#ff0000", "#f08080", "#808080", "#ff69b4", "#f0f8ff", "#1e90ff",
+        "#4b0082", "#8a2be2", "#da70d6", "#00ff7f", "#ff8c00", "#f0e68c", "#7b68ee", "#2f4f4f",
+        "#b22222", "#00008b", "#4682b4", "#191970", "#483d8b", "#9400d3", "#ff00ff", "#8b008b",
+        "#9932cc", "#fff8dc", "#8b0000", "#00fa9a", "#ff1493", "#00bfff", "#000000", "#ffd700",
+        "#4b0082", "#9400d3", "#ff00ff", "#00ffff", "#708090", "#ff1493", "#ff0000", "#e6e6fa",
+        "#000000", "#8a2be2", "#00ffff", "#e6e6fa", "#ffffff", "#800000", "#4b0082", "#ff00ff",
+        "#d3d3d3", "#000000", "#ffd700", "#8a2be2", "#ffffff", "#00ffff", "#ff0000", "#4169e1",
+        "#ff8c00", "#000000", "#ffd700", "#ff4500", "#ffffff", "#ff1493", "#ff0000", "#ff8c00",
+        "#ffffff", "#000000", "#666666", "#ff0055", "#00ffff", "#ffffff", "#00bfff", "#ff0000",
+        "#0000ff", "#ff0000", "#ffa500", "#00ff00", "#ff0055", "#ffff00", "#00ff00", "#0000ff",
+        "#ff4500", "#333333", "#4169e1", "#ff0000", "#8a2be2", "#00bfff"
+      ];
+
       const auras = names.map((name, i) => ({
         name,
         odds: odds[i] || 1000000000000000,
+        color: auraColors[i] || "#00f3ff",
         owned: 0,
         total: 0
       }));
@@ -495,6 +546,7 @@
       let biomeTime = currentBiome.time;
       let biomeVisits = {};
       let milestones = {};
+      let ambientInterval = null;
 
       /* SAVE / LOAD */
       function save() {
@@ -601,7 +653,10 @@
         potionLuck = 0;
 
         showResult("✨ " + auras[id].name + " ✨", auras[id].odds ? "1/" + auras[id].odds.toLocaleString() : "1/0");
-        vfx(id);
+        
+        // Spawn burst particles for the rolled aura
+        spawnBurst(auras[id].color);
+        
         checkMilestones();
         autoCraftCheck();
         update();
@@ -871,18 +926,65 @@
         renderLeaderboard();
       }
 
+      /* VISUAL EFFECTS ENGINE */
       function vfx(id) {
+        let stick = document.getElementById("stick");
+        
+        if (id === null || id === undefined) {
+          stick.classList.remove("aura-active");
+          if (ambientInterval) clearInterval(ambientInterval);
+          return;
+        }
+
+        let auraColor = auras[id].color;
+
+        // 1. Set glow on the stick figure
+        stick.style.setProperty("--aura-color", auraColor);
+        stick.classList.add("aura-active");
+
+        // 2. Clear old particle loops
+        if (ambientInterval) clearInterval(ambientInterval);
+
+        // 3. Start continuous ambient particle generation around player
+        ambientInterval = setInterval(() => {
+          spawnAmbientParticle(auraColor);
+        }, 120);
+
+        // 4. Initial burst explosion
+        spawnBurst(auraColor);
+      }
+
+      function spawnBurst(color) {
         let container = document.getElementById("vfx");
-        container.innerHTML = "";
-        for (let i = 0; i < 15; i++) {
+        for (let i = 0; i < 25; i++) {
           let spark = document.createElement("div");
           spark.className = "spark";
           spark.style.left = "50%";
           spark.style.top = "50%";
-          spark.style.setProperty("--x", (Math.random() * 200 - 100) + "px");
-          spark.style.setProperty("--y", (Math.random() * 200 - 100) + "px");
+          spark.style.background = color;
+          spark.style.boxShadow = `0 0 12px ${color}, 0 0 20px ${color}`;
+          spark.style.setProperty("--x", (Math.random() * 300 - 150) + "px");
+          spark.style.setProperty("--y", (Math.random() * 300 - 150) + "px");
           container.appendChild(spark);
+
+          setTimeout(() => spark.remove(), 1200);
         }
+      }
+
+      function spawnAmbientParticle(color) {
+        let container = document.getElementById("vfx");
+        let particle = document.createElement("div");
+        particle.className = "ambient-particle";
+        
+        // Offset near stick figure center
+        let offsetX = (Math.random() * 100 - 50);
+        particle.style.left = `calc(50% + ${offsetX}px)`;
+        particle.style.top = `calc(50% + 40px)`;
+        particle.style.background = color;
+        particle.style.boxShadow = `0 0 8px ${color}, 0 0 15px ${color}`;
+
+        container.appendChild(particle);
+        setTimeout(() => particle.remove(), 2000);
       }
 
       // Biome timer loop
@@ -895,9 +997,12 @@
         }
       }, 1000);
 
-      // Startup
+      // Startup Execution
       load();
       document.body.style.background = currentBiome.bg;
+      if (equippedAura !== null) {
+        vfx(equippedAura);
+      }
       update();
     </script>
   </body>
